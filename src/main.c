@@ -5,12 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/02 20:32:09 by mrudge            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2021/12/03 17:02:34 by mrudge           ###   ########.fr       */
-=======
-/*   Updated: 2021/12/03 15:28:13 by mrudge           ###   ########.fr       */
->>>>>>> cd
+/*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
+/*   Updated: 2021/12/03 17:54:20 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +23,13 @@ int	build_cd(const char *str)
 
 int main(int argc, char **argv, char **env)
 {
-	printf("Hello Minishell! \n");
+	t_struct	*p;
 
+	p = (t_struct *)malloc(sizeof(t_struct));
+	init_env(env, p);
+	while (1)
+	{
+
+	}
 	return (0);
 }
