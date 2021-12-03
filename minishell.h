@@ -21,5 +21,6 @@ typedef	struct	s_struct
 }				t_struct;
 
 void  init_env(char **env, t_struct *p);
+void  display_message(t_struct *p);
 
 #endif

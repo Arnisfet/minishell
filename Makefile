@@ -1,5 +1,5 @@
 
-SRC	=	$(addprefix ./src/, main.c)
+SRC	=	$(addprefix ./src/, main.c init_env.c cmd_msg.c)
 
 OBJ	=	$(SRC:.c=.o)
 

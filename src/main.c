@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/03 17:54:20 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/03 23:16:58 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int main(int argc, char **argv, char **env)
 	init_env(env, p);
 	while (1)
 	{
-
+		display_message(p);
+		return (0);
 	}
 	return (0);
 }
