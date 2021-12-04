@@ -26,15 +26,16 @@ int main(int argc, char **argv, char **env)
 	init_env(env, p);
 	while (status)
 	{
-		ft_putstr_fd("--@--minishell🍑$> ", 1);
+		ft_putstr_fd("@minishell🍑$> ", 1);
 		line = readline(argv[1]);
 		if (input_is_empty(line))
 		{
 			free(line);
 			continue;
 		}
+		//check_buildin(line);
 		ft_putstr_fd(line, 1);
-		write(1, "\n", 1);
+		write(1, "\n", 2);
 		free(line);
 	}
 	return (0);

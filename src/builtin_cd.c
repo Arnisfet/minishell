@@ -12,4 +12,3 @@ int	build_cd(const char *str)
 	ft_putstr_fd(error, 1);
 	return (1);
 }
-
