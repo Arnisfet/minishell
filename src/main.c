@@ -6,25 +6,11 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 20:32:09 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/03 17:02:34 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/04 13:19:19 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../minishell.h"
-# include <sys/types.h>
-# include <sys/stat.h>
-# include <sys/wait.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <signal.h>
-# include <dirent.h>
-// # include "libft/libft.h"
-# include <stdio.h>
-# include <errno.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <string.h>
-
+ #include "../minishell.h"
 
 size_t	ft_strlen(const char *str)
 {
