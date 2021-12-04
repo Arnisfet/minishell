@@ -14,6 +14,11 @@
 # include <dirent.h>
 # include "libft/libft.h"
 # include <stdio.h>
+# include <errno.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <string.h>
+
 
 typedef	struct	s_struct
 {

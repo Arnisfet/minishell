@@ -19,7 +19,7 @@ $(NAME): echo	$(OBJ)
 	@echo "\t\t\t\tCompile LIBFT!\n"
 	@make -C libft
 	@echo "\t\t\t\tLibft is ready!\n"
-	@gcc $(OBJ) -pthread libft/libft.a -g -o $(NAME)
+	@gcc $(OBJ) libft/libft.a -g -lreadline -o $(NAME)
 	@echo "\t\t\t\033[0mProject is ready! Launch minishell!\n"
 
 %.o:	%.c
