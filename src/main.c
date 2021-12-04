@@ -26,8 +26,7 @@ int main(int argc, char **argv, char **env)
 	init_env(env, p);
 	while (status)
 	{
-		display_message(p);
-		ft_putstr_fd("minishell🐻$> ", 1);
+		ft_putstr_fd("--@--minishell🍑$> ", 1);
 		line = readline(argv[1]);
 		if (input_is_empty(line))
 		{
