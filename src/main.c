@@ -6,28 +6,88 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 20:32:09 by mrudge            #+#    #+#             */
-<<<<<<< HEAD
 /*   Updated: 2021/12/03 17:02:34 by mrudge           ###   ########.fr       */
-=======
-/*   Updated: 2021/12/03 15:28:13 by mrudge           ###   ########.fr       */
->>>>>>> cd
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+// #include "../minishell.h"
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <signal.h>
+# include <dirent.h>
+// # include "libft/libft.h"
+# include <stdio.h>
+# include <errno.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <string.h>
+
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (*str++)
+		i++;
+	return (i);
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	if (!s)
+		return ;
+	write(fd, s, ft_strlen(s));
+}
 
 int	build_cd(const char *str)
 {
+	char	*error;
+
 	if (chdir(str) == 0)
 	{
 		return (0);
 	}
-	return (-1);
+	error = strerror(errno);
+	ft_putstr_fd(error, 1);
+	return (1);
+}
+
+int	input_is_empty(char *check)
+{
+	int	i;
+
+	i = 0;
+	while (check[i] != '\0')
+	{
+		if (check[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int main(int argc, char **argv, char **env)
 {
-	printf("Hello Minishell! \n");
+	int		status;
+	char	*line;
 
+	status = 1;
+	while (status)
+	{
+		ft_putstr_fd("minishell🐻$> ", 1);
+		line = readline(argv[1]);
+		if (input_is_empty(line))
+		{
+			free(line);
+			continue;
+		}
+		ft_putstr_fd(line, 1);
+		write(1, "\n", 1);
+		free(line);
+	}
 	return (0);
 }
