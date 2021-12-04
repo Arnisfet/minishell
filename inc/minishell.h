@@ -2,8 +2,8 @@
 // Created by arnisfet on 02.12.2021.
 //
 
-#ifndef MINISHELL_MINISHELL_H
-# define MINISHELL_MINISHELL_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -12,7 +12,7 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <dirent.h>
-# include "libft/libft.h"
+# include "../libft/libft.h"
 # include <stdio.h>
 # include <errno.h>
 # include <readline/readline.h>
@@ -25,7 +25,9 @@ typedef	struct	s_struct
 	char **arr_env;
 }				t_struct;
 
-void  init_env(char **env, t_struct *p);
-void  display_message(t_struct *p);
+void	init_env(char **env, t_struct *p);
+void	display_message(t_struct *p);
+int		build_cd(const char *str);
+int		input_is_empty(char *check);
 
 #endif

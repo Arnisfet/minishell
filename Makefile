@@ -1,36 +1,58 @@
-
-SRC	=	$(addprefix ./src/, main.c init_env.c cmd_msg.c)
-
-OBJ	=	$(SRC:.c=.o)
-
-WWW	=	-Wall -Werror -Wextra
-
-INC_LIB	=	-I libft
-
+# Project file
 NAME	=	minishell
 
-all: $(NAME)
+# Project builds
+SRCDIR		= ./src/
+SRCNAMES	= $(shell ls $(SRCDIR) | grep -E ".+\.c")
+SRC 		= $(addprefix $(SRCDIR), $(SRCNAMES))
+OBJ			= $(SRC:.c=.o)
+INC 		= ./inc/
+BUILDDIR 	= ./build/
+BUILDOBJS 	= $(addprefix $(BUILDDIR), $(SRCNAMES:.c=.o))
 
-echo:
-	@echo "\n\t\t\t\t\033[0mMaking project!\n"
+# Libft builds and dirs
+LIBDIR 		= ./libft/
+LIBFT 		= ./libft/libft.a
+LIBINC 		= ./libft/
 
-$(NAME): echo	$(OBJ)
-	@echo "\n\n"
-	@echo "\t\t\t\tCompile LIBFT!\n"
-	@make -C libft
-	@echo "\t\t\t\tLibft is ready!\n"
-	@gcc $(OBJ) libft/libft.a -g -lreadline -o $(NAME)
-	@echo "\t\t\t\033[0mProject is ready! Launch minishell!\n"
+# Optimization and compiler flags
+CC			= gcc
+CFLAGS		= -Wall -Werror -Wextra
 
-%.o:	%.c
-	@gcc -c -g -I. $(INC_LIB) $< -o $@
-	@echo "\t\033[0mCompile $@"
+# Debug flag
+DEBUG 		= -g
+
+# Main rule
+all:		$(BUILDDIR) $(LIBFT) $(NAME)
+
+# Object dir rule
+$(BUILDDIR):
+	mkdir -p $(BUILDDIR)
+
+# Object dir rule
+$(BUILDDIR)%.o:$(SRCDIR)%.c
+	$(CC) $(CFLAGS) -I$(LIBINC) -I$(INC) -o $@ -c $<
+
+# Project file rule
+$(NAME): $(BUILDOBJS)
+	$(CC) $(CFLAGS) -lreadline -o $(NAME) $(BUILDOBJS) $(LIBFT)
+
+# Libft rule
+$(LIBFT):
+	make -C $(LIBDIR)
+
+# Cleaning up the build files
 clean:
-	@make clean -C libft
-	@rm -f $(OBJ)
+	rm -rf $(BUILDDIR)
+	make -C $(LIBDIR) clean
 
+# Getting rid of the project file
 fclean: clean
-	@echo "\t\t\t\t\033[32mDelete all minishell's obj"
-	@rm -rf $(NAME)
+	rm -rf $(NAME)
+	make -C $(LIBDIR) fclean
 
+# Do both of the above
 re: fclean all
+
+# Just in case those files exist in the root dir
+.PHONY: all fclean clean re

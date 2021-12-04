@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 int  env_len(char **env)
 {
@@ -31,11 +31,27 @@ void  init_env(char **env, t_struct *p)
 
 	i = 0;
 	p->arr_env = (char **)malloc(sizeof (char *) * (env_len(env) + 1));
+	if (!(p->arr_env))
+		return ;
 	while (env[i])
 	{
 		p->arr_env[i] = ft_strdup(env[i]);
 		if (!p->arr_env[i])
-			exit (0);
+			exit(0);
 		i++;
 	}
+}
+
+int	input_is_empty(char *check)
+{
+	int	i;
+
+	i = 0;
+	while (check[i] != '\0')
+	{
+		if (check[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
 }

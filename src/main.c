@@ -10,58 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
- #include "../minishell.h"
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (*str++)
-		i++;
-	return (i);
-}
-
-int	input_is_empty(char *check)
-{
-	int	i;
-
-	i = 0;
-	while (check[i] != '\0')
-	{
-		if (check[i] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	build_cd(const char *str)
-{
-	char	*error;
-
-	if (chdir(str) == 0)
-	{
-		return (0);
-	}
-	error = strerror(errno);
-	ft_putstr_fd(error, 1);
-	return (1);
-}
-
-void	get_env_parse(char **env)
-{
-	//char	**parsed_env;
-	int	i;
-
-	i = 0;
-	while (*env[i] != '\0')
-	{
-		ft_putstr_fd(env[i], 1);
-		ft_putstr_fd("\n", 1);
-		i++;
-	}
-}
+#include "minishell.h"
 
 int main(int argc, char **argv, char **env)
 {
@@ -69,7 +18,10 @@ int main(int argc, char **argv, char **env)
 	int			status;
 	char		*line;
 
+	(void)argc;
 	p = (t_struct *)malloc(sizeof(t_struct));
+	if (!p)
+		return (-1);
 	status = 1;
 	init_env(env, p);
 	while (status)
@@ -82,7 +34,6 @@ int main(int argc, char **argv, char **env)
 			free(line);
 			continue;
 		}
-		get_env_parse(env);
 		ft_putstr_fd(line, 1);
 		write(1, "\n", 1);
 		free(line);

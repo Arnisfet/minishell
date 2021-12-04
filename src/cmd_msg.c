@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 /* Check the HOME variable from **env*/
 
@@ -40,6 +40,7 @@ char  *parse_path(char *path, t_struct *p)
 	if (!path)
 		return (NULL);
 	home_path = get_env_var("HOME", p);
+	return (home_path);
 }
 
 void  display_message(t_struct *p)
