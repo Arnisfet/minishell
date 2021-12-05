@@ -6,11 +6,11 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:49:43 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/03 23:17:14 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/05 21:52:51 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 
 int  env_len(char **env)
 {

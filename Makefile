@@ -43,7 +43,7 @@ $(LIBFT):
 
 # Cleaning up the build files
 clean:
-	rm -rf $(BUILDDIR)
+	rm -rf $(SRCDIR)$(OBJ)
 	make -C $(LIBDIR) clean
 
 # Getting rid of the project file
