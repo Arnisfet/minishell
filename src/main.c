@@ -6,11 +6,12 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/04 13:19:19 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/05 20:46:49 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
+
 
 int main(int argc, char **argv, char **env)
 {
@@ -26,7 +27,7 @@ int main(int argc, char **argv, char **env)
 	init_env(env, p);
 	while (status)
 	{
-		ft_putstr_fd("@minishell🍑$> ", 1);
+		display_message(p);
 		line = readline(argv[1]);
 		if (input_is_empty(line))
 		{
