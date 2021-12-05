@@ -159,6 +159,15 @@
                   </entry>
                 </map>
               </option>
+<<<<<<< HEAD
+=======
+              <option name="COLUMN_ID_WIDTH">
+                <map>
+                  <entry key="Table.Default.Author.ColumnIdWidth" value="205" />
+                  <entry key="Table.Default.Date.ColumnIdWidth" value="204" />
+                </map>
+              </option>
+>>>>>>> 02437a4db877d98d289ad7eba4fed4b2b4a561a5
             </State>
           </value>
         </entry>
@@ -174,6 +183,19 @@
                   <option value="vitya" />
                 </option>
               </RecentGroup>
+<<<<<<< HEAD
+=======
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="dev" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="master" />
+                </option>
+              </RecentGroup>
+>>>>>>> 02437a4db877d98d289ad7eba4fed4b2b4a561a5
             </list>
           </value>
         </entry>
