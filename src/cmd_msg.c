@@ -6,8 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 22:26:43 by mrudge            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2021/12/05 21:54:26 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/05 22:01:17 by mrudge           ###   ########.fr       */#.fr       */
 =======
 /*   Updated: 2021/12/05 21:00:06 by mrudge           ###   ########.fr       */
 >>>>>>> 02437a4db877d98d289ad7eba4fed4b2b4a561a5
