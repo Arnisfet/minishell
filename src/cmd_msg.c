@@ -6,11 +6,11 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 22:26:43 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/03 23:25:00 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/05 20:09:09 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 /* Check the HOME variable from **env*/
 
@@ -40,6 +40,7 @@ char  *parse_path(char *path, t_struct *p)
 	if (!path)
 		return (NULL);
 	home_path = get_env_var("HOME", p);
+	return (home_path);
 }
 
 void  display_message(t_struct *p)
