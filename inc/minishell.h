@@ -27,7 +27,7 @@ typedef	struct	s_struct
 
 void	init_env(char **env, t_struct *p);
 void	display_message(t_struct *p);
-int		build_cd(const char *str);
+int		build_cd(char **str, t_struct *p);
 int		input_is_empty(char *check);
 char	*get_env_var(char *str, t_struct *p);
 

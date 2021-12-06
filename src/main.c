@@ -6,11 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-<<<<<<< HEAD
 /*   Updated: 2021/12/05 21:52:51 by mrudge           ###   ########.fr       */
-=======
-/*   Updated: 2021/12/05 20:46:49 by mrudge           ###   ########.fr       */
->>>>>>> 02437a4db877d98d289ad7eba4fed4b2b4a561a5
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +18,7 @@ int main(int argc, char **argv, char **env)
 	t_struct	*p;
 	int			status;
 	char		*line;
+	char		**test;
 
 	(void)argc;
 	p = (t_struct *)malloc(sizeof(t_struct));
@@ -38,8 +35,14 @@ int main(int argc, char **argv, char **env)
 			free(line);
 			continue;
 		}
-		//check_buildin(line);
-		ft_putstr_fd(line, 1);
+		test = ft_split(line, ' ');
+		int x = 0;
+		while (test[x])
+		{
+			printf("str[%d]: %s\n", x, test[x]);
+			x++;
+		}
+		build_cd(test, p);
 		write(1, "\n", 2);
 		free(line);
 	}

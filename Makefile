@@ -49,6 +49,7 @@ clean:
 # Getting rid of the project file
 fclean: clean
 	rm -rf $(NAME)
+	rm -rf $(BUILDDIR)
 	make -C $(LIBDIR) fclean
 
 # Do both of the above
