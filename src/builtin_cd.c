@@ -49,6 +49,9 @@ int	build_cd(char **str, t_struct *p)
 	if (chdir(str[1]) == 0)
 		return (1);
 	else
-		ft_putstr_fd("cd: string not in pwd: ", 2);
+	{
+		ft_putstr_fd("cd: no such file or directory: ", 2);
+		ft_putstr_fd(str[1], 2);
+	}
 	return (-1);
 }
