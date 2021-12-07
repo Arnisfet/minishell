@@ -36,7 +36,6 @@ int main(int argc, char **argv, char **env)
 			continue;
 		}
 		test = ft_split(line, ' ');
-		int x = 0;
 		if (find_str(test[0], "cd"))
 			build_cd(test, p);
 		if (find_str(test[0], "pwd"))
