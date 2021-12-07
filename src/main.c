@@ -42,6 +42,10 @@ int main(int argc, char **argv, char **env)
 			printf("str[%d]: %s\n", x, test[x]);
 			x++;
 		}
+		if (find_str(test[0], "pwd"))
+		{
+			build_pwd(test);
+		}
 		build_cd(test, p);
 		write(1, "\n", 2);
 		free(line);

@@ -30,5 +30,7 @@ void	display_message(t_struct *p);
 int		build_cd(char **str, t_struct *p);
 int		input_is_empty(char *check);
 char	*get_env_var(char *str, t_struct *p);
+char	*build_pwd(char **str);
+int		find_str(const char *s1,const char *s2);
 
 #endif
