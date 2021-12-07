@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/05 21:52:51 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/07 21:29:43 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int main(int argc, char **argv, char **env)
 			continue;
 		}
 		test = ft_split(line, ' ');
-		int x = 0;
 		if (find_str(test[0], "cd"))
 			build_cd(test, p);
 		if (find_str(test[0], "pwd"))
