@@ -1,44 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/09 23:28:02 by mrudge           ###   ########.fr       */
+/*   Created: 2021/12/07 21:51:41 by mrudge            #+#    #+#             */
+/*   Updated: 2021/12/09 23:24:15 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-
-int main(int argc, char **argv, char **env)
+int	check_bultin(char **str, t_struct *p)
 {
-	t_struct	*p;
-	int			status;
-	char		*line;
-	char		**test;
+	if (find_str(str[0], "cd")) //segfault
+		build_cd(str, p);
+	if (find_str(str[0], "pwd"))
+		build_pwd(str);
+	if (find_str(str[0], "echo"))
+		builtin_echo(str + 1, p);
+}
 
-	(void)argc;
-	p = (t_struct *)malloc(sizeof(t_struct));
-	if (!p)
-		return (-1);
-	status = 1;
-	init_env(env, p);
-	while (status)
+int	parse_cmd(char **str, t_struct *p)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		display_message(p);
-		line = readline(argv[1]);
-		if (input_is_empty(line))
-		{
-			free(line);
-			continue;
-		}
-		test = ft_split(line, ' ');
-		if (parse_cmd(test, p) == 1)
+		if (check_bultin(str, p) == 1)
 			return (1);
-		free(line);
+		i++;
 	}
-	return (0);
 }
