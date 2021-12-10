@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 22:29:33 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/09 23:27:39 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/10 20:12:24 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,13 @@ int	check_echo_sym(char **str, t_struct *p)
 		{
 			if (str[i][j] == '"')
 				count++;
-//			if (((count % 2) == 0) && str[i][j + 1] != '\0')
-//				return (-1);
 			j++;
 		}
 		i++;
 	}
 	if ((count % 2) != 0)
-		return (1);
-	return (0);
+		return (0);
+	return (1);
 }
 
 void	print_echo(char *str)
@@ -47,14 +45,10 @@ void	print_echo(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[0] == '"')
+		if (str[i] == '"' && (str[i - 1] == '"' || str[i + 1] == '"'))
 			i++;
-		if (str[i] == '\'' && str[i + 1] == '"')
-		{
-			ft_putchar_fd('"', 1);
-			i += 1;
-		}
-		ft_putchar_fd(str[i], 1);
+		if(str[i] && str[i] != '"' )
+			ft_putchar_fd(str[i], 1);
 		i++;
 	}
 }
@@ -75,11 +69,8 @@ int	builtin_echo(char **str, t_struct *p)
 		flag_n = 1;
 	if (flag_n)
 		++i;
-	if (check_echo_sym(str, p) == 1)
-	{
-		printf("%d", i);
-		return (1);
-	}
+	if (check_echo_sym(str, p) == 0)
+		return (0);
 	while (str[i])
 	{
 		print_echo(str[i]);

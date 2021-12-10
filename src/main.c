@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/09 23:28:02 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/10 18:52:34 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,8 @@ int main(int argc, char **argv, char **env)
 			continue;
 		}
 		test = ft_split(line, ' ');
-		if (parse_cmd(test, p) == 1)
-			return (1);
+		if (parse_cmd(test, p) == 0)
+			return (0);
 		free(line);
 	}
-	return (0);
 }
