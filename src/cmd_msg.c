@@ -62,5 +62,4 @@ void  display_message(t_struct *p)
 	cwd = getcwd(buf, 4096);
 	parsed = parse_path(cwd, p, 0);
 	ft_putstr_fd(parsed, 1);
-	ft_putstr_fd("/minishell🍑$> ", 1);
 }

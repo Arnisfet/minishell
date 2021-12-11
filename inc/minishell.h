@@ -22,7 +22,8 @@
 
 typedef	struct	s_struct
 {
-	char **arr_env;
+	char	**arr_env;
+	int		echo_flag;
 }				t_struct;
 
 void	init_env(char **env, t_struct *p);
@@ -34,5 +35,6 @@ char	*build_pwd(char **str);
 int		find_str(const char *s1,const char *s2);
 int		parse_cmd(char **str, t_struct *p);
 int		builtin_echo(char **str, t_struct *p);
+int		builtin_env(t_struct *p);
 
 #endif

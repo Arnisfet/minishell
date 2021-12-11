@@ -1,53 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_env.c                                         :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 17:49:43 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/12 17:14:47 by mrudge           ###   ########.fr       */
+/*   Created: 2021/12/12 17:01:04 by mrudge            #+#    #+#             */
+/*   Updated: 2021/12/12 17:13:56 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int  env_len(char **env)
-{
-	int  i;
-
-	i = 0;
-	while (env[i])
-		i++;
-	return (i);
-}
-
-void  init_env(char **env, t_struct *p)
-{
-	int i;
-
-	i = 0;
-	p->arr_env = (char **)malloc(sizeof (char *) * (env_len(env) + 1));
-	if (!(p->arr_env))
-		return ;
-	while (env[i])
-	{
-		p->arr_env[i] = ft_strdup(env[i]);
-		if (!p->arr_env[i])
-			exit(0);
-		i++;
-	}
-}
-
-int	input_is_empty(char *check)
+int	builtin_env(t_struct *p)
 {
 	int	i;
 
 	i = 0;
-	while (check[i] != '\0')
+	while (p->arr_env[i])
 	{
-		if (check[i] != ' ')
-			return (0);
+		ft_putendl_fd(p->arr_env[i], 1);
 		i++;
 	}
 	return (1);
