@@ -40,5 +40,6 @@ char	*build_pwd(char **str);
 int		find_str(const char *s1,const char *s2);
 int		build_export(char **str, t_struct *p);
 int		build_unset(char **str, t_struct *p);
+void	init_env_list(t_struct *p, char *content);
 
 #endif

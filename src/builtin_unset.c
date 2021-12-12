@@ -1,5 +1,24 @@
 #include "../inc/minishell.h"
 
+void	delete_var(t_env *to_delete, t_struct *p)
+{
+	t_env	*tmp;
+
+	tmp = p->my_env;
+	if (tmp == to_delete)
+	{
+		p->my_env = to_delete->next;
+		free(to_delete->var);
+		free(to_delete);
+		return ;
+	}
+	while (tmp->next != to_delete)
+		tmp = tmp->next;
+	tmp->next = to_delete->next;
+	free(to_delete->var);
+	free(to_delete);
+}
+
 int	unset_errors(char **str)
 {
 	if (!str[1])
@@ -32,7 +51,11 @@ int	build_unset(char **str, t_struct *p)
 			{	
 				ft_putstr_fd(compare, 1);
 				ft_putstr_fd("\n", 1);
+				delete_var(tmp, p);
+				break ;
 			}
+			else
+				*stop_position = '=';
 			free(compare);
 		}
 		tmp = tmp->next;
