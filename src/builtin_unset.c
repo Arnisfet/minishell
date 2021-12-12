@@ -21,24 +21,21 @@ int	build_unset(char **str, t_struct *p)
 	if (unset_errors(str))
 		return (-1);
 	tmp = p->my_env;
-	if (tmp != NULL)
+	while (tmp != NULL)
 	{
-		while (tmp->next != NULL)
+		stop_position = ft_strchr(tmp->var, '=');
+		if (stop_position)
 		{
-			stop_position = ft_strchr(tmp->var, '=');
-			if (stop_position)
-			{
-				*stop_position = '\0';
-				compare = ft_strdup(tmp->var);
-				if (find_str(str[1], compare))
-				{	
-					ft_putstr_fd(compare, 1);
-					ft_putstr_fd("\n", 1);
-				}
-				free(compare);
+			*stop_position = '\0';
+			compare = ft_strdup(tmp->var);
+			if (find_str(str[1], compare))
+			{	
+				ft_putstr_fd(compare, 1);
+				ft_putstr_fd("\n", 1);
 			}
-			tmp = tmp->next;
+			free(compare);
 		}
+		tmp = tmp->next;
 	}
 	return (1);
 }
