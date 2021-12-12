@@ -48,9 +48,7 @@ int	build_unset(char **str, t_struct *p)
 			*stop_position = '\0';
 			compare = ft_strdup(tmp->var);
 			if (find_str(str[1], compare))
-			{	
-				ft_putstr_fd(compare, 1);
-				ft_putstr_fd("\n", 1);
+			{
 				delete_var(tmp, p);
 				break ;
 			}
