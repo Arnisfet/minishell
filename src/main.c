@@ -36,11 +36,15 @@ int main(int argc, char **argv, char **env)
 			continue;
 		}
 		test = ft_split(line, ' ');
+		if (find_str(test[0], "unset"))
+			build_unset(test, p);
+		if (find_str(test[0], "export"))
+			build_export(test, p);
 		if (find_str(test[0], "cd"))
 			build_cd(test, p);
 		if (find_str(test[0], "pwd"))
 			build_pwd(test);
-		write(1, "\n", 2);
+		//write(1, "\n", 2);
 		free(line);
 	}
 	return (0);

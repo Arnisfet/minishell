@@ -19,10 +19,16 @@
 # include <readline/history.h>
 # include <string.h>
 
+typedef struct	s_env
+{
+	char			*var;
+	struct s_env	*next;
+}				t_env;
 
 typedef	struct	s_struct
 {
-	char **arr_env;
+	char 	**arr_env;
+	t_env	*my_env;
 }				t_struct;
 
 void	init_env(char **env, t_struct *p);
@@ -32,5 +38,7 @@ int		input_is_empty(char *check);
 char	*get_env_var(char *str, t_struct *p);
 char	*build_pwd(char **str);
 int		find_str(const char *s1,const char *s2);
+int		build_export(char **str, t_struct *p);
+int		build_unset(char **str, t_struct *p);
 
 #endif

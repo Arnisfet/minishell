@@ -12,6 +12,27 @@
 
 #include "../inc/minishell.h"
 
+void	init_env_list(t_struct *p, char *content)
+{
+	t_env	*tmp;
+
+	tmp = p->my_env;
+	if (p->my_env == NULL)
+	{
+		p->my_env = (t_env *)malloc(sizeof(t_env));
+		p->my_env->var = ft_strdup(content);
+		p->my_env->next = NULL;
+	}
+	else
+	{
+		while (tmp->next != NULL)
+			tmp = tmp->next;
+		tmp->next = (t_env *)malloc(sizeof(t_env));
+		tmp->next->var = ft_strdup(content);
+		tmp->next->next = NULL;
+	}
+}
+
 int  env_len(char **env)
 {
 	int  i;
@@ -30,9 +51,11 @@ void  init_env(char **env, t_struct *p)
 	p->arr_env = (char **)malloc(sizeof (char *) * (env_len(env) + 1));
 	if (!(p->arr_env))
 		return ;
+	p->my_env = NULL;
 	while (env[i])
 	{
 		p->arr_env[i] = ft_strdup(env[i]);
+		init_env_list(p, env[i]);
 		if (!p->arr_env[i])
 			exit(0);
 		i++;
