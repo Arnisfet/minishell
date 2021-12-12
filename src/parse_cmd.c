@@ -1,54 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_env.c                                         :+:      :+:    :+:   */
+/*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 17:49:43 by mrudge            #+#    #+#             */
+/*   Created: 2021/12/07 21:51:41 by mrudge            #+#    #+#             */
 /*   Updated: 2021/12/12 17:42:05 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int  env_len(char **env)
+int	check_bultin(char **str, t_struct *p)
 {
-	int  i;
-
-	i = 0;
-	while (env[i])
-		i++;
-	return (i);
-}
-
-void  init_env(char **env, t_struct *p)
-{
-	int i;
-
-	i = 0;
-	p->arr_env = (char **)malloc(sizeof (char *) * (env_len(env) + 1));
-	if (!(p->arr_env))
-		return ;
-	while (env[i])
+	if (find_str(str[0], "cd")) //segfault
+		build_cd(str, p);
+	if (find_str(str[0], "pwd"))
+		build_pwd(str);
+	if (find_str(str[0], "echo"))
 	{
-		p->arr_env[i] = ft_strdup(env[i]);
-		if (!p->arr_env[i])
-			exit(0);
-		i++;
+		if (builtin_echo(str + 1, p))
+			return (1);
 	}
+	if (find_str(str[0], "env"))
+		builtin_env(p);
+	if (find_str(str[0], "exit"))
+		return (0);
 }
 
-int	input_is_empty(char *check)
+int	parse_cmd(char **str, t_struct *p)
 {
-	int	i;
-
-	i = 0;
-	while (check[i] != '\0')
-	{
-		if (check[i] != ' ')
+		if (check_bultin(str, p) == 0)
 			return (0);
-		i++;
-	}
 	return (1);
 }
