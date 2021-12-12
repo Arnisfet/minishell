@@ -31,11 +31,11 @@ $(BUILDDIR):
 
 # Object dir rule
 $(BUILDDIR)%.o:$(SRCDIR)%.c
-	$(CC) $(CFLAGS) -I$(LIBINC) -I$(INC) -o $@ -c $<
+	$(CC) -I$(LIBINC) -I$(INC) -o $@ -c $<
 
 # Project file rule
 $(NAME): $(BUILDOBJS)
-	$(CC) $(CFLAGS) -lreadline -o $(NAME) $(BUILDOBJS) $(LIBFT)
+	$(CC) -lreadline -o $(NAME) $(BUILDOBJS) $(LIBFT)
 
 # Libft rule
 $(LIBFT):

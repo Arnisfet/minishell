@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 22:16:59 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/18 19:17:52 by mrudge           ###   ########.fr       */
+/*   Created: 2021/12/12 17:01:04 by mrudge            #+#    #+#             */
+/*   Updated: 2021/12/12 17:42:05 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../inc/minishell.h"
 
-void	ft_bzero(void *s, size_t n)
+int	builtin_env(t_struct *p)
 {
-	ft_memset(s, 0, n);
+	int	i;
+
+	i = 0;
+	while (p->arr_env[i])
+	{
+		ft_putendl_fd(p->arr_env[i], 1);
+		i++;
+	}
+	return (1);
 }

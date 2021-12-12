@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 22:26:43 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/05 22:01:17 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/12 17:42:05 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,4 @@ void  display_message(t_struct *p)
 	cwd = getcwd(buf, 4096);
 	parsed = parse_path(cwd, p, 0);
 	ft_putstr_fd(parsed, 1);
-	ft_putstr_fd("  minishell🍑$> ", 1);
 }
