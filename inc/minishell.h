@@ -27,7 +27,6 @@ typedef struct	s_env
 
 typedef	struct	s_struct
 {
-	char 	**arr_env;
 	t_env	*my_env;
 	char	**arr_env;
 	int		echo_flag;

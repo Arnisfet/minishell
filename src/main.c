@@ -30,7 +30,7 @@ int main(int argc, char **argv, char **env)
 	{
 		display_message(p);
 		line = readline("/minishell🍑$> ");
-		add_history(line);
+		//add_history(line);
 		if (input_is_empty(line))
 		{
 			free(line);
@@ -49,6 +49,6 @@ int main(int argc, char **argv, char **env)
 		if (parse_cmd(test, p) == 0)
 			return (0);
 		free(line);
-		rl_clear_history();
+		//rl_clear_history();
 	}
 }
