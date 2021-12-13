@@ -29,6 +29,8 @@ typedef	struct	s_struct
 {
 	char 	**arr_env;
 	t_env	*my_env;
+	char	**arr_env;
+	int		echo_flag;
 }				t_struct;
 
 void	init_env(char **env, t_struct *p);
@@ -41,5 +43,8 @@ int		find_str(const char *s1,const char *s2);
 int		build_export(char **str, t_struct *p);
 int		build_unset(char **str, t_struct *p);
 void	init_env_list(t_struct *p, char *content);
+int		parse_cmd(char **str, t_struct *p);
+int		builtin_echo(char **str, t_struct *p);
+int		builtin_env(t_struct *p);
 
 #endif

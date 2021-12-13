@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:49:43 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/05 22:01:17 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/12 17:42:05 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int  env_len(char **env)
 	i = 0;
 	while (env[i])
 		i++;
-	return (i - 1);
+	return (i);
 }
 
 void  init_env(char **env, t_struct *p)
