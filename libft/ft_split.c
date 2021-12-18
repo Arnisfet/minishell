@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 22:18:39 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/18 19:17:52 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/07 21:29:43 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,49 +24,67 @@
 
 #include "libft.h"
 
-static char	**ft_free(char **arr)
+static int	ft_count(const char *s, char c)
 {
-	int	i;
+	size_t	i;
+	int		counter;
 
 	i = 0;
-	if (arr[i])
+	counter = 0;
+	while (s[i] != '\0')
 	{
-		while (arr[i])
-		{
-			free(arr[i]);
-			arr[i] = NULL;
+		while (s[i] == c)
 			i++;
-		}
-		free(arr);
-		arr = NULL;
+		if (s[i] != '\0')
+			counter++;
+		while ((s[i] != '\0') && (s[i] != c))
+			i++;
 	}
-	return (NULL);
+	return (counter);
+}
+
+static char	*ft_copy(const char *str, size_t n)
+{
+	char	*new;
+	size_t	i;
+
+	new = (char *)malloc(sizeof(char) * (n + 1));
+	if (new == NULL)
+		return (NULL);
+	i = 0;
+	while ((str[i] != '\0') && (i < n))
+	{
+		new[i] = str[i];
+		i++;
+	}
+	new[i] = '\0';
+	return (new);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	size_t	counter;
-	char	**arr_2;
-	int		len;
-	int		len_s;
+	char	**new;
+	size_t	i;
+	size_t	place;
+	int		word;
 
-	len = 0;
-	counter = ft_count_words(s, c);
-	arr_2 = (char **) malloc(sizeof(char *) * (counter + 1));
-	if (!arr_2)
+	if (s == NULL)
 		return (NULL);
-	while (s[len])
+	new = (char **)malloc(sizeof(char *) * (ft_count(s, c) + 1));
+	if (new == NULL)
+		return (NULL);
+	i = 0;
+	word = 0;
+	while (s[i] != '\0')
 	{
-		while (s[len] == c)
-			len++;
-		len_s = len;
-		while (s[len] && s[len] != c)
-			len++;
-		if (len > len_s)
-			*arr_2++ = ft_strndup(&s[len_s], (len - len_s));
-		if (!*arr_2)
-			return (ft_free(arr_2));
+		while (s[i] == c)
+			i++;
+		place = i;
+		while ((s[i] != '\0') && (s[i] != c))
+			i++;
+		if (place < i)
+			new[word++] = ft_copy(s + place, i - place);
 	}
-	*arr_2 = (NULL);
-	return (arr_2 - counter);
+	new[word] = NULL;
+	return (new);
 }
