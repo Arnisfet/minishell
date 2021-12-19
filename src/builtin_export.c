@@ -19,6 +19,7 @@ int	build_export(char **str, t_struct *p)
 	}
 	if (!str[2])
 	{
-			
+		return (1);
 	}
+	return (1);
 }
