@@ -6,9 +6,7 @@ int	build_export(char **str, t_struct *p)
 	t_env	*tmp;
 
 	i = 0;
-	if (str[1])
-		return (0);
-	else
+	if (!str[1])
 	{
 		tmp = p->my_env;
 		while (tmp != NULL)
@@ -18,5 +16,9 @@ int	build_export(char **str, t_struct *p)
 			tmp = tmp->next;
 		}
 		return (1);
+	}
+	if (!str[2])
+	{
+			
 	}
 }

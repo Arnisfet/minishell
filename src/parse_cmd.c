@@ -27,6 +27,7 @@ int	check_bultin(char **str, t_struct *p)
 		builtin_env(p);
 	if (find_str(str[0], "exit"))
 		return (0);
+	return (0);
 }
 
 int	parse_cmd(char **str, t_struct *p)

@@ -29,7 +29,7 @@ int main(int argc, char **argv, char **env)
 	while (status)
 	{
 		display_message(p);
-		line = readline("/minishell🍑$> ");
+		line = readline("🍑$> ");
 		//add_history(line);
 		if (input_is_empty(line))
 		{
@@ -45,9 +45,11 @@ int main(int argc, char **argv, char **env)
 			build_cd(test, p);
 		if (find_str(test[0], "pwd"))
 			build_pwd(test);
+		if (find_str(test[0], "exit"))
+			build_exit(test, p);
 		//write(1, "\n", 2);
-		if (parse_cmd(test, p) == 0)
-			return (0);
+		// if (parse_cmd(test, p) == 0)
+		// 	return (0);
 		free(line);
 		//rl_clear_history();
 	}

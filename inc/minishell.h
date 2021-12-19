@@ -45,5 +45,7 @@ int		parse_cmd(char **str, t_struct *p);
 int		builtin_echo(char **str, t_struct *p);
 int		builtin_env(t_struct *p);
 char	*get_env_var(char *str, t_struct *p);
+void	build_exit(char **str, t_struct *p);
+void	free_list(t_struct *p);
 
 #endif
