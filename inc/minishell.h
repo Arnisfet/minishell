@@ -30,6 +30,8 @@ typedef	struct	s_struct
 	t_env	*my_env;
 	char	**arr_env;
 	int		echo_flag;
+	char	**commands;
+	int		count;
 }				t_struct;
 
 void	init_env(char **env, t_struct *p);
@@ -41,9 +43,13 @@ int		find_str(const char *s1,const char *s2);
 int		build_export(char **str, t_struct *p);
 int		build_unset(char **str, t_struct *p);
 void	init_env_list(t_struct *p, char *content);
-int		parse_cmd(char **str, t_struct *p);
+int		parse_cmd(char *line, t_struct *p);
 int		builtin_echo(char **str, t_struct *p);
 int		builtin_env(t_struct *p);
 char	*get_env_var(char *str, t_struct *p);
+char	**write_in_2_dim(char *command,char **commands);
+int  	env_len(char **env);
+void	ft_free(char **commands);
+
 
 #endif
