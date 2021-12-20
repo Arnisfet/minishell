@@ -35,7 +35,7 @@ $(BUILDDIR)%.o:$(SRCDIR)%.c
 
 # Project file rule
 $(NAME): $(BUILDOBJS)
-	$(CC) -lreadline -o $(NAME) $(BUILDOBJS) $(LIBFT)
+	$(CC) -lreadline -g -o $(NAME) $(BUILDOBJS) $(LIBFT)
 
 # Libft rule
 $(LIBFT):
