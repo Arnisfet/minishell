@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 21:51:41 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/23 22:26:40 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/23 23:04:38 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,15 @@ void	printr(char **commands)
 	}
 }
 
-char	*ft_realloc_ch(char *command, char ch)
-{
-	int	i;
-	char *new_arr;
-
-	i = strlen(command);
-	new_arr = (char *)malloc(sizeof (char) * (i + 1));
-	new_arr = memmove(new_arr, command, i);
-	new_arr[i] = ch;
-	new_arr[i + 1] = '\0';
-	//	printf("%s\n", new_arr);
-	free (command);
-	return (new_arr);
-}
-
-char	*write_in_arr(char *line, char *command, int i)
+char	*write_in_arr(char *line, char *command, int i, t_struct *p)
 {
 	if (line[i] == ' ' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
 		return (command);
+	if (line[i] == '"' || line[i] == '\'')
+	{
+		command = parse_revert(command, line , i, p);
+		return (command);
+	}
 	if (command == NULL)
 	{
 		if (line[i] == ' ')
@@ -59,8 +49,8 @@ char	*write_in_arr(char *line, char *command, int i)
 int	parse_cmd(char *line, t_struct *p)
 {
 	int	i;
-	char	*command;
 	char	**commands;
+	char	*command;
 
 	i = 0;
 	commands = NULL;
@@ -73,10 +63,10 @@ int	parse_cmd(char *line, t_struct *p)
 			command = NULL;
 			i++;
 		}
-		command = write_in_arr(line, command, i);
-		i++;
+		command = write_in_arr(line, command, i, p);
+		i += 1 + p->count;
+		p->count = 0;
 	}
 	commands =  write_in_2_dim(command, commands);
 	printr(commands);
-	free(commands);
 }

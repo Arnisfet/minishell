@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 21:51:16 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/23 22:24:10 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/23 23:00:21 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,19 @@ char **write_in_2_dim(char *command,char **commands)
 		free(command);
 		return (commands);
 	}
+}
+
+char	*ft_realloc_ch(char *command, char ch)
+{
+	int	i;
+	char *new_arr;
+
+	i = strlen(command);
+	new_arr = (char *)malloc(sizeof (char) * (i + 1));
+	new_arr = memmove(new_arr, command, i);
+	new_arr[i] = ch;
+	new_arr[i + 1] = '\0';
+	//	printf("%s\n", new_arr);
+	free (command);
+	return (new_arr);
 }

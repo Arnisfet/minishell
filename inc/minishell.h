@@ -32,6 +32,7 @@ typedef	struct	s_struct
 	int		echo_flag;
 	char	**commands;
 	int		count;
+	int		double_rev_flag;
 }				t_struct;
 
 void	init_env(char **env, t_struct *p);
@@ -50,6 +51,8 @@ char	*get_env_var(char *str, t_struct *p);
 char	**write_in_2_dim(char *command,char **commands);
 int  	env_len(char **env);
 void	ft_free(char **commands);
+char	*ft_realloc_ch(char *command, char ch);
+char	*parse_revert(char *command, char *line, int i, t_struct *p);
 
 
 #endif
