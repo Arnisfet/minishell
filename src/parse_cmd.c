@@ -52,6 +52,7 @@ int	parse_cmd(char *line, t_struct *p)
 	char	**commands;
 	char	*command;
 
+	p->count = 0;
 	i = 0;
 	commands = NULL;
 	command = NULL;

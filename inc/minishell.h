@@ -49,10 +49,12 @@ int		builtin_echo(char **str, t_struct *p);
 int		builtin_env(t_struct *p);
 char	*get_env_var(char *str, t_struct *p);
 char	**write_in_2_dim(char *command,char **commands);
-int  	env_len(char **env);
+int		env_len(char **env);
 void	ft_free(char **commands);
 char	*ft_realloc_ch(char *command, char ch);
 char	*parse_revert(char *command, char *line, int i, t_struct *p);
+char	*parse_double_revert(char *command, char *line, int i, t_struct *p);
+char	*dollar(char *command, char *line, int i, t_struct *p);
 
 
 #endif

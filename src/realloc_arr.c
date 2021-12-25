@@ -51,6 +51,7 @@ char **write_in_2_dim(char *command,char **commands)
 	{
 		commands = (char **)malloc(sizeof (char *) * 1);
 		commands[0] = strdup(command);
+		commands[1] = NULL;
 		free(command);
 		return (commands);
 	}
@@ -67,7 +68,9 @@ char	*ft_realloc_ch(char *command, char ch)
 	int	i;
 	char *new_arr;
 
-	i = strlen(command);
+	i = 0;
+	if (command)
+		i = ft_strlen(command);
 	new_arr = (char *)malloc(sizeof (char) * (i + 1));
 	new_arr = memmove(new_arr, command, i);
 	new_arr[i] = ch;
