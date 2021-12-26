@@ -1,48 +1,74 @@
 #include "../inc/minishell.h"
 
-int	find_var(const char *s1, const char *s1)
+void	add_or_blank(char *str, t_struct *p)
 {
-	int	result;
+	char	*stop_position;
+	char	*compare;
+	t_env	*tmp;
 
-	if (!s1 || !s2)
-		return (0);
-	result = strcmp(s1, s2);
-	if (result == 0)
-		return (1);
-	return (0);
+	tmp = p->my_env;
+	while (tmp != NULL)
+	{
+		stop_position = ft_strchr(tmp->var, '=');
+		if (stop_position)
+		{
+			*stop_position = '\0';
+			compare = ft_strdup(tmp->var);
+			if (find_str(str, compare))
+			{
+				free(tmp->var);
+				tmp->var = ft_strdup(str);
+			}
+			else
+			{
+				free(tmp->var);
+				tmp->var = ft_strdup(str);
+			}
+		}
+	}
+}
+
+int	print_env(t_struct *p)
+{
+	t_env	*tmp;
+
+	tmp = p->my_env;
+	while (tmp != NULL)
+	{
+		printf("var -- %s\n", tmp->var);
+		// //ft_putstr_fd("declare -x ", 1);
+		// ft_putstr_fd(tmp->var, 1);
+		// ft_putchar_fd('=', 1);
+		// ft_putendl_fd(tmp->value, 1);
+		tmp = tmp->next;
+	}
+	return (1);
 }
 
 int	build_export(char **str, t_struct *p)
 {
 	int		i;
-	t_env	*tmp;
 	char	*stop_position;
 	char	*compare;
 
 	if (!str[1])
 	{
-		builtin_env(p);
+		print_env(p);
 		return (1);
 	}
-	i = 1;
-	while (str[i])
-	{
-		stop_position = ft_strchr(str[i], '=');
-		if (stop_position)
-		{
-			*stop_position = '\0';
-			compare = ft_strdup(str[i]);
-			if (find_var(compare, p))
-			{
-				/* code */
-			}
-			free(compare);
-		}
-		else
-		{
-
-		}
-		i++;
-	}
+	// i = 1;
+	// while (str[i])
+	// {
+	// 	stop_position = ft_strchr(str[i], '=');
+	// 	if (stop_position)
+	// 	{
+	// 		*stop_position = '\0';
+	// 	}
+	// 	else
+	// 	{
+	// 		add_or_blank(str[i], p);
+	// 	}
+	// 	i++;
+	// }
 	return (1);
 }

@@ -71,6 +71,7 @@ int	build_unset(char **str, t_struct *p)
 			if (find_str(str[i], compare))
 			{
 				delete_var(tmp, p);
+				free(compare);
 				break ;
 			}
 			else

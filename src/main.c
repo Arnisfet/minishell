@@ -62,6 +62,8 @@ int main(int argc, char **argv, char **env)
 			build_unset(test, p);
 		if (find_str(test[0], "export"))
 			build_export(test, p);
+		if (find_str(test[0], "env"))
+			builtin_env(p);
 		if (find_str(test[0], "cd"))
 			build_cd(test, p);
 		if (find_str(test[0], "pwd"))

@@ -12,15 +12,28 @@
 
 #include "../inc/minishell.h"
 
+void	clean_split_tmp(char **clean)
+{
+	if(clean[0])
+		free(clean[0]);
+	if(clean[1])
+		free(clean[1]);
+	free(clean);
+}
+
 void	init_env_list(t_struct *p, char *content)
 {
 	t_env	*tmp;
+	char	**str;
 
 	tmp = p->my_env;
 	if (p->my_env == NULL)
 	{
 		p->my_env = (t_env *)malloc(sizeof(t_env));
-		p->my_env->var = ft_strdup(content);
+		str = ft_split(content, '=');
+		p->my_env->var = ft_strdup(str[0]);
+		p->my_env->value = ft_strdup(str[1]);
+		clean_split_tmp(str);
 		p->my_env->next = NULL;
 	}
 	else
@@ -28,7 +41,10 @@ void	init_env_list(t_struct *p, char *content)
 		while (tmp->next != NULL)
 			tmp = tmp->next;
 		tmp->next = (t_env *)malloc(sizeof(t_env));
-		tmp->next->var = ft_strdup(content);
+		str = ft_split(content, '=');
+		tmp->next->var = ft_strdup(str[0]);
+		tmp->next->value = ft_strdup(str[1]);
+		clean_split_tmp(str);
 		tmp->next->next = NULL;
 	}
 }
