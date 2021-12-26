@@ -35,11 +35,10 @@ int	print_env(t_struct *p)
 	tmp = p->my_env;
 	while (tmp != NULL)
 	{
-		printf("var -- %s\n", tmp->var);
-		// //ft_putstr_fd("declare -x ", 1);
-		// ft_putstr_fd(tmp->var, 1);
-		// ft_putchar_fd('=', 1);
-		// ft_putendl_fd(tmp->value, 1);
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd(tmp->var, 1);
+		ft_putchar_fd('=', 1);
+		ft_putendl_fd(tmp->value, 1);
 		tmp = tmp->next;
 	}
 	return (1);

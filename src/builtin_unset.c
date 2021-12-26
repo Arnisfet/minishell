@@ -9,6 +9,7 @@ void	delete_var(t_env *to_delete, t_struct *p)
 	{
 		p->my_env = to_delete->next;
 		free(to_delete->var);
+		free(to_delete->value);
 		free(to_delete);
 		return ;
 	}
@@ -16,6 +17,7 @@ void	delete_var(t_env *to_delete, t_struct *p)
 		tmp = tmp->next;
 	tmp->next = to_delete->next;
 	free(to_delete->var);
+	free(to_delete->value);
 	free(to_delete);
 }
 

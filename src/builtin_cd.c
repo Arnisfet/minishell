@@ -20,13 +20,48 @@ int	find_str(const char *s1,const char *s2)
 	return (0);
 }
 
+// void	switch_dir(char *path, t_struct *p)
+// {
+// 	char	*pwd;
+// 	char	buf[4096 + 1];
+// 	t_env	*tmp;
+// 	char	*stop_position;
+// 	char	*compare;
+
+// 	pwd = getcwd(buf, 4096);
+// 	if (chdir(path) == 0)
+// 	{
+// 		ft_putstr_fd("cd: string not in pwd: ", 2);
+// 		return ;
+// 	}
+// 	tmp = p->my_env;
+// 	while (tmp != NULL)
+// 	{
+// 		stop_position = ft_strchr(tmp->var, '=');
+// 		if (stop_position)
+// 		{
+// 			*stop_position = '\0';
+// 			compare = ft_strdup(tmp->var);
+// 			if (find_str("OLDPWD", compare))
+// 			{
+// 				free(tmp->var);
+// 				tmp->var = ft_strdup(pwd);
+// 				break ;
+// 			}
+// 			else
+// 				*stop_position = '=';
+// 			free(compare);
+// 		}
+// 		tmp = tmp->next;
+// 	}
+	
+// }
+
 void	switch_dir(char *path, t_struct *p)
 {
 	char	*pwd;
 	char	buf[4096 + 1];
 	t_env	*tmp;
-	char	*stop_position;
-	char	*compare;
 
 	pwd = getcwd(buf, 4096);
 	if (chdir(path) == 0)
@@ -37,24 +72,14 @@ void	switch_dir(char *path, t_struct *p)
 	tmp = p->my_env;
 	while (tmp != NULL)
 	{
-		stop_position = ft_strchr(tmp->var, '=');
-		if (stop_position)
+		if (find_str("OLDPWD", tmp->var))
 		{
-			*stop_position = '\0';
-			compare = ft_strdup(tmp->var);
-			if (find_str("OLDPWD", compare))
-			{
-				free(tmp->var);
-				tmp->var = ft_strdup(pwd);
-				break ;
-			}
-			else
-				*stop_position = '=';
-			free(compare);
+			free(tmp->value);
+			tmp->value = ft_strdup(pwd);
+			break ;
 		}
 		tmp = tmp->next;
 	}
-	
 }
 
 int	build_cd(char **str, t_struct *p)
@@ -66,7 +91,7 @@ int	build_cd(char **str, t_struct *p)
 	old_path = get_env_var("OLDPWD", p);
 	
 	if (!str[1])
-		switch_dir(old_path, p);
+		switch_dir(home_path, p);
 	else
 	{
 		if (str[2])
