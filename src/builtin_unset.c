@@ -50,10 +50,41 @@ int	unset_errors(char **str)
 	return (0);
 }
 
+// int	build_unset(char **str, t_struct *p)
+// {
+// 	char	*compare;
+// 	char	*stop_position;
+// 	int		i;
+// 	t_env	*tmp;
+
+// 	i = 1;
+// 	if (unset_errors(str))
+// 		return (-1);
+// 	tmp = p->my_env;
+// 	while (tmp != NULL)
+// 	{
+// 		stop_position = ft_strchr(tmp->var, '=');
+// 		if (stop_position)
+// 		{
+// 			*stop_position = '\0';
+// 			compare = ft_strdup(tmp->var);
+// 			if (find_str(str[i], compare))
+// 			{
+// 				delete_var(tmp, p);
+// 				free(compare);
+// 				break ;
+// 			}
+// 			else
+// 				*stop_position = '=';
+// 			free(compare);
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	return (1);
+// }
+
 int	build_unset(char **str, t_struct *p)
 {
-	char	*compare;
-	char	*stop_position;
 	int		i;
 	t_env	*tmp;
 
@@ -63,20 +94,10 @@ int	build_unset(char **str, t_struct *p)
 	tmp = p->my_env;
 	while (tmp != NULL)
 	{
-		stop_position = ft_strchr(tmp->var, '=');
-		if (stop_position)
+		if (find_str(str[i], tmp->var))
 		{
-			*stop_position = '\0';
-			compare = ft_strdup(tmp->var);
-			if (find_str(str[i], compare))
-			{
-				delete_var(tmp, p);
-				free(compare);
-				break ;
-			}
-			else
-				*stop_position = '=';
-			free(compare);
+			delete_var(tmp, p);
+			break ;
 		}
 		tmp = tmp->next;
 	}
