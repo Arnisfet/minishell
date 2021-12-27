@@ -32,88 +32,6 @@ void	add_null_value(char *str, t_struct *p, int flag)
 	}
 }
 
-void	add_value_to_env(char *str, t_struct *p)
-{
-	t_env	*tmp;
-	char	**splitted;
-
-	tmp = p->my_env;
-	splitted = ft_split(str, '=');
-	if (tmp == NULL)
-	{
-		tmp = (t_env *)malloc(sizeof(t_env));
-		tmp->var = ft_strdup(splitted[0]);
-		if (splitted[1])
-			tmp->value = splitted[1];
-		else
-			tmp->value = NULL;
-		tmp->is_blank = 0;
-		tmp->next = NULL;
-	}
-	else
-	{
-		while (tmp->next != NULL)
-			tmp = tmp->next;
-		tmp->next = (t_env *)malloc(sizeof(t_env));
-		tmp->var = ft_strdup(splitted[0]);
-		if (splitted[1])
-			tmp->value = splitted[1];
-		else
-			tmp->value = NULL;
-		tmp->next->is_blank = 0;
-		tmp->next->next = NULL;
-	}
-	clean_split_tmp(splitted);
-}
-
-void	update_value(char *position, t_env *tmp, int flag)
-{
-	if (tmp->value)
-		free(tmp->value);
-	if (flag)
-		tmp->value = ft_strdup(position);	
-	else
-		tmp->value = NULL;
-	tmp->next->is_blank = 0;
-}
-
-
-void	find_and_replace(char *str, t_struct *p)
-{
-	char	*position;
-	t_env	*tmp;
-
-	tmp = p->my_env;
-	while (tmp != NULL)
-	{
-		position = ft_strchr(str, '=');
-		*position = '\0';
-		if (find_str(str, tmp->var))
-		{
-			*position = '=';
-			position++;
-			if (position)
-				update_value(position, tmp, 0);
-			else
-				update_value(position, tmp, 1);
-		}
-		else
-		{
-			*position = '=';
-			position++;
-			if (position)
-				add_value_to_env(str, p);
-			else
-			{
-				position--;
-				*position = '\0';
-				add_null_value(str, p, 2);
-			}
-		}
-		tmp = tmp->next;
-	}
-}
-
 void	blank_and_replace(char *str, t_struct *p)
 {
 	t_env	*tmp;
@@ -149,6 +67,118 @@ int	print_env(t_struct *p)
 	return (1);
 }
 
+int	check_var(char *str, t_struct *p)
+{
+	t_env	*tmp;
+
+	tmp = p->my_env;
+	while (tmp != NULL)
+	{
+		if (find_str(str, tmp->value))
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+void	exist_add(char *var, char *value, t_struct *p, int flag)
+{
+	t_env	*tmp;
+
+	tmp = p->my_env;
+	while (tmp != NULL)
+	{
+		if (find_str(var, tmp->var))
+		{
+			if (flag)
+			{
+				if (tmp->value)
+					free(tmp->value);
+				tmp->value = NULL;
+				tmp->is_blank = 1;
+			}
+			else
+			{
+				if (tmp->value)
+					free(tmp->value);
+				tmp->value = ft_strdup(value);
+				tmp->is_blank = 0;
+			}
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	addition_var(char *var, char *value, t_struct *p, int flag)
+{
+	t_env	*tmp;
+
+	tmp = p->my_env;
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	tmp->next = (t_env *)malloc(sizeof(t_env));
+	tmp->next->var = ft_strdup(var);
+	if (flag)
+	{
+		tmp->next->value = NULL;
+		tmp->next->is_blank = 1;
+	}
+	else
+	{
+		tmp->next->value = ft_strdup(value);
+		tmp->next->is_blank = 0;
+	}
+}
+
+void	add_new(char *var, char *value, t_struct *p, int flag)
+{
+	t_env	*tmp;
+
+	tmp = p->my_env;
+	if (tmp == NULL)
+	{
+		tmp = (t_env *)malloc(sizeof(t_env));
+		tmp->var = ft_strdup(var);
+		if (flag)
+		{
+			tmp->value = NULL;
+			tmp->is_blank = 1;
+		}
+		else
+		{
+			tmp->value = ft_strdup(value);
+			tmp->is_blank = 0;
+		}
+		tmp->next = NULL;
+	}
+	else
+		addition_var(var, value, p, flag);
+}
+
+void	find_and_update(char *str, t_struct *p)
+{
+	char	*stop_position;
+
+	stop_position = ft_strchr(str, '=');
+	*stop_position = '\0';
+	if (check_var(str, p))
+	{
+		stop_position++;
+		if (*stop_position)
+			exist_add(str, stop_position, p, 0);
+		else
+			exist_add(str, stop_position, p, 1);
+	}
+	else
+	{
+		stop_position++;
+		if (*stop_position)
+			add_new(str, stop_position, p, 0);
+		else
+			add_new(str, stop_position, p, 1);
+	}
+}
+
 int	build_export(char **str, t_struct *p)
 {
 	int		i;
@@ -166,7 +196,7 @@ int	build_export(char **str, t_struct *p)
 	{
 		equal = ft_strchr(str[i], '=');
 		if (equal)
-			find_and_replace(str[i], p);
+			find_and_update(str[i], p);
 		else
 			blank_and_replace(str[i], p);
 		i++;

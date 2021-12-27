@@ -23,15 +23,16 @@ void	delete_var(t_env *to_delete, t_struct *p)
 
 int	special_check(char *str)
 {
-	int	i;
+	// int	i;
 
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (!ft_isalpha((int)str[0]) && str[i] != '_')
+	// i = 0;
+	// while (str[i] != '\0')
+	// {
+		// if (!ft_isalpha((int)str[0]) && str[i] != '_')
+		if (!ft_isalpha((int)str[0]))
 			return (1);
-		i++;	
-	}
+	// 	i++;	
+	// }
 	return (0);
 }
 
