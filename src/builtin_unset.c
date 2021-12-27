@@ -28,7 +28,7 @@ int	special_check(char *str)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (!ft_isalpha((int)str[i]) && str[i] != '_')
+		if (!ft_isalpha((int)str[0]) && str[i] != '_')
 			return (1);
 		i++;	
 	}
@@ -52,56 +52,33 @@ int	unset_errors(char **str)
 	return (0);
 }
 
-// int	build_unset(char **str, t_struct *p)
-// {
-// 	char	*compare;
-// 	char	*stop_position;
-// 	int		i;
-// 	t_env	*tmp;
+void	to_delete(char *str, t_struct *p)
+{
+	t_env	*tmp;
 
-// 	i = 1;
-// 	if (unset_errors(str))
-// 		return (-1);
-// 	tmp = p->my_env;
-// 	while (tmp != NULL)
-// 	{
-// 		stop_position = ft_strchr(tmp->var, '=');
-// 		if (stop_position)
-// 		{
-// 			*stop_position = '\0';
-// 			compare = ft_strdup(tmp->var);
-// 			if (find_str(str[i], compare))
-// 			{
-// 				delete_var(tmp, p);
-// 				free(compare);
-// 				break ;
-// 			}
-// 			else
-// 				*stop_position = '=';
-// 			free(compare);
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// 	return (1);
-// }
+	tmp = p->my_env;
+	while (tmp != NULL)
+	{
+		if (find_str(str, tmp->var))
+		{
+			delete_var(tmp, p);
+			return ;
+		}
+		tmp = tmp->next;
+	}
+}
 
 int	build_unset(char **str, t_struct *p)
 {
 	int		i;
-	t_env	*tmp;
 
 	i = 1;
 	if (unset_errors(str))
 		return (-1);
-	tmp = p->my_env;
-	while (tmp != NULL)
+	while (str[i])
 	{
-		if (find_str(str[i], tmp->var))
-		{
-			delete_var(tmp, p);
-			break ;
-		}
-		tmp = tmp->next;
+		to_delete(str[i], p);
+		i++;
 	}
 	return (1);
 }
