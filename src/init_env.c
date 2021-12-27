@@ -33,6 +33,7 @@ void	init_env_list(t_struct *p, char *content)
 		str = ft_split(content, '=');
 		p->my_env->var = ft_strdup(str[0]);
 		p->my_env->value = ft_strdup(str[1]);
+		p->my_env->is_blank = 0;
 		clean_split_tmp(str);
 		p->my_env->next = NULL;
 	}
@@ -44,6 +45,7 @@ void	init_env_list(t_struct *p, char *content)
 		str = ft_split(content, '=');
 		tmp->next->var = ft_strdup(str[0]);
 		tmp->next->value = ft_strdup(str[1]);
+		tmp->next->is_blank = 0;
 		clean_split_tmp(str);
 		tmp->next->next = NULL;
 	}

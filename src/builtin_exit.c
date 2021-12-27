@@ -9,6 +9,8 @@ void	free_list(t_struct *p)
 		tmp = p->my_env;
 		p->my_env = p->my_env->next;
 		free(tmp->var);
+		if (tmp->value)
+			free(tmp->value);
 		free(tmp);
 	}
 }

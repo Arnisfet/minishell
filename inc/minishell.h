@@ -23,6 +23,7 @@ typedef struct	s_env
 {
 	char			*var;
 	char			*value;
+	int				is_blank;
 	struct s_env	*next;
 }				t_env;
 
