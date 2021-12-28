@@ -13,8 +13,8 @@ void	add_null_value(char *str, t_struct *p, int flag)
 		tmp->is_blank = 0;
 		if (flag == 1)
 			tmp->next->is_blank = 1;
-		else
-			tmp->next->is_blank = 0;
+		// // else
+		// 	tmp->next->is_blank = 0;
 		tmp->next = NULL;
 	}
 	else
@@ -26,8 +26,8 @@ void	add_null_value(char *str, t_struct *p, int flag)
 		tmp->next->value = NULL;
 		if (flag == 1)
 			tmp->next->is_blank = 1;
-		else
-			tmp->next->is_blank = 0;
+		// else
+			// tmp->next->is_blank = 0;
 		tmp->next->next = NULL;
 	}
 }
@@ -55,7 +55,7 @@ int	print_env(t_struct *p)
 	{
 		ft_putstr_fd("declare -x ", 1);
 		ft_putstr_fd(tmp->var, 1);
-		if (tmp->value && !tmp->is_blank)
+		if (!tmp->is_blank)
 		{
 			ft_putstr_fd("=\"", 1);
 			ft_putstr_fd(tmp->value, 1);
@@ -74,7 +74,7 @@ int	check_var(char *str, t_struct *p)
 	tmp = p->my_env;
 	while (tmp != NULL)
 	{
-		if (find_str(str, tmp->value))
+		if (find_str(str, tmp->var))
 			return (1);
 		tmp = tmp->next;
 	}
@@ -95,7 +95,7 @@ void	exist_add(char *var, char *value, t_struct *p, int flag)
 				if (tmp->value)
 					free(tmp->value);
 				tmp->value = NULL;
-				tmp->is_blank = 1;
+				tmp->is_blank = 0;
 			}
 			else
 			{
@@ -121,7 +121,7 @@ void	addition_var(char *var, char *value, t_struct *p, int flag)
 	if (flag)
 	{
 		tmp->next->value = NULL;
-		tmp->next->is_blank = 1;
+		tmp->next->is_blank = 0;
 	}
 	else
 	{
