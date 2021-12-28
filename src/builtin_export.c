@@ -10,11 +10,7 @@ void	add_null_value(char *str, t_struct *p, int flag)
 		tmp = (t_env *)malloc(sizeof(t_env));
 		tmp->var = ft_strdup(str);
 		tmp->value = NULL;
-		tmp->is_blank = 0;
-		if (flag == 1)
-			tmp->next->is_blank = 1;
-		// // else
-		// 	tmp->next->is_blank = 0;
+		tmp->is_blank = 1;
 		tmp->next = NULL;
 	}
 	else
@@ -24,10 +20,7 @@ void	add_null_value(char *str, t_struct *p, int flag)
 		tmp->next = (t_env *)malloc(sizeof(t_env));
 		tmp->next->var = ft_strdup(str);
 		tmp->next->value = NULL;
-		if (flag == 1)
-			tmp->next->is_blank = 1;
-		// else
-			// tmp->next->is_blank = 0;
+		tmp->next->is_blank = 1;
 		tmp->next->next = NULL;
 	}
 }
