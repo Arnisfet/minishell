@@ -1,13 +1,5 @@
 #include "../inc/minishell.h"
 
-void	get_error()
-{
-	char	*error;
-
-	error = strerror(errno);
-	ft_putstr_fd(error, 2);
-}
-
 int	find_str(const char *s1,const char *s2)
 {
 	int	result;
@@ -18,33 +10,6 @@ int	find_str(const char *s1,const char *s2)
 	if (result == 0)
 		return (1);
 	return (0);
-}
-
-void	switch_dir(char *path, t_struct *p)
-{
-	char	*pwd;
-	char	buf[4096 + 1];
-	t_env	*tmp;
-
-	pwd = getcwd(buf, 4096);
-	if (chdir(path) == 0)
-		return ;
-	else
-	{
-		ft_putstr_fd("cd: string not in pwd: ", 2);
-		return ;
-	}
-	tmp = p->my_env;
-	while (tmp != NULL)
-	{
-		if (find_str("OLDPWD", tmp->var))
-		{
-			free(tmp->value);
-			tmp->value = ft_strdup(pwd);
-			break ;
-		}
-		tmp = tmp->next;
-	}
 }
 
 void	update_var(char *s1, char *s2, t_struct *p)
@@ -96,21 +61,15 @@ int	build_cd(char **str, t_struct *p)
 	}
 	else
 	{
-		if (str[2])
+		if (!str[3])
 		{
-			ft_putstr_fd("cd: string not in pwd: ", 2);
-			return (-1);
+			if (find_str(str[2], "--") || find_str(str[2], "~"))
+				go_to_dir(home_path, p);
+			if (find_str(str[2], "-"))
+				go_to_dir(old_path, p);
 		}
-		else if (find_str(str[1], "--") || find_str(str[1], "~"))
-		{
-			chdir(home_path);
-			return (1);
-		}
-		else if (find_str(str[1], "-"))
-		{
-			switch_dir(old_path, p);
-			return (1);
-		}
+		else
+			ft_putstr_fd("bash: cd: too many arguments\n", 2);
 	}
 	return (1);
 }
