@@ -61,11 +61,11 @@ int	build_cd(char **str, t_struct *p)
 	}
 	else
 	{
-		if (!str[3])
+		if (!str[2])
 		{
-			if (find_str(str[2], "--") || find_str(str[2], "~"))
+			if (find_str(str[1], "--") || find_str(str[1], "~"))
 				go_to_dir(home_path, p);
-			if (find_str(str[2], "-"))
+			if (find_str(str[1], "-"))
 				go_to_dir(old_path, p);
 		}
 		else
