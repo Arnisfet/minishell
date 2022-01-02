@@ -1,24 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 22:17:39 by mrudge            #+#    #+#             */
+/*   Created: 2021/11/16 22:18:42 by mrudge            #+#    #+#             */
 /*   Updated: 2021/12/18 19:29:25 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// Created by Mickey Rudge on 5/1/21.
-//
-// Возвращает кодовый номер числа
-
 #include "libft.h"
 
-int	ft_isdigit(int ch)
+char	*ft_strchr_quote(const char *str, int ch)
 {
-	if (ch >= 48 && ch <= 57)
-		return (ch);
-	return (0);
+	char	*p;
+	char	quote;
+
+	p = (char *)str;
+	while (*p && *p != ch)
+	{
+		if (*p == '"' || *p == '\'')
+		{
+			quote = *p++;
+			while (*p != quote)
+				p++;
+		}
+		else
+			p++;
+	}
+	if (*p == ch)
+		return (p);
+	return (NULL);
 }

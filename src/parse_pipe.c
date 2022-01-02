@@ -37,6 +37,8 @@ char	*quotes(char *line, char *command, int i, t_struct *p)
 		command  = write_in_arr(line, command, i, p);
 		i++;
 	}
+	if (line[i] != ch)
+		exit(2);
 	p->count = i - p->count;
 	p->revert_flag = 0;
 	return (command);
