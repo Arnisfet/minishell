@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:49:43 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/12 17:42:05 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/03 16:56:19 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void  init_env(char **env, t_struct *p)
 			exit(0);
 		i++;
 	}
+	p->arr_env[i] = NULL;
 }
 
 int	input_is_empty(char *check)
