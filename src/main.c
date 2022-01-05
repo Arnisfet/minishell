@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/05 20:17:24 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/05 20:20:20 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,11 @@ int main(int argc, char **argv, char **env)
 
 
 //	char line[] = ">>file'$US'ER$USER\"$USER\"";
-	(void)argc;
+	if (argc > 1)
+	{
+		ft_putstr_fd("Error: too many arguments\n", 2);
+		return (-1);
+	}
 	p = (t_struct *)malloc(sizeof(t_struct));
 	if (!p)
 		return (-1);
