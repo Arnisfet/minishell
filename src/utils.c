@@ -47,3 +47,20 @@ void	add_to_list_redirect(t_struct *p, char *type, char *file, int num)
 		tmp->next = NULL;
 	}
 }
+
+void	print_list(t_struct *p)
+{
+	t_redirect	*tmp;
+
+	tmp = p->redirect;
+	if (!tmp)
+		return ;
+	while (tmp->next != NULL)
+	{
+		printf ("type of redirect: %s, filename: %s, number of pipe: %d",
+				tmp->type, tmp->file, tmp->number_command);
+		tmp = tmp->next;
+	}
+	printf ("type of redirect: %s, filename: %s, number of pipe: %d",
+			tmp->type, tmp->file, tmp->number_command);
+}

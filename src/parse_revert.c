@@ -74,7 +74,7 @@ char *parse_revert(char *array, int i, t_struct *p)
 		if (array[i] == '\'' || array[i] == '"')
 		{
 			start = i;
-			end = last_revert(array + start + 1 , array[i]) - array;
+			end = ft_strchr(array + start + 1 , array[i]) - array;
 			before = ft_substr(array, 0, start - 0);
 			now = ft_substr(array, start, end - start + 1);
 			now = rev_2(now, array, start, p);
@@ -88,10 +88,10 @@ char *parse_revert(char *array, int i, t_struct *p)
 			array = ft_strjoin(array, last);
 			free(last);
 			free(now);
+			free (trimmer);
 			continue ;
 		}
 		i++;
 	}
-	free (trimmer);
 	return (array);
 }

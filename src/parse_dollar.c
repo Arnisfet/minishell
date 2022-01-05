@@ -68,7 +68,7 @@ char	*parse_dollar_without_quote(char *array, t_struct *p)
 	if (start == NULL)
 		return (array);
 	end = start + 1;
-	while (*end && (*end >= 65 && *end <= 90) || *end == '_')
+	while ((*end && *end >= 65 && *end <= 90) || *end == '_')
 	{
 		if (*end == '?')
 			break ;
@@ -94,15 +94,13 @@ char	*parse_dollar_with_quote(char *array, t_struct *p)
 	char	*last;
 
 	start = ft_strchr(array, '$');
+	if (strcmp(array, "$") == 0)
+		return (array);
 	if (start == NULL)
 		return (array);
 	end = start + 1;
-	while (*end && (*end >= 65 && *end <= 90) || *end == '_')
-	{
-		if (*end == '?')
-			break ;
+	while ((*end && *end >= 65 && *end <= 90) || *end == '_')
 		end++;
-	}
 	first = ft_substr(array, 0, start - array);
 	middle = ft_substr(array, start - array + 1, end - start - 1);
 	if (*end == '?')

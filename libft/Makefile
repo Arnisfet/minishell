@@ -26,7 +26,7 @@ $(NAME):	$(OBJS)
 	@echo "\t\t\t\tCompile is ready\t\n"
 
 %.o:	%.c
-	@gcc $(FLAGS) -c $< -o $@
+	@gcc $(FLAGS) -c $< -g -o $@
 	@echo "\t\t\033[32mCompile $@"
 
 clean:

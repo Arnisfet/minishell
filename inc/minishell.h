@@ -44,6 +44,7 @@ typedef struct s_redirect
 typedef	struct	s_struct
 {
 	t_env	*my_env;
+	char	**trim_env;
 	char	**arr_env;
 	int		echo_flag;
 	char	**commands;
@@ -70,7 +71,7 @@ char	**write_in_2_dim(char *command,char **commands);
 int  	env_len(char **env);
 void	ft_free(char **commands);
 char	*ft_realloc_ch(char *command, char ch);
-char	*parse_revert(char *command, char *line, int i, t_struct *p);
+char	*parse_revert(char *array, int i, t_struct *p);
 void	parse_cmd(char *line, t_struct *p);
 char	*parse_double_revert(char *command, char *line, int i, t_struct *p);
 char	*write_in_arr(char *line, char *command, int i, t_struct *p);
@@ -78,6 +79,11 @@ char	**parse_pipe(char *line, t_struct *p);
 void	printr(char **commands);
 char	**parse_redirect(char **commands, t_struct *p);
 void	add_to_list_redirect(t_struct *p, char *type, char *file, int num);
+char	*parse_revert(char *array, int i, t_struct *p);
+char	*parse_dollar_with_quote(char *array, t_struct *p);
+char	*parse_dollar_without_quote(char *array, t_struct *p);
+void	print_list(t_struct *p);
+
 
 
 

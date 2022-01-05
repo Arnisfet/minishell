@@ -16,7 +16,9 @@ void	parse_cmd(char *line, t_struct *p)
 {
 	char **commands;
 
+	p->trim_env = NULL;
 	commands = parse_pipe(line, p);
 	commands = parse_redirect(commands, p);
-//	printr(commands);
+	print_list(p);
+	printr(commands);
 }

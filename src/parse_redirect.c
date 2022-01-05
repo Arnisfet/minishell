@@ -67,8 +67,9 @@ void	substring(char *start, char ch, t_struct *p)
 		end++;
 	p->point_f = end;
 	file = ft_strndup(start, end - start);
+	file = parse_dollar_without_quote(file, p);
+	file = parse_revert(file, 0, p);
 	add_to_list_redirect(p, redirect, file, p->count);
-	printf("redir %s, file %s\n", redirect, file);
 }
 
 char	*first_rparse(char *commands, t_struct *p)
@@ -81,17 +82,13 @@ char	*first_rparse(char *commands, t_struct *p)
 		{
 			start = ft_strchr_quote(commands, '>');
 			substring(start, '>', p);
-			printf("%s\n", commands);
 			commands = ft_strtrim_quote(commands, p->point_r, p->point_f);
-			printf("%s\n", commands);
 		}
 		if (ft_strchr_quote(commands, '<'))
 		{
 			start = ft_strchr_quote(commands, '<');
 			substring(start, '<', p);
-//			printf("%s\n", commands);
 			commands = ft_strtrim_quote(commands, p->point_r, p->point_f);
-			printf("%s\n", commands);
 		}
 	}
 	return (commands);

@@ -15,16 +15,17 @@
 char	*ft_strchr_quote(const char *str, int ch)
 {
 	char	*p;
-	char	quote;
+	char	*end;
 
 	p = (char *)str;
+	if (!p)
+		return (p);
 	while (*p && *p != ch)
 	{
 		if (*p == '"' || *p == '\'')
 		{
-			quote = *p++;
-			while (*p != quote)
-				p++;
+			end = ft_strchr(p + 1, *p);
+			p += end - p + 1;
 		}
 		else
 			p++;
