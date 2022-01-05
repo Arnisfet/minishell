@@ -83,6 +83,7 @@ char	*parse_revert(char *array, int i, t_struct *p);
 char	*parse_dollar_with_quote(char *array, t_struct *p);
 char	*parse_dollar_without_quote(char *array, t_struct *p);
 void	print_list(t_struct *p);
+char	**parse_strings(char **commands, t_struct *p);
 
 
 
