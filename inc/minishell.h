@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/02 17:45:25 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/05 16:20:02 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 typedef struct	s_env
 {
 	char			*var;
+	char			*value;
+	int				is_blank;
 	struct s_env	*next;
 }				t_env;
 
@@ -67,12 +69,17 @@ void	init_env_list(t_struct *p, char *content);
 int		builtin_echo(char **str, t_struct *p);
 int		builtin_env(t_struct *p);
 char	*get_env_var(char *str, t_struct *p);
+
+void	build_exit(char **str, t_struct *p);
+void	free_list(t_struct *p);
+void	clean_split_tmp(char **clean);
+
 char	**write_in_2_dim(char *command,char **commands);
 int  	env_len(char **env);
 void	ft_free(char **commands);
 char	*ft_realloc_ch(char *command, char ch);
 char	*parse_revert(char *array, int i, t_struct *p);
-void	parse_cmd(char *line, t_struct *p);
+int		parse_cmd(char *line, t_struct *p);
 char	*parse_double_revert(char *command, char *line, int i, t_struct *p);
 char	*write_in_arr(char *line, char *command, int i, t_struct *p);
 char	**parse_pipe(char *line, t_struct *p);

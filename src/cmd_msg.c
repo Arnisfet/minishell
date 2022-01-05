@@ -16,19 +16,14 @@
 
 char	*get_env_var(char *str, t_struct *p)
 {
-	int	i;
-	char	*array;
+	t_env	*tmp;
 
-	i = 0;
-	while (p->arr_env[i])
+	tmp = p->my_env;
+	while (tmp != NULL)
 	{
-		array = ft_strjoin(str, "=");
-		if (ft_strncmp(array, p->arr_env[i], 4) == 0)
-		{
-			free(array);
-			return (ft_strchr(p->arr_env[i], '=') + 1);
-		}
-		i++;
+		if (find_str(str, tmp->var))
+			return (tmp->value);
+		tmp = tmp->next;
 	}
 	return (NULL);
 }

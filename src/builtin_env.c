@@ -14,13 +14,18 @@
 
 int	builtin_env(t_struct *p)
 {
-	int	i;
+	t_env	*tmp;
 
-	i = 0;
-	while (p->arr_env[i])
+	tmp = p->my_env;
+	while (tmp != NULL)
 	{
-		ft_putendl_fd(p->arr_env[i], 1);
-		i++;
+		if (!tmp->is_blank)
+		{
+			ft_putstr_fd(tmp->var, 1);
+			ft_putchar_fd('=', 1);
+			ft_putendl_fd(tmp->value, 1);
+		}
+		tmp = tmp->next;
 	}
 	return (1);
 }
