@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_cmd.c                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/28 09:37:39 by mrudge           ###   ########.fr       */
+/*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
+/*   Updated: 2021/12/26 13:16:48 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	parse_cmd(char *line, t_struct *p)
+char	**parse_strings(char **commands, t_struct *p)
 {
-	char **commands;
+	int		i;
 
-	p->trim_env = NULL;
-	commands = parse_pipe(line, p);
-	commands = parse_redirect(commands, p);
-	commands = parse_strings(commands, p);
-	print_list(p);
-	printr(commands);
+	i = 0;
+	while (commands[i])
+	{
+		commands[i] = parse_dollar_without_quote(commands[i], p);
+		commands[i] = parse_revert(commands[i], 0, p);
+		i++;
+	}
+	return (commands);
 }
