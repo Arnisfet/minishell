@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/03 16:05:16 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/05 16:16:03 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ int main(int argc, char **argv, char **env)
 	t_struct	*p;
 	int			status;
 	char		*line;
-	char		**test;
 
+
+//	char line[] = ">>file'$US'ER$USER\"$USER\"";
 	(void)argc;
 	p = (t_struct *)malloc(sizeof(t_struct));
 	if (!p)
@@ -51,16 +52,14 @@ int main(int argc, char **argv, char **env)
 	{
 		display_message(p);
 		signal(SIGINT, my_handler);
-		line = readline("🍑$> ");
-		//add_history(line);
+		line = readline("/minishell🍑$> ");
+		add_history(line);
 		if (input_is_empty(line))
 		{
 			free(line);
 			continue;
 		}
-		test = ft_split(line, ' ');
-		parse_cmd(test, p);
+		parse_cmd(line, p);
 		free(line);
-		//rl_clear_history();
 	}
 }

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/07 21:51:41 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/03 17:44:17 by jmacmill         ###   ########.fr       */
+/*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
+/*   Updated: 2022/01/05 16:19:18 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,25 @@ int	check_execve(char *str, t_struct *p)
 	
 }
 
-int	parse_cmd(char **str, t_struct *p)
+int	parse_cmd(char *line, t_struct *p)
 {
-	int	result;
+	// int	result;
+	char **commands;
 	
-	result = check_bultin(str, p);
-	if (result == 1)
-		return (0);
-	if (result == -1)
-		return (-1);
-	if (check_execve(str, p))
-		return (0);
-	execute(str, p);
-	return (1);
+	p->trim_env = NULL;
+	commands = parse_pipe(line, p);
+	commands = parse_redirect(commands, p);
+	commands = parse_strings(commands, p);
+	print_list(p);
+	printr(commands);
+	
+	// 	result = check_bultin(str, p);
+	// if (result == 1)
+	// 	return (0);
+	// if (result == -1)
+	// 	return (-1);
+	// if (check_execve(str, p))
+	// 	return (0);
+	// execute(str, p);
+	// return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 21:19:18 by mrudge            #+#    #+#             */
-/*   Updated: 2021/11/17 21:19:18 by mrudge           ###   ########.fr       */
+/*   Updated: 2021/12/18 19:29:25 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ char		*ft_mystrncpy(char *dst, const char *src, size_t len);
 char		*ft_strndup(char const *s, size_t n);
 int			ft_strcmp(const char *str1, const char *str2);
 double		ft_atof(const char *str);
+char		*ft_strchr_quote(const char *str, int ch);
 
 #endif //SCHOOLLIB_LIBFT_H

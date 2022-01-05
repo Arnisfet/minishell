@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 22:17:39 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/18 19:29:25 by mrudge           ###   ########.fr       */
+/*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
+/*   Updated: 2021/12/26 13:16:48 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// Created by Mickey Rudge on 5/1/21.
-//
-// Возвращает кодовый номер числа
+#include "../inc/minishell.h"
 
-#include "libft.h"
-
-int	ft_isdigit(int ch)
+char	**parse_strings(char **commands, t_struct *p)
 {
-	if (ch >= 48 && ch <= 57)
-		return (ch);
-	return (0);
+	int		i;
+
+	i = 0;
+	while (commands[i])
+	{
+		commands[i] = parse_dollar_without_quote(commands[i], p);
+		commands[i] = parse_revert(commands[i], 0, p);
+		i++;
+	}
+	return (commands);
 }
