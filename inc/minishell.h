@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/05 16:20:02 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/05 19:46:11 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,10 @@ char	*get_env_var(char *str, t_struct *p);
 void	build_exit(char **str, t_struct *p);
 void	free_list(t_struct *p);
 void	clean_split_tmp(char **clean);
+void	free_array(char **str);
+int		execute(char *path, char **str, t_struct *p);
+int		start_execve(char *path, char **str, t_struct *p);
+int		check_execve(char **str, t_struct *p);
 
 char	**write_in_2_dim(char *command,char **commands);
 int  	env_len(char **env);

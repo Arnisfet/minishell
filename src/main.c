@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/05 16:16:03 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/05 20:17:24 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	my_handler(int signo)
 	if (signo == SIGINT)
 	{
 		write(1, "\n", 2);
-		display_new_line();
-		ft_putstr_fd("🍑$> ",1);
+		//display_new_line();
+		ft_putstr_fd("minishell🍑$> ",1);
 		signal(SIGINT, my_handler);
 	}
 }
@@ -50,9 +50,14 @@ int main(int argc, char **argv, char **env)
 	signal(SIGQUIT, my_handler);
 	while (status)
 	{
-		display_message(p);
+		// display_message(p);
 		signal(SIGINT, my_handler);
-		line = readline("/minishell🍑$> ");
+		line = readline("minishell🍑$> ");
+		if (!line)
+		{
+			write(1, "exit\n", 5);
+			break ;
+		}
 		add_history(line);
 		if (input_is_empty(line))
 		{

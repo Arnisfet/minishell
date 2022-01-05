@@ -6,52 +6,11 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/05 16:26:42 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/05 20:04:37 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-int	check_bultin(char **str, t_struct *p)
-{
-	if (find_str(str[0], "cd"))
-		build_cd(str, p);
-	if (find_str(str[0], "pwd"))
-		build_pwd(str);
-	if (find_str(str[0], "echo"))
-	{
-		if (builtin_echo(str + 1, p))
-			return (1);
-	}
-	if (find_str(str[0], "env"))
-		builtin_env(p);
-	if (find_str(str[0], "unset"))
-		build_unset(str, p);
-	if (find_str(str[0], "export"))
-		build_export(str, p);
-	if (find_str(str[0], "exit"))
-		return (-1);
-	return (0);
-}
-
-int	execute(char *path, char **str, t_struct *p)
-{
-	pid_t	child;
-	
-	child = fork();
-	if (child == -1)
-	{
-		ft_putstr_fd("Error creating a process\n", 2);
-		return (-1);
-	}
-	if (child == 0)
-	{
-		if (execve(path, str, p->arr_env) == -1)
-			perror("Could not execute execve");
-	}
-	waitpid(child, NULL, 0);
-	return (1);
-}
 
 void	free_array(char **str)
 {
@@ -69,74 +28,70 @@ void	free_array(char **str)
 	}
 }
 
-int	start_execve(char *path, char **str, struct stat s, t_struct *p)
+int	check_bultin(char **str, t_struct *p)
 {
-	if (s.st_mode & S_IFREG)
+	if (find_str(str[0], "cd"))
+		return (build_cd(str, p));
+	if (find_str(str[0], "pwd"))
 	{
-		if (s.st_mode & S_IXUSR)
-			return (execute(path, str, p));
-		else
-		{
-			ft_putstr_fd("minishell: permission denied: ", 2);
-			ft_putendl_fd(path, 2);
-		}
-		free(path);
+		build_pwd(str);
 		return (1);
 	}
-	free(path);
+	if (find_str(str[0], "echo"))
+	{
+		if (builtin_echo(str + 1, p))
+			return (1);
+	}
+	if (find_str(str[0], "env"))
+		return (builtin_env(p));
+	if (find_str(str[0], "unset"))
+		return (build_unset(str, p));
+	if (find_str(str[0], "export"))
+		return (build_export(str, p));
+	if (find_str(str[0], "exit"))
+	{
+		build_exit(str, p);
+		return (-1);
+	}
 	return (0);
 }
 
-int	check_execve(char **str, t_struct *p)
+int	launch(char **commands, t_struct *p)
 {
-	struct stat	s;
-	char		*path;
-	char		*execve_path;
-	char		**spl_path;
-	int			i;
+	int	i;
+	int	result;
+	char	**spl_str;
 
-	path = get_env_var("PATH", p);
-	if (path)
+	i = 0;
+	while (commands[i])
 	{
-		i = 0;
-		spl_path = ft_split(path, ':');
-		while (spl_path[i])
+		spl_str = ft_split(commands[i], ' ');
+		if (spl_str)
 		{
-			if (find_str(str[0], spl_path[i]))
-				execve_path = ft_strdup(str[0]);
-			if (lstat(execve_path, &s) == -1)
-				free(execve_path);
-			else
-			{
-				free_array(spl_path);
-				return (start_execve(execve_path, str, s, p));
-			}
-			i++;
+			result = check_bultin(spl_str, p);
+			if (result == 1)
+				return (0);
+			if (result == -1)
+				return (-1);
+			if (check_execve(spl_str, p))
+				return (0);
 		}
-		free_array(spl_path);
+		i++;
 	}
-	return (0);	
+	return (1);
 }
 
 int	parse_cmd(char *line, t_struct *p)
 {
-	// int	result;
-	char **commands;
+	char	**commands;
+	int		i;
 	
 	p->trim_env = NULL;
 	commands = parse_pipe(line, p);
 	commands = parse_redirect(commands, p);
 	commands = parse_strings(commands, p);
+	
 	print_list(p);
 	printr(commands);
-	
-	// result = check_bultin(str, p);
-	// if (result == 1)
-	// 	return (0);
-	// if (result == -1)
-	// 	return (-1);
-	// if (check_execve(str, p))
-	// 	return (0);
-	// execute(str, p);
-	return (1);
+	return (launch(commands, p));
 }
