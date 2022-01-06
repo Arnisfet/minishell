@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 21:51:16 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/26 13:16:50 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/06 20:52:36 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char **write_in_2_dim(char *command,char **commands)
 		return (NULL);
 	if (!commands)
 	{
-		commands = (char **)malloc(sizeof (char *) * 1);
+		commands = (char **)malloc(sizeof (char *) * 2);
 		commands[0] = strdup(command);
 		commands[1] = NULL;
 		free(command);
@@ -71,8 +71,8 @@ char	*ft_realloc_ch(char *command, char ch)
 	i = 0;
 	if (command)
 		i = ft_strlen(command);
-	new_arr = (char *)malloc(sizeof (char) * (i + 1));
-	new_arr = memmove(new_arr, command, i);
+	new_arr = (char *)malloc(sizeof (char) * (i + 2));
+	new_arr = ft_memmove(new_arr, command, i);
 	new_arr[i] = ch;
 	new_arr[i + 1] = '\0';
 	free (command);
