@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 21:51:41 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/26 16:45:06 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/07 04:13:42 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,9 @@ char	**parse_pipe(char *line, t_struct *p)
 		i += p->count + 1;
 	}
 	commands =  write_in_2_dim(command, commands);
+	i = 0;
+	while (command[i])
+		i++;
 	return (commands);
 }
 

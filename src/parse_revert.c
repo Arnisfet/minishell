@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:54:00 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/06 20:35:12 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/07 04:40:55 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ char *parse_revert(char *array, int i, t_struct *p)
 	char	*trimmer;
 	char	*last;
 
-	trimmer = NULL;
 	while (array[i])
 	{
 		if (array[i] == '\'' || array[i] == '"')
 		{
+			trimmer = NULL;
 			start = i;
 			end = ft_strchr(array + start + 1 , array[i]) - array;
 			before = ft_substr(array, 0, start - 0);

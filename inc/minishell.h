@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/05 16:20:02 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/07 04:13:41 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,9 @@ char	*parse_dollar_with_quote(char *array, t_struct *p);
 char	*parse_dollar_without_quote(char *array, t_struct *p);
 void	print_list(t_struct *p);
 char	**parse_strings(char **commands, t_struct *p);
+
+char	*trim_and_find(char *array, int i, t_struct *p);
+void	trim_env(t_struct *p);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/06 20:35:12 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/07 04:15:43 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,51 @@ void	print_list(t_struct *p)
 	}
 	printf ("type of redirect: %s, filename: %s, number of pipe: %d",
 			tmp->type, tmp->file, tmp->number_command);
+}
+
+void	trim_env(t_struct *p)
+{
+	int		i;
+	char	*trimmer;
+	char	*start;
+
+	i = 0;
+	p->trim_env = (char **)malloc(sizeof (char*) * env_len(p->arr_env) + 1);
+	if (!p->trim_env)
+		return ((void) NULL);
+	while (p->arr_env[i])
+	{
+		start = ft_strchr(p->arr_env[i], '=');
+		trimmer = ft_substr(p->arr_env[i], start - p->arr_env[i] + 1, ft_strlen
+		(p->arr_env[i]));
+		p->trim_env[i] = ft_strdup(trimmer);
+		i++;
+	}
+}
+
+char	*trim_and_find(char *array, int i, t_struct *p)
+{
+	int		j;
+	char	*trimmer;
+	char	*end;
+
+	if (!p->trim_env)
+		trim_env(p);
+	j = 0;
+	if (i == 0)
+	{
+		while (p->trim_env[j])
+		{
+			end = ft_strchr(p->arr_env[j], '=');
+			trimmer = ft_substr(p->arr_env[j], 0, end - p->arr_env[j]);
+			if ((ft_strcmp(array, trimmer)) == 0)
+			{
+				free (array);
+				return (ft_strdup(p->trim_env[j]));
+			}
+			j++;
+		}
+	}
+	free(array);
+	return (ft_strdup(""));
 }

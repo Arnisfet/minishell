@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 21:51:16 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/06 20:52:36 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/07 04:13:42 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ char **write_in_2_dim(char *command,char **commands)
 		commands = (char **)malloc(sizeof (char *) * 2);
 		commands[0] = strdup(command);
 		commands[1] = NULL;
-		free(command);
 		return (commands);
 	}
 	else

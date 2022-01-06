@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/05 16:16:03 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/07 04:15:43 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int main(int argc, char **argv, char **env)
 	signal(SIGQUIT, my_handler);
 	while (status)
 	{
-		display_message(p);
+//		display_message(p);
 		signal(SIGINT, my_handler);
 		line = readline("/minishell🍑$> ");
 		add_history(line);
