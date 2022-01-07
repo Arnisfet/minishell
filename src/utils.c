@@ -91,6 +91,8 @@ char	*trim_and_find(char *array, int i, t_struct *p)
 	char	*trimmer;
 	char	*end;
 
+	if (check_ones(array, i))
+		return (ft_strdup(array));
 	if (!p->trim_env)
 		trim_env(p);
 	j = 0;
@@ -100,7 +102,7 @@ char	*trim_and_find(char *array, int i, t_struct *p)
 		{
 			end = ft_strchr(p->arr_env[j], '=');
 			trimmer = ft_substr(p->arr_env[j], 0, end - p->arr_env[j]);
-			if ((ft_strcmp(array, trimmer)) == 0)
+			if ((ft_strcmp(array + 1, trimmer)) == 0)
 			{
 				free (array);
 				return (ft_strdup(p->trim_env[j]));

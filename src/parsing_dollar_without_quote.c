@@ -12,31 +12,67 @@
 
 #include "../inc/minishell.h"
 
-char	*parse_dollar_without_quote(char *array, t_struct *p)
+int		end_of_quote(char *array, int i)
 {
-	char	*middle;
+	char	quote;
+
+	quote = array[i++];
+	while (array[i] && array[i] != quote)
+		i++;
+	return (i++);
+}
+
+char	*trimming_dollar_without(char *array, int i, char *trimmer, t_struct *p)
+{
 	char	*start;
 	char	*end;
-	char	*first;
+	char	*before;
+	char	*middle;
+	char	*copy;
+
+	start = &array[i];
+	end = start + 1;
+	end = find_end_dollar(end);
+	before = ft_substr(array, 0, start - array);
+	middle = ft_substr(array, start - array, end - start);
+	middle = trim_and_find(middle, 0, p);
+	copy = ft_strdup(before);
+	copy = ft_strjoin(copy, middle);
+	free(before);
+	free(middle);
+	return (copy);
+}
+
+char	*parse_dollar_without_quote(char *array, t_struct *p)
+{
+	int		i;
+	char	*trimmer;
+	char	*start;
+	char	*end;
 	char	*last;
 
-	start = ft_strchr_quote(array, '$');
-	if (start == NULL)
-		return (array);
-	end = start + 1;
-	while ((*end && *end >= 65 && *end <= 90) || *end == '_')
+	i = 0;
+	trimmer = NULL;
+	while (array[i])
 	{
-		if (*end == '?')
-			break ;
-		end++;
+		if (array[i] == '\'' || array[i] == '"')
+			i = end_of_quote(array, i);
+		if (array[i] == '$')
+		{
+			start = &array[i];
+			end = start + 1;
+			end = find_end_dollar(end);
+			trimmer = trimming_dollar_without(array, i, trimmer, p);
+			i = ft_strlen(trimmer);
+			last = ft_substr(array, end - array, ft_strlen(array));
+			free(array);
+			array = ft_strdup(trimmer);
+			array = ft_strjoin(array, last);
+			free(trimmer);
+			free(last);
+			continue ;
+		}
+		i++;
 	}
-	first = ft_substr(array, 0, start - array);
-	middle = ft_substr(array, start - array + 1, end - start - 1);
-	if (*end == '?')
-		middle = trim_and_find(middle, 1, p);
-	middle = trim_and_find(middle, 0, p);
-	last = ft_substr(array, end - array, ft_strlen(array));
-	first = ft_strjoin(first, middle);
-	first = ft_strjoin(first, last);
-	return (first);
+	return (array);
 }

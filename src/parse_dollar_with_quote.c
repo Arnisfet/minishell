@@ -14,7 +14,8 @@
 
 int		check_ones(char *array, int i)
 {
-	if (array[i + 1] == '\'' || array[i + 1] == '"' || array[i + 1] == '\0')
+	if (array[i + 1] == '\'' || array[i + 1] == '"' || array[i + 1] == '\0'
+			|| array[i + 1] == ' ')
 		return (1);
 	return (0);
 }
@@ -34,16 +35,11 @@ char	*trimming_dollar(char *array, int i, char *trimmer, t_struct *p)
 	char	*middle;
 	char	*copy;
 
-	if (check_ones(array, i))
-	{
-		copy = ft_strdup(array);
-		return (copy);
-	}
 	start = &array[i];
 	end = start + 1;
 	end = find_end_dollar(end);
 	before = ft_substr(array, 0, start - array);
-	middle = ft_substr(array, start - array + 1, end - start - 1);
+	middle = ft_substr(array, start - array, end - start);
 	middle = trim_and_find(middle, 0, p);
 	copy = ft_strdup(before);
 	copy = ft_strjoin(copy, middle);
@@ -70,11 +66,6 @@ char	*parse_dollar_with_quote(char *array, t_struct *p)
 			end = start + 1;
 			end = find_end_dollar(end);
 			trimmer = trimming_dollar(array, i, trimmer, p);
-			if (ft_strchr(trimmer, '$'))
-			{
-				free(array);
-				return (trimmer);
-			}
 			i = ft_strlen(trimmer);
 			last = ft_substr(array, end - array, ft_strlen(array));
 			free(array);

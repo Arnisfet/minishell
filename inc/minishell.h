@@ -94,6 +94,8 @@ char	**parse_strings(char **commands, t_struct *p);
 
 char	*trim_and_find(char *array, int i, t_struct *p);
 void	trim_env(t_struct *p);
+int		check_ones(char *array, int i);
+char	*find_end_dollar(char *end);
 
 
 
