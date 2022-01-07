@@ -96,6 +96,8 @@ char	*trim_and_find(char *array, int i, t_struct *p);
 void	trim_env(t_struct *p);
 int		check_ones(char *array, int i);
 char	*find_end_dollar(char *end);
+int		end_of_quote(char *array, int i);
+char	**ft_split_quotes(char const *s, char c);
 
 
 

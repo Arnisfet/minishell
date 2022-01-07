@@ -19,7 +19,7 @@ int		end_of_quote(char *array, int i)
 	quote = array[i++];
 	while (array[i] && array[i] != quote)
 		i++;
-	return (i++);
+	return (++i);
 }
 
 char	*trimming_dollar_without(char *array, int i, char *trimmer, t_struct *p)

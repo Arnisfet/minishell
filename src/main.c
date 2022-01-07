@@ -39,8 +39,6 @@ int main(int argc, char **argv, char **env)
 	int			status;
 	char		*line;
 
-
-//	char line[] = ">>file'$US'ER$USER\"$USER\"";
 	(void)argc;
 	p = (t_struct *)malloc(sizeof(t_struct));
 	if (!p)
