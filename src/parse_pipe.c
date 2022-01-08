@@ -1,4 +1,5 @@
-/* ************************************************************************** */
+/*
+ * ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
@@ -88,9 +89,7 @@ char	**parse_pipe(char *line, t_struct *p)
 		i += p->count + 1;
 	}
 	commands =  write_in_2_dim(command, commands);
-	i = 0;
-	while (command[i])
-		i++;
+	free(command);
 	return (commands);
 }
 

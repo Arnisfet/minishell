@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/07 04:15:43 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/08 16:14:49 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int main(int argc, char **argv, char **env)
 	int			status;
 	char		*line;
 
+
+//	char line[] = ">>file'$US'ER$USER\"$USER\"";
 	(void)argc;
 	p = (t_struct *)malloc(sizeof(t_struct));
 	if (!p)
