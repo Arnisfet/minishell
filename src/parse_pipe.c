@@ -89,7 +89,9 @@ char	**parse_pipe(char *line, t_struct *p)
 		i += p->count + 1;
 	}
 	commands =  write_in_2_dim(command, commands);
-	free(command);
+	if (command)
+		free(command);
 	return (commands);
 }
 
+//"qwerty$SHELL qwe$USER""$USER$SHELL" checktha$ qwe | $USER $SHELL

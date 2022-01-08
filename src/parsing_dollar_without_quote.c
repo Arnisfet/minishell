@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 04:24:32 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/07 04:24:32 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/08 18:13:54 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,19 @@ char	*trimming_dollar_without(char *array, int i, char *trimmer, t_struct *p)
 	start = &array[i];
 	end = start + 1;
 	end = find_end_dollar(end);
+	if (array[i + 1] == '\'' || array[i + 1] == '"')
+	{
+		before = ft_substr(array, 0, start - array);
+		copy = ft_strdup(before);
+		free(before);
+		return (copy);
+	}
 	before = ft_substr(array, 0, start - array);
 	middle = ft_substr(array, start - array, end - start);
-	middle = trim_and_find(middle, 0, p);
+	middle = trim_and_find(middle, 1, p);
 	copy = ft_strdup(before);
-	copy = ft_strjoin(copy, middle);
+	copy = concat_and_free(copy, middle);
 	free(before);
-	free(middle);
 	return (copy);
 }
 
@@ -67,9 +73,8 @@ char	*parse_dollar_without_quote(char *array, t_struct *p)
 			last = ft_substr(array, end - array, ft_strlen(array));
 			free(array);
 			array = ft_strdup(trimmer);
-			array = ft_strjoin(array, last);
+			array = concat_and_free(array, last);
 			free(trimmer);
-			free(last);
 			continue ;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/08 16:14:53 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/08 17:51:00 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,11 @@ char	**parse_strings(char **commands, t_struct *p);
 
 char	*trim_and_find(char *array, int i, t_struct *p);
 void	trim_env(t_struct *p);
-int		check_ones(char *array, int i);
+int		check_ones(char *array, int flag);
 char	*find_end_dollar(char *end);
 int		end_of_quote(char *array, int i);
+char    **ft_split_quotes(char const *s, char c);
+char	*concat_and_free(char *first, char *second);
 
 
 

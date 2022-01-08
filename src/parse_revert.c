@@ -6,11 +6,21 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:54:00 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/08 16:14:49 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/08 17:36:21 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+char	*concat_and_free(char *first, char *second)
+{
+	char *result;
+
+	result = ft_strjoin(first, second);
+	free(first);
+	free(second);
+	return (result);
+}
 
 char	*parse_d_revert(char *array, t_struct *p)
 {
@@ -27,8 +37,8 @@ char	*parse_d_revert(char *array, t_struct *p)
 	if (ft_strchr(middle, '$'))
 		middle = parse_dollar_with_quote(middle, p);
 	last = ft_substr(array, end - array + 1, ft_strlen(array));
-	first = ft_strjoin(first, middle);
-	first = ft_strjoin(first, last);
+	first = concat_and_free(first, middle);
+	first = concat_and_free(first, last);
 	return (first);
 }
 
@@ -45,18 +55,21 @@ char	*parse_ones_revert(char *array, t_struct *p)
 	first = ft_substr(array, 0, start - array);
 	middle = ft_substr(array, start - array + 1, end - start - 1);
 	last = ft_substr(array, end - array + 1, ft_strlen(array));
-	first = ft_strjoin(first, middle);
-	first = ft_strjoin(first, last);
+	first = concat_and_free(first, middle);
+	first = concat_and_free(first, last);
 	return(first);
 }
 
 char	*rev_2(char *now, char *array, int start, t_struct *p)
 {
+	char	*new;
+
 	if (array[start] == '\'')
-		now = parse_ones_revert(now, p);
+		new = parse_ones_revert(now, p);
 	if (array[start] == '"')
-		now = parse_d_revert(now, p);
-	return (now);
+		new = parse_d_revert(now, p);
+	free (now);
+	return (new);
 }
 
 char *parse_revert(char *array, int i, t_struct *p)
@@ -80,14 +93,12 @@ char *parse_revert(char *array, int i, t_struct *p)
 			now = rev_2(now, array, start, p);
 			if (!trimmer)
 				trimmer = ft_strdup(before);
-			trimmer = ft_strjoin(trimmer, now);
+			trimmer = concat_and_free(trimmer, now);
 			i = ft_strlen(trimmer);
 			last = ft_substr(array, end + 1, ft_strlen(array));
 			free (array);
 			array = ft_strdup(trimmer);
-			array = ft_strjoin(array, last);
-			free(last);
-			free(now);
+			array = concat_and_free(array, last);
 			free (trimmer);
 			continue ;
 		}

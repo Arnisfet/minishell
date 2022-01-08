@@ -6,16 +6,18 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 18:17:26 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/07 05:26:50 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/08 17:59:38 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int		check_ones(char *array, int i)
+int		check_ones(char *array, int flag)
 {
-	if (array[i + 1] == '\'' || array[i + 1] == '"' || array[i + 1] == '\0'
-			|| array[i + 1] == ' ')
+	if (flag == 1 && array[1] == '\0')
+		return (1);
+	if (array[1] == '\'' || array[1] == '"' || array[1] == '\0'
+			|| array[1] == ' ')
 		return (1);
 	return (0);
 }
@@ -42,9 +44,8 @@ char	*trimming_dollar(char *array, int i, char *trimmer, t_struct *p)
 	middle = ft_substr(array, start - array, end - start);
 	middle = trim_and_find(middle, 0, p);
 	copy = ft_strdup(before);
-	copy = ft_strjoin(copy, middle);
+	copy = concat_and_free(copy, middle);
 	free(before);
-	free(middle);
 	return (copy);
 }
 
@@ -70,9 +71,8 @@ char	*parse_dollar_with_quote(char *array, t_struct *p)
 			last = ft_substr(array, end - array, ft_strlen(array));
 			free(array);
 			array = ft_strdup(trimmer);
-			array = ft_strjoin(array, last);
+			array = concat_and_free(array, last);
 			free(trimmer);
-			free(last);
 			continue ;
 		}
 		i++;

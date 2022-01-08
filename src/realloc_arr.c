@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 21:51:16 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/08 16:14:49 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/08 17:34:11 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ char **write_in_2_dim(char *command,char **commands)
 	else
 	{
 		commands = realloc_2_dim(commands, command);
-		free(command);
 		return (commands);
 	}
 }

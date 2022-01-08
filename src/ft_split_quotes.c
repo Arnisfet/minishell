@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_revert.c                                     :+:      :+:    :+:   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/02 17:54:00 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/08 17:07:06 by mrudge           ###   ########.fr       */
+/*   Created: 2021/11/16 22:18:39 by mrudge            #+#    #+#             */
+/*   Updated: 2022/01/08 17:22:55 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,17 @@ static char    *ft_copy(const char *str, size_t n)
 	return (new);
 }
 
+int		count_counter(char const *s, char c, int i)
+{
+	while (s[i] != '\0' && s[i] != c)
+	{
+		if (s[i] == '\'' || s[i] == '"')
+			i = end_of_quote(s, i);
+		i++;
+	}
+	return (i);
+}
+
 char    **ft_split_quotes(char const *s, char c)
 {
 	char    **new;
@@ -72,12 +83,7 @@ char    **ft_split_quotes(char const *s, char c)
 		while (s[i] == c)
 			i++;
 		place = i;
-		while (s[i] != '\0' && s[i] != c)
-		{
-			if (s[i] == '\'' || s[i] == '"')
-				i = end_of_quote(s, i);
-			i++;
-		}
+		i = count_counter(s, c, i);
 		if (place < i)
 			new[word++] = ft_copy(s + place, i - place);
 	}
