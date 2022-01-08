@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 04:24:32 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/08 18:13:54 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/08 20:44:13 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,20 @@ char	*trimming_dollar_without(char *array, int i, char *trimmer, t_struct *p)
 	return (copy);
 }
 
+static char	*trimmering(char *array, char *trimmer, char *end)
+{
+	char	*last;
+
+	last = ft_substr(array, end - array, ft_strlen(array));
+	free(array);
+	array = ft_strdup(trimmer);
+	array = concat_and_free(array, last);
+	return (array);
+}
 char	*parse_dollar_without_quote(char *array, t_struct *p)
 {
 	int		i;
 	char	*trimmer;
-	char	*start;
 	char	*end;
 	char	*last;
 
@@ -65,15 +74,11 @@ char	*parse_dollar_without_quote(char *array, t_struct *p)
 			i = end_of_quote(array, i);
 		if (array[i] == '$')
 		{
-			start = &array[i];
-			end = start + 1;
+			end = &array[i] + 1;
 			end = find_end_dollar(end);
 			trimmer = trimming_dollar_without(array, i, trimmer, p);
 			i = ft_strlen(trimmer);
-			last = ft_substr(array, end - array, ft_strlen(array));
-			free(array);
-			array = ft_strdup(trimmer);
-			array = concat_and_free(array, last);
+			array = trimmering(array, trimmer, end);
 			free(trimmer);
 			continue ;
 		}

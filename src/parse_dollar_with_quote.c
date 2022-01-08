@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 18:17:26 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/08 17:59:38 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/08 20:25:53 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*find_end_dollar(char *end)
 	return (end);
 }
 
-char	*trimming_dollar(char *array, int i, char *trimmer, t_struct *p)
+char	*trimming_dollar(char *array, int i, t_struct *p)
 {
 	char	*start;
 	char	*end;
@@ -49,13 +49,26 @@ char	*trimming_dollar(char *array, int i, char *trimmer, t_struct *p)
 	return (copy);
 }
 
+static char	*trimming(char *array, t_struct *p, int i)
+{
+	char	*trimmer;
+	char	*start;
+	char	*end;
+
+	trimmer = NULL;
+	start = &array[i];
+	end = start + 1;
+	end = find_end_dollar(end);
+	trimmer = trimming_dollar(array, i, p);
+	return (trimmer);
+}
+
 char	*parse_dollar_with_quote(char *array, t_struct *p)
 {
 	int		i;
 	char	*trimmer;
-	char	*start;
-	char	*end;
 	char	*last;
+	char	*end;
 
 	i = 0;
 	trimmer = NULL;
@@ -63,10 +76,9 @@ char	*parse_dollar_with_quote(char *array, t_struct *p)
 	{
 		if (array[i] == '$')
 		{
-			start = &array[i];
-			end = start + 1;
+			end = &array[i] + 1;
 			end = find_end_dollar(end);
-			trimmer = trimming_dollar(array, i, trimmer, p);
+			trimmer = trimming(array, p, i);
 			i = ft_strlen(trimmer);
 			last = ft_substr(array, end - array, ft_strlen(array));
 			free(array);
