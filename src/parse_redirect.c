@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/09 17:15:46 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/09 19:37:25 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,17 @@ char	*ft_strtrim_quote(char *arr, char *start, char *end)
 	return (new_arr);
 }
 
+static	char	*write_filename(char *end)
+{
+	while (*end != ' ' && *end != '>' && *end != '<' && *end != '\0')
+	{
+		if (*end == '"' || *end == '\'')
+			end = ft_strchr(++end, *end);
+		end++;
+	}
+	return (end);
+}
+
 int	substring(char *start, t_struct *p)
 {
 	char	*redirect;
@@ -63,19 +74,14 @@ int	substring(char *start, t_struct *p)
 	if (*end != '\0' && *(end + 1) == ' ')
 		end++;
 	start = end;
-	while (*end != ' ' && *end != '>' && *end != '<' && *end != '\0')
-		end++;
+	end = write_filename(end);
 	p->point_f = end;
 	file = ft_strndup(start, end - start);
 	file = parse_dollar_without_quote(file, p);
 	file = parse_revert(file, 0, p);
-	if (correct_check(redirect, p))
-	{
-		free(redirect);
-		free(file);
-		return (2);
-	}
 	add_to_list_redirect(p, redirect, file, p->count);
+	if (correct_check(redirect, p))
+		return (2);
 	return (0);
 }
 
