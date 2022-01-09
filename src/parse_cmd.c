@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/08 17:30:36 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/09 15:48:09 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,30 +128,28 @@ char	**split_string(char **commands, t_struct *p)
 	{
 		new_arr = ft_split_quotes(commands[i], ' ');
 		new_arr = parse_strings(new_arr, p);
-		printr(new_arr);
 		i++;
 	}
-	ft_free(new_arr);
+	ft_free(commands);
+	return (new_arr);
 }
 
 int	parse_cmd(char *line, t_struct *p)
 {
 	char **commands;
 
+	p->error = 0;
 	p->trim_env = NULL;
 	commands = parse_pipe(line, p);
 	commands = parse_redirect(commands, p);
+	if (p->error != 0)
+	{
+		ft_free(commands);
+		return (2);
+	}
 	commands = split_string(commands, p);
 	print_list(p);
-	//	printr(commands);
-	
-	// result = check_bultin(str, p);
-	// if (result == 1)
-	// 	return (0);
-	// if (result == -1)
-	// 	return (-1);
-	// if (check_execve(str, p))
-	// 	return (0);
-	// execute(str, p);
-	return (1);
+	printr(commands);
+	ft_free(commands);
+	return (0);
 }

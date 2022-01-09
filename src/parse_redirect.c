@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/08 17:15:15 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/09 16:50:31 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,11 @@ void	substring(char *start, char ch, t_struct *p)
 
 	end = start;
 	p->point_r = start;
-	while (*end == ch)
+	while (*end != '\0' && (*end != ' ' && !ft_isalpha(*end) && !ft_isdigit
+	(*end)))
 		end++;
 	redirect = ft_strndup(start, end - start);
-	if (*(end + 1) == ' ')
+	if (*end != '\0' && *(end + 1) == ' ')
 		end++;
 	start = end;
 	while (*end != ' ' && *end != '>' && *end != '<' && *end != '\0')
@@ -69,6 +70,12 @@ void	substring(char *start, char ch, t_struct *p)
 	file = ft_strndup(start, end - start);
 	file = parse_dollar_without_quote(file, p);
 	file = parse_revert(file, 0, p);
+	if (correct_check(redirect, p))
+	{
+		free(redirect);
+		free(file);
+		return ;
+	}
 	add_to_list_redirect(p, redirect, file, p->count);
 }
 

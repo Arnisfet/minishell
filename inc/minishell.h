@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/08 17:51:00 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/09 15:13:42 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ typedef	struct	s_struct
 	char	**trim_env;
 	char	**arr_env;
 	int		echo_flag;
-	char	**commands;
 	int		revert_flag;
 	int		count;
 	char	*point_r;
 	char	*point_f;
 	t_redirect	*redirect;
+	int		error;
 }				t_struct;
 
 void	init_env(char **env, t_struct *p);
@@ -100,6 +100,9 @@ int		end_of_quote(char *array, int i);
 char    **ft_split_quotes(char const *s, char c);
 char	*concat_and_free(char *first, char *second);
 
+
+int		*correct_check(char *array, t_struct *p);
+void	freed(t_struct *p);
 
 
 #endif

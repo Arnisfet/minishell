@@ -79,7 +79,7 @@ char	**parse_pipe(char *line, t_struct *p)
 	while (line[i])
 	{
 		p->count = 0;
-		if (line[i] == '|')
+		if (line[i] == '|' && line[i + 1] == ' ' && line[i - 1] == ' ')
 		{
 			commands =  write_in_2_dim(command, commands);
 			command = NULL;

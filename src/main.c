@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/08 17:15:15 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/09 16:54:13 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,17 @@ int main(int argc, char **argv, char **env)
 	t_struct	*p;
 	int			status;
 	char		*line;
+//char line[] = "\"qwerty$SHELL qwe$USER\"\"$USER$SHELL\" checktha$ qwe | $USER $SHELL";
 
-
-//	char line[] = ">>file'$US'ER$USER\"$USER\"";
-	(void)argc;
 	p = (t_struct *)malloc(sizeof(t_struct));
 	if (!p)
-		return (-1);
-	status = 1;
-	init_env(env, p);
+	return (-1);
+	(void)argc;
+	status = 3;
 	signal(SIGQUIT, my_handler);
-	while (status)
+	init_env(env, p);
+	while (status--)
 	{
-//		display_message(p);
 		signal(SIGINT, my_handler);
 		line = readline("/minishell🍑$> ");
 		add_history(line);
@@ -60,6 +58,10 @@ int main(int argc, char **argv, char **env)
 			continue;
 		}
 		parse_cmd(line, p);
+		if (p->redirect)
+			freed(p);
 		free(line);
+		if (p->trim_env)
+			ft_free(p->trim_env);
 	}
 }

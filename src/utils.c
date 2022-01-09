@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/08 18:00:43 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/09 16:34:39 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ void	print_list(t_struct *p)
 		return ;
 	while (tmp->next != NULL)
 	{
-		printf ("type of redirect: %s, filename: %s, number of pipe: %d",
+		printf ("type of redirect: %s, filename: %s, number of pipe: %d\n",
 				tmp->type, tmp->file, tmp->number_command);
 		tmp = tmp->next;
 	}
-	printf ("type of redirect: %s, filename: %s, number of pipe: %d",
+	printf ("type of redirect: %s, filename: %s, number of pipe: %d\n",
 			tmp->type, tmp->file, tmp->number_command);
 }
 
@@ -81,6 +81,7 @@ void	trim_env(t_struct *p)
 		trimmer = ft_substr(p->arr_env[i], start - p->arr_env[i] + 1, ft_strlen
 		(p->arr_env[i]));
 		p->trim_env[i] = ft_strdup(trimmer);
+		free(trimmer);
 		i++;
 	}
 }
@@ -103,9 +104,12 @@ char	*trim_and_find(char *array, int i, t_struct *p)
 		if ((ft_strcmp(array + 1, trimmer)) == 0)
 		{
 			free (array);
+			free(trimmer);
 			return (ft_strdup(p->trim_env[j]));
 		}
+		free(trimmer);
 		j++;
 	}
+	free(trimmer);
 	free(array);
 }

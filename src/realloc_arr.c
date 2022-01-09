@@ -39,7 +39,7 @@ char	**realloc_2_dim(char **commands, char *command)
 	}
 	new_arr[i] = strdup(command);
 	new_arr[i + 1] = NULL;
-	ft_free(commands);
+//	ft_free(commands);
 	return (new_arr);
 }
 
@@ -50,7 +50,7 @@ char **write_in_2_dim(char *command,char **commands)
 	if (!commands)
 	{
 		commands = (char **)malloc(sizeof (char *) * 2);
-		commands[0] = strdup(command);
+		commands[0] = ft_strdup(command);
 		commands[1] = NULL;
 		return (commands);
 	}
