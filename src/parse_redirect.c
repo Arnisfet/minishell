@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/09 16:50:31 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/09 17:15:46 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*ft_strtrim_quote(char *arr, char *start, char *end)
 	return (new_arr);
 }
 
-void	substring(char *start, char ch, t_struct *p)
+int	substring(char *start, t_struct *p)
 {
 	char	*redirect;
 	char	*file;
@@ -57,8 +57,7 @@ void	substring(char *start, char ch, t_struct *p)
 
 	end = start;
 	p->point_r = start;
-	while (*end != '\0' && (*end != ' ' && !ft_isalpha(*end) && !ft_isdigit
-	(*end)))
+	while (*end != '\0' && (*end != ' ' && (*end == '<' || *end == '>')))
 		end++;
 	redirect = ft_strndup(start, end - start);
 	if (*end != '\0' && *(end + 1) == ' ')
@@ -74,29 +73,29 @@ void	substring(char *start, char ch, t_struct *p)
 	{
 		free(redirect);
 		free(file);
-		return ;
+		return (2);
 	}
 	add_to_list_redirect(p, redirect, file, p->count);
+	return (0);
 }
 
 char	*first_rparse(char *commands, t_struct *p)
 {
 	char	*start;
+	int		i;
 
-	while (ft_strchr_quote(commands, '>') || ft_strchr_quote(commands, '<'))
+	i = 0;
+	while (commands[i])
 	{
-		if (ft_strchr_quote(commands, '>'))
+		if (commands[i] == '>' || commands[i] == '<')
 		{
-			start = ft_strchr_quote(commands, '>');
-			substring(start, '>', p);
+			start = &commands[i];
+			if (substring(start, p))
+				return (NULL);
 			commands = ft_strtrim_quote(commands, p->point_r, p->point_f);
+			continue ;
 		}
-		if (ft_strchr_quote(commands, '<'))
-		{
-			start = ft_strchr_quote(commands, '<');
-			substring(start, '<', p);
-			commands = ft_strtrim_quote(commands, p->point_r, p->point_f);
-		}
+		i++;
 	}
 	return (commands);
 }

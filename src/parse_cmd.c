@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/09 15:48:09 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/09 15:55:38 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,8 @@ int	parse_cmd(char *line, t_struct *p)
 		return (2);
 	}
 	commands = split_string(commands, p);
-	print_list(p);
+	if (p->redirect)
+		print_list(p);
 	printr(commands);
 	ft_free(commands);
 	return (0);

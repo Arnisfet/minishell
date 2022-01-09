@@ -101,7 +101,7 @@ char    **ft_split_quotes(char const *s, char c);
 char	*concat_and_free(char *first, char *second);
 
 
-int		*correct_check(char *array, t_struct *p);
+int		correct_check(char *array, t_struct *p);
 void	freed(t_struct *p);
 
 

@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/09 16:34:39 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/09 17:45:25 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,8 @@ char	*trim_and_find(char *array, int i, t_struct *p)
 
 	if (check_ones(array, i))
 		return (ft_strdup(array));
-	if (!p->trim_env)
-		trim_env(p);
 	j = 0;
-	while (p->trim_env[j])
+	while (p->arr_env[j])
 	{
 		end = ft_strchr(p->arr_env[j], '=');
 		trimmer = ft_substr(p->arr_env[j], 0, end - p->arr_env[j]);
@@ -105,11 +103,14 @@ char	*trim_and_find(char *array, int i, t_struct *p)
 		{
 			free (array);
 			free(trimmer);
-			return (ft_strdup(p->trim_env[j]));
+			trimmer  = ft_substr(p->arr_env[j], (end - p->arr_env[j]) + 1,
+								 (ft_strlen(p->arr_env[j]) - (end -
+								 p->arr_env[j])));
+			return (trimmer);
 		}
-		free(trimmer);
 		j++;
 	}
 	free(trimmer);
 	free(array);
+	return (ft_strdup(""));
 }

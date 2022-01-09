@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 01:50:12 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/09 16:21:46 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/09 18:12:58 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,11 @@ void	freed(t_struct *p)
 	}
 	free(tmp->file);
 	free(tmp->type);
-	free(tmp);
-	tmp = NULL;
+	p->redirect = NULL;
 	next_elem = NULL;
 }
 
-int		*correct_check(char *array, t_struct *p)
+int		correct_check(char *array, t_struct *p)
 {
 	int	i;
 	char	*checker;
