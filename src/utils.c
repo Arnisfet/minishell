@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/09 17:45:25 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/09 20:21:37 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ char	*trim_and_find(char *array, int i, t_struct *p)
 
 	if (check_ones(array, i))
 		return (ft_strdup(array));
+	if (strcmp(array, "$?") == 0)
+		return (ft_itoa(p->error));
 	j = 0;
 	while (p->arr_env[j])
 	{

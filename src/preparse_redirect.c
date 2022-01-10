@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 01:50:12 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/09 20:02:28 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/10 20:11:44 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,17 @@ void	freed(t_struct *p)
 	next_elem = NULL;
 }
 
-static	int check_redirect(char *array, t_struct *p)
+static	int check_redirect(t_struct *p)
 {
 	int	i;
 	char	*checker;
 
 	i = 0;
-	while (i != 4 && array[i])
+	while (i != 4 && p->redirect->type[i])
 	{
-		if (i >= 2 || array[0] != array[i])
+		if (i >= 2 || p->redirect->type[0] != p->redirect->type[i])
 		{
-			checker = ft_strndup(&array[i], 2);
+			checker = ft_strndup(&p->redirect->type[i], 2);
 			ft_putstr_fd("\t\tsyntax error near unexpected token: ", 1);
 			ft_putstr_fd(checker, 1);
 			ft_putstr_fd("\n", 1);
@@ -59,7 +59,7 @@ static	int check_redirect(char *array, t_struct *p)
 	return (0);
 }
 
-static	int	check_filename(char *array, t_struct *p)
+static	int	check_filename(t_struct *p)
 {
 	t_redirect *tmp;
 
@@ -85,7 +85,7 @@ static	int	check_filename(char *array, t_struct *p)
 	return (0);
 }
 
-int		check_digit(char *array, t_struct *p)
+int		check_digit(t_struct *p)
 {
 	t_redirect	*tmp;
 	t_redirect	*last_elem;
@@ -127,13 +127,17 @@ int		check_digit(char *array, t_struct *p)
 	return (0);
 }
 
-int		correct_check(char *array, t_struct *p)
+int		correct_check(t_struct *p)
 {
-	if (check_redirect(array, p))
+//	if (!p->redirect)
+//		return (0);
+//	if (!p->redirect->type)
+//		return (0);
+	if (check_redirect(p))
 		return (2);
-	if (check_filename(array, p))
+	if (check_filename(p))
 		return (2);
-	if (check_digit(array, p))
+	if (check_digit(p))
 		return (2);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/09 15:13:42 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/10 21:02:11 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ char    **ft_split_quotes(char const *s, char c);
 char	*concat_and_free(char *first, char *second);
 
 
-int		correct_check(char *array, t_struct *p);
+int		correct_check(t_struct *p);
+int 	check_the_pipe(char *array, t_struct *p);
 void	freed(t_struct *p);
 
 

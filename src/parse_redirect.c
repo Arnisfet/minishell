@@ -80,7 +80,7 @@ int	substring(char *start, t_struct *p)
 	file = parse_dollar_without_quote(file, p);
 	file = parse_revert(file, 0, p);
 	add_to_list_redirect(p, redirect, file, p->count);
-	if (correct_check(redirect, p))
+	if (correct_check(p))
 		return (2);
 	return (0);
 }

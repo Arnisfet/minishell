@@ -1,26 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalnum.c                                       :+:      :+:    :+:   */
+/*   preparse_string.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 22:17:27 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/09 20:21:37 by mrudge           ###   ########.fr       */
+/*   Created: 2022/01/10 20:52:06 by mrudge            #+#    #+#             */
+/*   Updated: 2022/01/10 21:05:20 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// Created by Mickey Rudge on 5/1/21.
-//
-// Макрос, возвращающий кодовый номер числа или символа, если это число или
-// символ, если нет, то
-// возврвщает 0.
+#include "../inc/minishell.h"
 
-#include "libft.h"
-
-int	ft_isalnum(int c)
+int check_the_pipe(char *array, t_struct *p)
 {
-	if ((ft_isalpha(c) || ft_isdigit(c)) > 0)
-		return (c);
+	int	i;
+
+	i = 0;
+	if (array[0] == '|')
+	{
+		ft_putstr_fd("\t\tsyntax error near unexpected token '|'\n", 1);
+		p->error = 2;
+		return (2);
+	}
+	while (array[i])
+		i++;
+	if (array[i - 1] == '|')
+	{
+		ft_putstr_fd("\t\tsyntax error near unexpected token '|'\n", 1);
+		p->error = 2;
+		return (2);
+	}
 	return (0);
 }
+

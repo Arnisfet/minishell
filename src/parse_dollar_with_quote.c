@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 18:17:26 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/08 20:25:53 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/10 19:50:46 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ int		check_ones(char *array, int flag)
 
 char	*find_end_dollar(char *end)
 {
+	if (*end == '?')
+	{
+		end++;
+		return (end);
+	}
 	while (*end && (ft_isdigit(*end) || ft_isalpha(*end)))
 		end++;
 	return (end);
