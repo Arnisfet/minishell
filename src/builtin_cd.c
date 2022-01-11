@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 17:43:02 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/03 17:43:05 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/11 21:24:59 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	build_cd(char **str, t_struct *p)
 	{
 		if (!str[2])
 		{
+			if (!find_str(str[1], "--") && !find_str(str[1], "~") && !find_str(str[1], "-"))
+				go_to_dir(str[1], p);
 			if (find_str(str[1], "--") || find_str(str[1], "~"))
 				go_to_dir(home_path, p);
 			if (find_str(str[1], "-"))

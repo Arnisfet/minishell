@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 17:43:53 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/03 17:43:55 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/11 19:58:03 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,8 @@ void	delete_var(t_env *to_delete, t_struct *p)
 
 int	special_check(char *str)
 {
-	// int	i;
-
-	// i = 0;
-	// while (str[i] != '\0')
-	// {
-		// if (!ft_isalpha((int)str[0]) && str[i] != '_')
-		if (!ft_isalpha((int)str[0]))
-			return (1);
-	// 	i++;	
-	// }
+	if (!ft_isalpha((int)str[0]))
+		return (1);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 18:36:20 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/05 20:05:44 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/11 19:55:57 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,13 @@ int	execute(char *path, char **str, t_struct *p)
 
 int	start_execve(char *path, char **str, t_struct *p)
 {
-	// if (s.st_mode & S_IFREG)
-	// {
-	// 	if (s.st_mode & S_IXUSR)
 	execute(path, str, p);
-	// 	else
-	// 	{
-	// 		ft_putstr_fd("minishell: permission denied: ", 2);
-	// 		ft_putendl_fd(path, 2);
-	// 	}
-	// 	free(path);
-	// 	return (1);
-	// }
 	free(path);
 	return (0);
 }
 
 int	check_execve(char **str, t_struct *p)
 {
-	// struct stat	s;
 	char		*path;
 	char		*execve_path;
 	char		**spl_path;

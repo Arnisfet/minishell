@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/05 19:46:11 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/11 20:02:45 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	free_array(char **str);
 int		execute(char *path, char **str, t_struct *p);
 int		start_execve(char *path, char **str, t_struct *p);
 int		check_execve(char **str, t_struct *p);
+int		special_check(char *str);
 
 char	**write_in_2_dim(char *command,char **commands);
 int  	env_len(char **env);
