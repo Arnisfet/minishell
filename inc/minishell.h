@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/10 21:02:11 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/11 20:45:33 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef	struct	s_struct
 	char	*point_f;
 	t_redirect	*redirect;
 	int		error;
+	int		error_code;
 }				t_struct;
 
 void	init_env(char **env, t_struct *p);
@@ -102,7 +103,7 @@ char	*concat_and_free(char *first, char *second);
 
 
 int		correct_check(t_struct *p);
-int 	check_the_pipe(char *array, t_struct *p);
+int	check_string(char *array, t_struct *p);
 void	freed(t_struct *p);
 
 

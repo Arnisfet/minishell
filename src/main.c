@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/10 20:43:03 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/10 21:12:16 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int main(int argc, char **argv, char **env)
 	(void)argc;
 	p->count = 0;
 	p->revert_flag = 0;
+	p->trim_env = NULL;
 	status = 3;
 	signal(SIGQUIT, my_handler);
 	init_env(env, p);
@@ -62,10 +63,10 @@ int main(int argc, char **argv, char **env)
 			continue;
 		}
 		parse_cmd(line, p);
-		p->trim_env = NULL;
 		if (p->redirect)
 			freed(p);
 		free(line);
+		p->error_code = p->error;
 //		line = line2;
 	}
 }

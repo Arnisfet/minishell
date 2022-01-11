@@ -140,7 +140,7 @@ int	parse_cmd(char *line, t_struct *p)
 	char	**commands;
 
 	p->error = 0;
-	if (check_the_pipe(line, p) != 0)
+	if (check_string(line, p) != 0)
 		return (2);
 	commands = parse_pipe(line, p);
 	if (p->error != 0)

@@ -95,7 +95,7 @@ char	*trim_and_find(char *array, int i, t_struct *p)
 	if (check_ones(array, i))
 		return (ft_strdup(array));
 	if (strcmp(array, "$?") == 0)
-		return (ft_itoa(p->error));
+		return (ft_itoa(p->error_code));
 	j = 0;
 	while (p->arr_env[j])
 	{
