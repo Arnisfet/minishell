@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 21:51:41 by mrudge            #+#    #+#             */
-/*   Updated: 2021/12/26 16:45:06 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/12 19:50:19 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,12 @@ char	*quotes(char *line, char *command, int i, t_struct *p)
 		i++;
 	}
 	if (line[i] != ch)
-		exit(2);
+	{
+		ft_putstr_fd("\t\tError: odd number of quotes\n", 1);
+		p->error = 1;
+		free(command);
+		return (NULL);
+	}
 	p->count = i - p->count;
 	p->revert_flag = 0;
 	return (command);
@@ -50,7 +55,11 @@ char	*write_in_arr(char *line, char *command, int i, t_struct *p)
 	p->revert_flag == 0)
 		return (command);
 	if ((line[i] == '"' || line[i] == '\'') && p->revert_flag == 0)
+	{
 		command = quotes(line, command, i, p);
+		if (command == NULL)
+			return (NULL);
+	}
 	if (command == NULL)
 	{
 		if (line[i] == ' ')
@@ -70,8 +79,6 @@ char	**parse_pipe(char *line, t_struct *p)
 	char	**commands;
 	char	*command;
 
-	p->count = 0;
-	p->revert_flag = 0;
 	i = 0;
 	commands = NULL;
 	command = NULL;
@@ -88,6 +95,8 @@ char	**parse_pipe(char *line, t_struct *p)
 		i += p->count + 1;
 	}
 	commands =  write_in_2_dim(command, commands);
+	if (command)
+		free(command);
 	return (commands);
 }
-
+//"qwerty$SHELL qwe$USER""$USER$SHELL" checktha$ qwe | $USER $SHELL

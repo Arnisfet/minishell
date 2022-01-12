@@ -39,8 +39,6 @@ int main(int argc, char **argv, char **env)
 	int			status;
 	char		*line;
 
-
-//	char line[] = ">>file'$US'ER$USER\"$USER\"";
 	if (argc > 1)
 	{
 		ft_putstr_fd("Error: too many arguments\n", 2);
@@ -48,13 +46,16 @@ int main(int argc, char **argv, char **env)
 	}
 	p = (t_struct *)malloc(sizeof(t_struct));
 	if (!p)
-		return (-1);
-	status = 1;
-	init_env(env, p);
+	return (-1);
+	(void)argc;
+	p->count = 0;
+	p->revert_flag = 0;
+	p->trim_env = NULL;
+	status = 3;
 	signal(SIGQUIT, my_handler);
+	init_env(env, p);
 	while (status)
 	{
-		// display_message(p);
 		signal(SIGINT, my_handler);
 		line = readline("minishell🍑$> ");
 		if (!line)
@@ -69,6 +70,9 @@ int main(int argc, char **argv, char **env)
 			continue;
 		}
 		parse_cmd(line, p);
+		if (p->redirect)
+			freed(p);
 		free(line);
+		p->error_code = p->error;
 	}
 }

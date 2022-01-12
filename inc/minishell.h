@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
 /*   Updated: 2022/01/11 20:02:45 by jmacmill         ###   ########.fr       */
@@ -49,12 +49,13 @@ typedef	struct	s_struct
 	char	**trim_env;
 	char	**arr_env;
 	int		echo_flag;
-	char	**commands;
 	int		revert_flag;
 	int		count;
 	char	*point_r;
 	char	*point_f;
 	t_redirect	*redirect;
+	int		error;
+	int		error_code;
 }				t_struct;
 
 void	init_env(char **env, t_struct *p);
@@ -97,6 +98,18 @@ char	*parse_dollar_without_quote(char *array, t_struct *p);
 void	print_list(t_struct *p);
 char	**parse_strings(char **commands, t_struct *p);
 
+char	*trim_and_find(char *array, int i, t_struct *p);
+void	trim_env(t_struct *p);
+int		check_ones(char *array, int flag);
+char	*find_end_dollar(char *end);
+int		end_of_quote(char *array, int i);
+char    **ft_split_quotes(char const *s, char c);
+char	*concat_and_free(char *first, char *second);
+
+
+int		correct_check(t_struct *p);
+int	check_string(char *array, t_struct *p);
+void	freed(t_struct *p);
 
 
 #endif

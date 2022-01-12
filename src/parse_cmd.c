@@ -81,36 +81,46 @@ int	launch(char **commands, t_struct *p)
 	return (1);
 }
 
-// int	new_launch(char **commands, t_struct *p)
-// {
-// 	int	tmpin;
-// 	int	tmpout;
-// 	int	fdin;
-// 	int	fdout;
-// 	int i;
-// 	int	ret;
+char	**split_string(char **commands, t_struct *p)
+{
+	int		i;
+	char	**new_arr;
 
-// 	tmpin = dup(0);
-// 	tmpout = dup(1);
-// 	i = 0;
-// 	if (infile)
-// 		fdin = open(infile, O_READ);
-// 	else
-// 		fdin = dup(tmpin);
-	
-// }
+	i = 0;
+	while (commands[i])
+	{
+		new_arr = ft_split_quotes(commands[i], ' ');
+		new_arr = parse_strings(new_arr, p);
+		printr(new_arr);
+		i++;
+	}
+	ft_free(commands);
+	return (new_arr);
+}
 
 int	parse_cmd(char *line, t_struct *p)
 {
 	char	**commands;
-	int		i;
-	
-	p->trim_env = NULL;
+
+	p->error = 0;
+	if (check_string(line, p) != 0)
+		return (2);
 	commands = parse_pipe(line, p);
+	if (p->error != 0)
+	{
+		if (commands)
+			ft_free(commands);
+		return (1);
+	}
 	commands = parse_redirect(commands, p);
-	commands = parse_strings(commands, p);
-	
-	print_list(p);
-	printr(commands);
-	return (launch(commands, p));
+	if (p->error != 0)
+	{
+		ft_free(commands);
+		return (2);
+	}
+	commands = split_string(commands, p);
+	if (p->redirect)
+		print_list(p);
+	ft_free(commands);
+	return (0);
 }
