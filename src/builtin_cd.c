@@ -29,12 +29,16 @@ void	update_var(char *s1, char *s2, t_struct *p)
 	t_env	*tmp;
 
 	tmp = p->my_env;
+	printf("s2 - %s\n", s2);
 	while (tmp != NULL)
 	{
 		if (find_str(s1, tmp->var))
 		{
 			if (tmp->value)
+			{
 				free(tmp->value);
+				tmp->value = NULL;
+			}
 			tmp->value = ft_strdup(s2);
 			break ;
 		}
@@ -45,17 +49,17 @@ void	update_var(char *s1, char *s2, t_struct *p)
 void	go_to_dir(char *path, t_struct *p)
 {
 	t_env	*tmp;
-	char	*cwd;
-	char	buff[4096 + 1];
+	char	oldpwd[4096 + 1];
+	char	cwd[4096 + 1];
 
-	cwd = getcwd(buff, 4096);
+	getcwd(oldpwd, 4096);
 	if (chdir(path) != 0)
 	{
-		ft_putstr_fd("cd: string not in pwd: ", 2);
+		perror("cd ");
 		return ;
 	}
-	update_var("OLDPWD", cwd, p);
-	update_var("PWD", path, p);
+	update_var("OLDPWD", oldpwd, p);
+	update_var("PWD", getcwd(cwd, 4096), p);
 }
 
 int	build_cd(char **str, t_struct *p)

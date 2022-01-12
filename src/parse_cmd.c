@@ -81,6 +81,25 @@ int	launch(char **commands, t_struct *p)
 	return (1);
 }
 
+// int	new_launch(char **commands, t_struct *p)
+// {
+// 	int	tmpin;
+// 	int	tmpout;
+// 	int	fdin;
+// 	int	fdout;
+// 	int i;
+// 	int	ret;
+
+// 	tmpin = dup(0);
+// 	tmpout = dup(1);
+// 	i = 0;
+// 	if (infile)
+// 		fdin = open(infile, O_READ);
+// 	else
+// 		fdin = dup(tmpin);
+	
+// }
+
 int	parse_cmd(char *line, t_struct *p)
 {
 	char	**commands;

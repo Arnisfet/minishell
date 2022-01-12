@@ -57,10 +57,10 @@ void	print_list(t_struct *p)
 		return ;
 	while (tmp->next != NULL)
 	{
-		printf ("type of redirect: %s, filename: %s, number of pipe: %d",
+		printf ("type of redirect: %s, filename: %s, number of pipe: %d\n",
 				tmp->type, tmp->file, tmp->number_command);
 		tmp = tmp->next;
 	}
-	printf ("type of redirect: %s, filename: %s, number of pipe: %d",
+	printf ("type of redirect: %s, filename: %s, number of pipe: %d\n",
 			tmp->type, tmp->file, tmp->number_command);
 }
