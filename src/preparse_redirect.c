@@ -134,7 +134,7 @@ int		correct_check(t_struct *p)
 		return (2);
 	if (check_filename(p))
 		return (2);
-	if (check_digit(p))
-		return (2);
+//	if (check_digit(p))
+//		return (2);
 	return (0);
 }

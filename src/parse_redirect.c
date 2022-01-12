@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/09 19:37:25 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/12 18:33:21 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	substring(char *start, t_struct *p)
 	while (*end != '\0' && (*end != ' ' && (*end == '<' || *end == '>')))
 		end++;
 	redirect = ft_strndup(start, end - start);
-	if (*end != '\0' && *(end + 1) == ' ')
+	if (*end != '\0' && *(end) == ' ')
 		end++;
 	start = end;
 	end = write_filename(end);
