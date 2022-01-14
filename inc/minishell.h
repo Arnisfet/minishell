@@ -13,6 +13,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define BUFFER_SIZE 1
+
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
@@ -26,6 +28,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <string.h>
+# include <fcntl.h>
 
 typedef struct	s_env
 {
@@ -43,6 +46,12 @@ typedef struct s_redirect
 	struct	s_redirect	*next;
 }				t_redirect;
 
+typedef struct s_cmd
+{
+	char			**cmd;
+	struct	s_cmd	*next;
+}				t_cmd;
+
 typedef	struct	s_struct
 {
 	t_env	*my_env;
@@ -53,10 +62,16 @@ typedef	struct	s_struct
 	int		count;
 	char	*point_r;
 	char	*point_f;
+	int		total_cmd;
+	int		in_file;
+	int		out_file;
+	int		here_doc;
 	t_redirect	*redirect;
 	int		error;
 	int		error_code;
 }				t_struct;
+
+int		get_next_line(int fd, char **line);
 
 void	init_env(char **env, t_struct *p);
 void	display_message(t_struct *p);
