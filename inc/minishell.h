@@ -65,7 +65,10 @@ typedef	struct	s_struct
 	int		total_cmd;
 	int		in_file;
 	int		out_file;
+	int		is_infile;
 	int		here_doc;
+	int		*pipe;
+	int		idx;
 	t_redirect	*redirect;
 	int		error;
 	int		error_code;

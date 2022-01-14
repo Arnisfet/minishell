@@ -88,7 +88,21 @@ void	start_heredoc(t_struct *p, char *stop)
 	}
 }
 
-char	*get_infile(t_struct *p)
+char	*get_file(t_struct *p, char *symbol)
+{
+	t_redirect	*tmp;
+
+	tmp = p->redirect;
+	while (tmp)
+	{
+		if (!ft_strncmp(symbol, tmp->type, 2))
+			return (tmp->file);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+void	get_infile(t_struct *p)
 {
 	t_redirect	*tmp;
 
@@ -102,7 +116,17 @@ char	*get_infile(t_struct *p)
 			tmp = tmp->next;
 		}
 	}
-	return (NULL);
+	else
+	{
+		if (p->is_infile)
+		{
+			p->in_file = open(get_file(p, "<"), O_RDONLY);
+			if (p->in_file < 0)
+				return ;
+		}
+		else
+			p->in_file = dup(0);
+	}
 }
 
 char	*get_outfile(t_struct *p)
@@ -124,7 +148,8 @@ int	launch(char **commands, t_struct *p)
 {
 	char	*infile;
 
-	get_infile(p);	
+	printf("%d\n", p->in_file);
+	
 	//get_outfile(p);
 
 	// else     
@@ -137,6 +162,7 @@ int	launch(char **commands, t_struct *p)
 	// 	if (check_execve(commands, p))
 	// 		return (0);
 	// }
+	//free(p->pipe);
 	return (1);
 }
 
@@ -156,6 +182,45 @@ void	check_heredoc(t_struct *p)
 	}
 }
 
+void	check_infile(t_struct *p)
+{
+	t_redirect	*tmp;
+
+	tmp = p->redirect;
+	while (tmp)
+	{
+		if (!ft_strncmp("<", tmp->type, 2))
+		{
+			p->is_infile = 1;
+			break ;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	parent_free(t_struct *p)
+{
+	close(p->in_file);
+	close(p->out_file);
+	if (p->here_doc)
+		unlink(".heredoc_tmp");
+	if (p->pipe)
+		free(p->pipe);
+}
+
+static void	create_pipes(t_struct *p)
+{
+	int	i;
+
+	i = 0;
+	while (i < p->total_cmd - 1)
+	{
+		if (pipe(p->pipe + 2 * i) < 0)
+			parent_free(p);
+		i++;
+	}
+}
+
 char	**split_string(char **commands, t_struct *p)
 {
 	int		i;
@@ -167,7 +232,16 @@ char	**split_string(char **commands, t_struct *p)
 	p->total_cmd = i;
 	i = 0;
 	p->here_doc = 0;
+	p->is_infile = 0;
 	check_heredoc(p);
+	check_infile(p);
+	get_infile(p);
+	p->pipe = (int *)malloc(sizeof(int) * (2 * (p->total_cmd - 1)));
+	if (!(p->pipe))
+		return (NULL);
+	create_pipes(p);
+	p->idx = -1;
+
 	while (commands[i])
 	{
 		new_arr = ft_split_quotes(commands[i], ' ');
