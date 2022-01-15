@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/15 13:50:24 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/15 18:29:31 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,26 +122,29 @@ void	get_infile(t_struct *p)
 		{
 			p->in_file = open(get_file(p, "<"), O_RDONLY);
 			if (p->in_file < 0)
+			{
+				ft_putendl_fd("Unable to open a file", 1);	
 				return ;
+			}
 		}
 		else
 			p->in_file = dup(0);
 	}
 }
 
-char	*get_outfile(t_struct *p)
+void	get_outfile(t_struct *p)
 {
-	t_redirect	*tmp;
-	char		*file_name;
-
-	tmp = p->redirect;
-	while (tmp)
+	if (p->is_outfile)
 	{
-		if (!ft_strncmp(">", tmp->type, 2))
-			return (tmp->file);
-		tmp = tmp->next;
+		p->out_file = open(get_file(p, ">"), O_CREAT | O_WRONLY | O_TRUNC, 0000644);	
+		if (p->out_file < 0)
+		{
+			ft_putendl_fd("Unable to open a file", 1);	
+			return ;
+		}
 	}
-	return (NULL);
+	else
+		p->out_file = dup(1);
 }
 
 void	close_pipes(t_struct *p)
@@ -154,36 +157,37 @@ void	close_pipes(t_struct *p)
 		close(p->pipe[i]);
 		i++;
 	}
+	// printf("Total pipes: %d\n", p->total_pipes);
+	// printf("Total closed pipes: %d\n", i - 1);
 }
 
 void	sub_dup2(int fdin, int fdout)
 {
-	dup2(fdin, 0);
-	dup2(fdout, 1);
+	dup2(fdin, STDIN_FILENO);
+	dup2(fdout, STDOUT_FILENO);
 }
 
 void	launch_child(char **commands, t_struct *p)
 {
 	// printf("%s\n", *commands);
-	//get_outfile(p);
-	int	result;
-	
+	//get_outfile(p);	
 	p->pid = fork();
-	if (p->pid == 0)
+	if (!p->pid)
 	{
 		if (p->idx == 0) // Если первая команда
 			sub_dup2(p->in_file, p->pipe[1]);
+		else if (p->idx == 0 && p->total_cmd == 1) // Если первая и последняя команда
+			sub_dup2(p->pipe[1], p->out_file);
 		else if (p->idx == p->total_cmd - 1) // Если последняя команда
-			sub_dup2(p->pipe[2 * p->idx - 2], p->out_file); // Направляем в файл out если он есть
+			sub_dup2(p->pipe[2 * p->idx - 2], p->out_file); // Направляем файл в out
 		else
 			sub_dup2(p->pipe[2 * p->idx - 2], p->pipe[2 * p->idx + 1]); // Направлем в следующий пайп
 		close_pipes(p);
 		
-		result = check_bultin(commands, p);
-		if (result == 1)
+		if (check_bultin(commands, p) == 1)
 			return ;
-		if (result == -1)
-			return ;
+		// if (result == -1)
+		// 	return ;
 		if (check_execve(commands, p))
 			return ;		
 	}
@@ -216,16 +220,28 @@ void	check_heredoc(t_struct *p)
 	}
 }
 
-void	check_infile(t_struct *p)
+void	check_files(t_struct *p)
 {
 	t_redirect	*tmp;
 
 	tmp = p->redirect;
+	p->is_infile = 0;
+	p->is_outfile = 0;
 	while (tmp)
 	{
 		if (!ft_strncmp("<", tmp->type, 2))
 		{
 			p->is_infile = 1;
+			break ;
+		}
+		tmp = tmp->next;
+	}
+	tmp = p->redirect;
+	while (tmp)
+	{
+		if (!ft_strncmp(">", tmp->type, 2))
+		{
+			p->is_outfile = 1;
 			break ;
 		}
 		tmp = tmp->next;
@@ -266,17 +282,19 @@ char	**split_string(char **commands, t_struct *p)
 	p->total_cmd = i;
 	i = 0;
 	p->here_doc = 0;
-	p->is_infile = 0;
 	check_heredoc(p);
-	check_infile(p);
+	check_files(p);
 	get_infile(p);
+	get_outfile(p);
 	p->total_pipes = 2 * (p->total_cmd - 1);
+	printf("Total pipes: %d\n",p->total_pipes);
 	p->pipe = (int *)malloc(sizeof(int) * p->total_pipes);
 	if (!(p->pipe))
 		return (NULL);
 	create_pipes(p);
 	p->idx = 0;
-	p->out_file = open("outfile", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+	printf("AMOUNT of commands: %d\n",p->total_cmd);
 	while (p->idx < p->total_cmd)
 	{
 		new_arr = ft_split_quotes(commands[p->idx], ' ');
@@ -285,14 +303,11 @@ char	**split_string(char **commands, t_struct *p)
 		p->idx++;
 	}
 	close_pipes(p);
+	close(p->in_file);
+	close(p->out_file);
 	waitpid(-1, NULL, 0);
-	// while (commands[i])
-	// {
-	// 	new_arr = ft_split_quotes(commands[i], ' ');
-	// 	new_arr = parse_strings(new_arr, p);
-	// 	launch(new_arr, p);
-	// 	p->idx++;
-	// }
+
+	free(p->pipe);
 	ft_free(commands);
 	return (new_arr);
 }
@@ -318,8 +333,8 @@ int	parse_cmd(char *line, t_struct *p)
 		return (2);
 	}
 	commands = split_string(commands, p);
-	if (p->redirect)
-		print_list(p);
+	// if (p->redirect)
+	// 	print_list(p);
 	ft_free(commands);
 	return (0);
 }
