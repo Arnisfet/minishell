@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/11 20:02:45 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/15 13:35:27 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ typedef	struct	s_struct
 	int		is_infile;
 	int		here_doc;
 	int		*pipe;
+	int		total_pipes;
 	int		idx;
+	pid_t	pid;
 	t_redirect	*redirect;
 	int		error;
 	int		error_code;

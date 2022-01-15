@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/05 20:04:37 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/15 13:50:24 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,14 +144,49 @@ char	*get_outfile(t_struct *p)
 	return (NULL);
 }
 
-int	launch(char **commands, t_struct *p)
+void	close_pipes(t_struct *p)
 {
-	char	*infile;
+	int	i;
 
-	printf("%d\n", p->in_file);
-	
+	i = 0;
+	while (i < (p->total_pipes))
+	{
+		close(p->pipe[i]);
+		i++;
+	}
+}
+
+void	sub_dup2(int fdin, int fdout)
+{
+	dup2(fdin, 0);
+	dup2(fdout, 1);
+}
+
+void	launch_child(char **commands, t_struct *p)
+{
+	// printf("%s\n", *commands);
 	//get_outfile(p);
-
+	int	result;
+	
+	p->pid = fork();
+	if (p->pid == 0)
+	{
+		if (p->idx == 0) // Если первая команда
+			sub_dup2(p->in_file, p->pipe[1]);
+		else if (p->idx == p->total_cmd - 1) // Если последняя команда
+			sub_dup2(p->pipe[2 * p->idx - 2], p->out_file); // Направляем в файл out если он есть
+		else
+			sub_dup2(p->pipe[2 * p->idx - 2], p->pipe[2 * p->idx + 1]); // Направлем в следующий пайп
+		close_pipes(p);
+		
+		result = check_bultin(commands, p);
+		if (result == 1)
+			return ;
+		if (result == -1)
+			return ;
+		if (check_execve(commands, p))
+			return ;		
+	}
 	// else     
 	// {
 	// 	result = check_bultin(commands, p);
@@ -163,7 +198,6 @@ int	launch(char **commands, t_struct *p)
 	// 		return (0);
 	// }
 	//free(p->pipe);
-	return (1);
 }
 
 void	check_heredoc(t_struct *p)
@@ -236,19 +270,29 @@ char	**split_string(char **commands, t_struct *p)
 	check_heredoc(p);
 	check_infile(p);
 	get_infile(p);
-	p->pipe = (int *)malloc(sizeof(int) * (2 * (p->total_cmd - 1)));
+	p->total_pipes = 2 * (p->total_cmd - 1);
+	p->pipe = (int *)malloc(sizeof(int) * p->total_pipes);
 	if (!(p->pipe))
 		return (NULL);
 	create_pipes(p);
-	p->idx = -1;
-
-	while (commands[i])
+	p->idx = 0;
+	p->out_file = open("outfile", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	while (p->idx < p->total_cmd)
 	{
-		new_arr = ft_split_quotes(commands[i], ' ');
+		new_arr = ft_split_quotes(commands[p->idx], ' ');
 		new_arr = parse_strings(new_arr, p);
-		launch(new_arr, p);
-		i++;
+		launch_child(new_arr, p);
+		p->idx++;
 	}
+	close_pipes(p);
+	waitpid(-1, NULL, 0);
+	// while (commands[i])
+	// {
+	// 	new_arr = ft_split_quotes(commands[i], ' ');
+	// 	new_arr = parse_strings(new_arr, p);
+	// 	launch(new_arr, p);
+	// 	p->idx++;
+	// }
 	ft_free(commands);
 	return (new_arr);
 }
