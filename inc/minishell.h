@@ -70,7 +70,8 @@ typedef	struct	s_struct
 	int		total_pipes;
 	int		here_doc;
 	int		*pipe;
-	pid_t	pid;
+	int		**fd;
+	pid_t	*pid;
 	int		idx;
 	t_redirect	*redirect;
 	int		error;
