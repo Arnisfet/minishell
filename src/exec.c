@@ -75,5 +75,6 @@ int	check_execve(char **str, t_struct *p)
 	}
     ft_putstr_fd("minishell: command not found: ", 2);
     ft_putstr_fd(str[0], 2);
+	ft_putstr_fd("\n", 2);
 	return (1);	
 }

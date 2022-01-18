@@ -132,75 +132,28 @@ void	get_infile(t_struct *p)
 	}
 }
 
-void	get_outfile(t_struct *p)
+void	get_outfile(t_struct *p, int pos)
 {
-	if (p->is_outfile)
+	t_redirect	*tmp;
+
+	tmp = p->redirect;
+	while (tmp != NULL)
 	{
-		p->out_file = open(get_file(p, ">"), O_CREAT | O_WRONLY | O_TRUNC, 0000644);	
-		if (p->out_file < 0)
+		if (!ft_strncmp(">", tmp->type, 2) && pos == tmp->number_command)
 		{
-			ft_putendl_fd("Unable to open a file", 1);	
-			return ;
+			p->out_file = open(get_file(p, ">"), O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			if (!p->out_file)
+				perror("minishell");
 		}
-	}
-	else
-		p->out_file = dup(1);
-}
-
-void	close_pipes(t_struct *p)
-{
-	int	i;
-
-	i = 0;
-	while (i < (p->total_pipes))
-	{
-		close(p->pipe[i]);
-		i++;
+		if (!ft_strncmp(">>", tmp->type, 3) && pos == tmp->number_command)
+		{
+			p->out_file = open(get_file(p, ">>"), O_CREAT | O_WRONLY | O_APPEND, 0644);
+			if (!p->out_file)
+				perror("minishell");
+		}
+		tmp = tmp->next;
 	}
 }
-
-void	sub_dup2(int fdin, int fdout)
-{
-	dup2(fdin, STDIN_FILENO);
-	dup2(fdout, STDOUT_FILENO);
-}
-
-// void	launch_child(char **commands, t_struct *p)
-// {
-// 	// printf("%s\n", *commands);
-// 	//get_outfile(p);	
-// 	p->pid = fork();
-// 	if (!p->pid)
-// 	{
-// 		if (p->idx == 0) // Если первая команда
-// 			sub_dup2(p->in_file, p->pipe[1]);
-// 		else if (p->idx == 0 && p->total_cmd == 1) // Если первая и последняя команда
-// 			sub_dup2(p->pipe[1], p->out_file);
-// 		else if (p->idx == p->total_cmd - 1) // Если последняя команда
-// 			sub_dup2(p->pipe[2 * p->idx - 2], p->out_file); // Направляем файл в out
-// 		else
-// 			sub_dup2(p->pipe[2 * p->idx - 2], p->pipe[2 * p->idx + 1]); // Направлем в следующий пайп
-// 		close_pipes(p);
-		
-// 		if (check_bultin(commands, p) == 1)
-// 			return ;
-// 		// if (result == -1)
-// 		// 	return ;
-// 		if (check_execve(commands, p))
-// 			return ;		
-// 	}
-// 	// else     
-// 	// {
-// 	// 	result = check_bultin(commands, p);
-// 	// 	if (result == 1)
-// 	// 		return (0);
-// 	// 	if (result == -1)
-// 	// 		return (-1);
-// 	// 	if (check_execve(commands, p))
-// 	// 		return (0);
-// 	// }
-// 	//free(p->pipe);
-// }
 
 void	check_heredoc(t_struct *p)
 {
@@ -218,201 +171,84 @@ void	check_heredoc(t_struct *p)
 	}
 }
 
-void	check_files(t_struct *p)
+int	check_outfile(t_struct *p, int pos)
 {
 	t_redirect	*tmp;
 
 	tmp = p->redirect;
-	p->is_infile = 0;
 	p->is_outfile = 0;
 	while (tmp)
 	{
-		if (!ft_strncmp("<", tmp->type, 2))
-		{
-			p->is_infile = 1;
-			break ;
-		}
+		if (!ft_strncmp(">", tmp->type, 2) && pos == tmp->number_command)
+			return (1);
+		if (!ft_strncmp(">>", tmp->type, 3) && pos == tmp->number_command)
+			return (1);
 		tmp = tmp->next;
 	}
-	tmp = p->redirect;
-	while (tmp)
-	{
-		if (!ft_strncmp(">", tmp->type, 2))
-		{
-			p->is_outfile = 1;
-			break ;
-		}
-		tmp = tmp->next;
-	}
-}
-
-void	parent_free(t_struct *p)
-{
-	close(p->in_file);
-	close(p->out_file);
-	if (p->here_doc)
-		unlink(".heredoc_tmp");
-	if (p->pipe)
-		free(p->pipe);
-}
-
-static void	create_pipes(t_struct *p)
-{
-	int	i;
-
-	i = 0;
-	while (i < p->total_cmd - 1)
-	{
-		if (pipe(p->pipe + 2 * i) < 0)
-			parent_free(p);
-		i++;
-	}
-}
-
-void	create_fd(t_struct *p)
-{
-	int	i;
-
-	i = 0;
-	p->fd = malloc(sizeof(int *) * p->total_cmd);
-	if (!p->fd)
-		printf("Error\n");
-	while (i < p->total_cmd)
-	{
-		p->fd[i] = malloc(sizeof(int) * 2);
-		if (!(p->fd[i]))
-			printf("Error\n");
-		i++;
-	}
-}
-
-void	create_pipe_fd(t_struct *p)
-{
-	int	i;
-
-	i = 0;
-	while (i < p->total_cmd)
-	{
-		pipe(p->fd[i]);
-		if (pipe(p->fd[i]) == -1)
-			printf("Error\n");
-		i++;
-	}
-}
-
-void	close_fds(t_struct *p)
-{
-	int	i;
-
-	i = 0;
-	while (i < p->total_cmd)
-	{
-		if (!p->fd || !p->fd[i])
-			continue ;
-		close(p->fd[i][0]);
-		close(p->fd[i][1]);
-		free(p->fd[i]);
-		i++;
-	}
-	free(p->fd);
-}
-
-int	child(char **commands, t_struct *p)
-{
-	int	file[2];
-	int	dup_result;
-
-	file[0] = 0;
-	file[1] = 1;
-	if (p->idx == 0)
-		dup2(file[0], STDIN_FILENO);
-	else if (p->idx != 0)
-		dup2(p->fd[p->idx][1], STDOUT_FILENO);
-	close_fds(p);
-	check_execve(commands, p);
 	return (0);
 }
 
-void	waitpid_pipex(t_struct *p)
+void	child(char **commands, t_struct *p)
 {
-	int	i;
-
-	i = 0;
-	while (i < p->total_cmd)
+	//redirect input
+	dup2(p->fdin, 0);
+	close(p->fdin);
+	//set output
+	if (p->idx == p->total_cmd - 1)
 	{
-		waitpid(p->pid[i], NULL, 0);
-		i++;
+		// if (check_outfile(p, p->idx))
+		// 	p->fdout = get_outfile(p, p->idx);	
+		// else
+			p->fdout = dup(p->tmpout); // Use default output
+		//fdout = open("test.txt", O_WRONLY | O_CREAT, 0644);
+	}
+	else
+	{
+		// Not last simple command create pipe
+		pipe(p->fdpipe);
+		p->fdout = p->fdpipe[1];
+		p->fdin = p->fdpipe[0];
+	}
+	// Redirect output
+	dup2(p->fdout, 1);
+	close(p->fdout);
+
+	// Create child process;
+	p->ret = fork();
+	if (p->ret == 0)
+	{
+		check_execve(commands, p);
+		//perror("minishell");
+		exit(1);
 	}
 }
 
 char	**split_string(char **commands, t_struct *p)
 {
-	int		i;
 	char	**new_arr;
 
-	//save in/out
-	int tmpin = dup(0);
-	int tmpout = dup(1);	
-
-	//set the initial input
-	int fdin;
-	fdin = dup(tmpin);  //Use default input
+	p->tmpin = dup(0);
+	p->tmpout = dup(1);	
 	
-	int ret;
-	int fdout;
-
-	i = 0;
-	while (commands[i])
-		i++;
-	p->total_cmd = i;
+	p->here_doc = 0;
+	// check_heredoc(p);
+	// check_files(p);
+	// get_infile(p);
+	p->fdin = dup(p->tmpin);  //Use default input
+	//p->fdin = open("infile2", O_RDONLY | O_CREAT, 0644);
 	p->idx = 0;
-
 	while (p->idx < p->total_cmd)
 	{
 		new_arr = ft_split_quotes(commands[p->idx], ' ');
 		new_arr = parse_strings(new_arr, p);
-		
-		//redirect input
-		dup2(fdin, 0);
-		close(fdin);
-		//set output
-		if (p->idx == p->total_cmd - 1)
-		{
-			// Use default output
-			fdout = dup(tmpout);
-		}
-		else
-		{
-			// Not last simple command create pipe
-			int fdpipe[2];
-			pipe(fdpipe);
-			fdout = fdpipe[1];
-			fdin = fdpipe[0];
-		}
-		// Redirect output
-		dup2(fdout, 1);
-		close(fdout);
-
-		// Create child process;
-		ret = fork();
-		if (ret == 0)
-		{
-			check_execve(new_arr, p);
-			//perror("minishell");
-			exit(1);
-		}
-
+		child(new_arr, p);
 		p->idx++;
 	}
-	// restore in/out defaults
-	dup2(tmpin, 0);
-	dup2(tmpout, 1);
-
-	close(tmpin);
-	close(tmpout);
-
-	waitpid(ret, NULL, 0);
-
+	dup2(p->tmpin, 0);
+	dup2(p->tmpout, 1);
+	close(p->tmpin);
+	close(p->tmpout);
+	waitpid(p->ret, NULL, 0);
 	ft_free(commands);
 	return (new_arr);
 }
@@ -422,38 +258,65 @@ char	**split_string(char **commands, t_struct *p)
 // 	int		i;
 // 	char	**new_arr;
 
-// 	i = 0;
-// 	while (commands[i])
-// 		i++;
-// 	p->total_cmd = i;
-// 	i = 0;
-// 	p->here_doc = 0;
-// 	check_heredoc(p);
-// 	check_files(p);
-// 	get_infile(p);
-// 	get_outfile(p);
-// 	p->total_pipes = 2 * (p->total_cmd - 1);
-// 	printf("Total pipes: %d\n",p->total_pipes);
-// 	p->pipe = (int *)malloc(sizeof(int) * p->total_pipes);
-// 	if (!(p->pipe))
-// 		return (NULL);
-// 	create_pipes(p);
+// 	//save in/out
+// 	int tmpin = dup(0);
+// 	int tmpout = dup(1);	
+
+// 	//set the initial input
+// 	int fdin;
+// 	fdin = dup(tmpin);  //Use default input
+	
+// 	int ret;
+// 	int fdout;
+
 // 	p->idx = 0;
 
-// 	printf("AMOUNT of commands: %d\n",p->total_cmd);
 // 	while (p->idx < p->total_cmd)
 // 	{
 // 		new_arr = ft_split_quotes(commands[p->idx], ' ');
 // 		new_arr = parse_strings(new_arr, p);
-// 		launch_child(new_arr, p);
+		
+// 		//redirect input
+// 		dup2(fdin, 0);
+// 		close(fdin);
+// 		//set output
+// 		if (p->idx == p->total_cmd - 1)
+// 		{	
+// 			fdout = dup(tmpout); // Use default output
+// 			//fdout = open("test.txt", O_WRONLY | O_CREAT, 0644);
+// 		}
+// 		else
+// 		{
+// 			// Not last simple command create pipe
+// 			int fdpipe[2];
+// 			pipe(fdpipe);
+// 			fdout = fdpipe[1];
+// 			fdin = fdpipe[0];
+// 		}
+// 		// Redirect output
+// 		dup2(fdout, 1);
+// 		close(fdout);
+
+// 		// Create child process;
+// 		ret = fork();
+// 		if (ret == 0)
+// 		{
+// 			check_execve(new_arr, p);
+// 			//perror("minishell");
+// 			exit(1);
+// 		}
+
 // 		p->idx++;
 // 	}
-// 	close_pipes(p);
-// 	close(p->in_file);
-// 	close(p->out_file);
-// 	waitpid(-1, NULL, 0);
+// 	// restore in/out defaults
+// 	dup2(tmpin, 0);
+// 	dup2(tmpout, 1);
 
-// 	free(p->pipe);
+// 	close(tmpin);
+// 	close(tmpout);
+
+// 	waitpid(ret, NULL, 0);
+
 // 	ft_free(commands);
 // 	return (new_arr);
 // }
@@ -461,6 +324,7 @@ char	**split_string(char **commands, t_struct *p)
 int	parse_cmd(char *line, t_struct *p)
 {
 	char	**commands;
+	int		i;
 
 	p->error = 0;
 	if (check_string(line, p) != 0)
@@ -478,6 +342,10 @@ int	parse_cmd(char *line, t_struct *p)
 		ft_free(commands);
 		return (2);
 	}
+	i = 0;
+	while (commands[i])
+		i++;
+	p->total_cmd = i;
 	commands = split_string(commands, p);
 	// if (p->redirect)
 	// 	print_list(p);

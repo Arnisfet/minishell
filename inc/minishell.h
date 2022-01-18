@@ -69,10 +69,13 @@ typedef	struct	s_struct
 	int		is_outfile;
 	int		total_pipes;
 	int		here_doc;
-	int		*pipe;
-	int		**fd;
-	pid_t	*pid;
+	int		tmpin;
+	int		tmpout;
+	int		fdin;
+	int		fdout;
 	int		idx;
+	int		ret;
+	int		fdpipe[2];
 	t_redirect	*redirect;
 	int		error;
 	int		error_code;

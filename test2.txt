@@ -1,0 +1,6 @@
+64 bytes from 64.233.164.138: icmp_seq=0 ttl=110 time=21.617 ms
+64 bytes from 64.233.164.138: icmp_seq=1 ttl=110 time=14.640 ms
+64 bytes from 64.233.164.138: icmp_seq=2 ttl=110 time=24.946 ms
+64 bytes from 64.233.164.138: icmp_seq=3 ttl=110 time=131.725 ms
+64 bytes from 64.233.164.138: icmp_seq=4 ttl=110 time=21.697 ms
+64 bytes from 64.233.164.138: icmp_seq=5 ttl=110 time=20.749 ms
