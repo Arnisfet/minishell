@@ -1,0 +1,14 @@
+mla;d
+
+
+		last_infile = ".heredoc_tmp"
+
+<file1<file2<file3 ls "<file4" | <file5<file6 ls -l <file7<file8 >file9 | grep >file10>>file11<file12
+
+
+
+<file1<file2<file3 ls -l | cat -e <file3 <file4<file5
+
+
+
+

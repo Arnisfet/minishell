@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/15 18:29:31 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/19 21:00:49 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,11 +188,30 @@ int	check_outfile(t_struct *p, int pos)
 	return (0);
 }
 
-void	child(char **commands, t_struct *p)
+// void	compare_with_last(t_struct *p, int idx)
+// {
+// 	t_redirect *tmp;
+	
+
+// 	tmp = p->redirect;
+// 	while (tmp != NULL)
+// 	{
+		
+// 	}
+	
+// }
+
+void	child(char **commands, t_struct *p, int cmd_num, char *infile)
 {
+	// compare_with_last(p->idx, idx);
 	//redirect input
-	dup2(p->fdin, 0);
-	close(p->fdin);
+	if (p->idx == cmd_num && infile)
+	{
+		// printf("lol: %d\n", p->idx);
+		dup2(p->fdin, 0);
+		close(p->fdin);
+	}
+	
 	//set output
 	if (p->idx == p->total_cmd - 1)
 	{
@@ -223,25 +242,112 @@ void	child(char **commands, t_struct *p)
 	}
 }
 
+// char	*check_infile(t_struct *p)
+// {
+// 	t_redirect	*tmp;
+// 	char *last_infile;
+
+// 	last_infile = NULL;
+// 	tmp = p->redirect;
+// 	if (p->redirect)
+// 	{
+// 		while (tmp->next != NULL)
+// 		{
+// 			if (!ft_strncmp("<<", tmp->type, 3))
+// 				start_heredoc(p, tmp->file);
+// 			if (!ft_strncmp("<", tmp->type, 2))
+// 				last_infile = tmp->file;		
+// 			tmp = tmp->next;
+// 		}
+// 		if (tmp->next == NULL && !ft_strncmp("<<", tmp->type, 3))
+// 		{
+// 			start_heredoc(p, tmp->file);
+// 			last_infile = ".heredoc_tmp";
+// 		}
+// 		if (tmp->next == NULL && !ft_strncmp("<", tmp->type, 2))
+// 			last_infile = tmp->file;
+// 	}
+// 	// printf("last_infile: %s\n", last_infile);
+// 	return (last_infile);
+// }
+
+int check_infile(t_struct *p, char **infile)
+{
+	t_redirect	*tmp;
+	char		*last_infile;
+	int			num_cmd;
+
+	num_cmd = 0;
+	last_infile = NULL;
+	tmp = p->redirect;
+	if (p->redirect)
+	{
+		while (tmp->next != NULL)
+		{
+			if (!ft_strncmp("<<", tmp->type, 3))
+				start_heredoc(p, tmp->file);
+			if (!ft_strncmp("<", tmp->type, 2))
+			{
+				num_cmd = tmp->number_command;
+				last_infile = tmp->file;		
+			}
+			tmp = tmp->next;
+		}
+		if (tmp->next == NULL && !ft_strncmp("<<", tmp->type, 3))
+		{
+			start_heredoc(p, tmp->file);
+			num_cmd = tmp->number_command;
+			last_infile = ".heredoc_tmp";
+		}
+		if (tmp->next == NULL && !ft_strncmp("<", tmp->type, 2))
+		{
+			num_cmd = tmp->number_command;
+			last_infile = tmp->file;
+		}
+	}
+	*infile = last_infile;
+	// printf("last_infile: %s\n", last_infile);
+	return (num_cmd);
+}
+
 char	**split_string(char **commands, t_struct *p)
 {
 	char	**new_arr;
-
+	char	*infile;
+	int		cmd_num;
+	
 	p->tmpin = dup(0);
 	p->tmpout = dup(1);	
+	// printf("000000\n");
 	
+	cmd_num = check_infile(p, &infile);
+	// printf("num_cmd: %d\n", cmd_num);
+	// printf("infile: %s\n", infile);
+
 	p->here_doc = 0;
+	if (infile)
+	{
+		p->fdin = open(infile, O_RDONLY, 0644);
+		if (p->fdin == -1)
+			perror("minishell");
+	}
+	else
+	{
+		p->fdin = dup(p->tmpin);
+	}
+	printf("fdin: %d\n", p->fdin);
+	// check_infile(p);
 	// check_heredoc(p);
-	// check_files(p);
 	// get_infile(p);
-	p->fdin = dup(p->tmpin);  //Use default input
-	//p->fdin = open("infile2", O_RDONLY | O_CREAT, 0644);
+	
+	  //Use default input
+	// p->fdin = open("infile", O_RDONLY, 0644);
 	p->idx = 0;
 	while (p->idx < p->total_cmd)
 	{
 		new_arr = ft_split_quotes(commands[p->idx], ' ');
 		new_arr = parse_strings(new_arr, p);
-		child(new_arr, p);
+		child(new_arr, p, cmd_num, infile);
 		p->idx++;
 	}
 	dup2(p->tmpin, 0);
@@ -251,75 +357,8 @@ char	**split_string(char **commands, t_struct *p)
 	waitpid(p->ret, NULL, 0);
 	ft_free(commands);
 	return (new_arr);
+	// return(NULL);
 }
-
-// char	**split_string(char **commands, t_struct *p)
-// {
-// 	int		i;
-// 	char	**new_arr;
-
-// 	//save in/out
-// 	int tmpin = dup(0);
-// 	int tmpout = dup(1);	
-
-// 	//set the initial input
-// 	int fdin;
-// 	fdin = dup(tmpin);  //Use default input
-	
-// 	int ret;
-// 	int fdout;
-
-// 	p->idx = 0;
-
-// 	while (p->idx < p->total_cmd)
-// 	{
-// 		new_arr = ft_split_quotes(commands[p->idx], ' ');
-// 		new_arr = parse_strings(new_arr, p);
-		
-// 		//redirect input
-// 		dup2(fdin, 0);
-// 		close(fdin);
-// 		//set output
-// 		if (p->idx == p->total_cmd - 1)
-// 		{	
-// 			fdout = dup(tmpout); // Use default output
-// 			//fdout = open("test.txt", O_WRONLY | O_CREAT, 0644);
-// 		}
-// 		else
-// 		{
-// 			// Not last simple command create pipe
-// 			int fdpipe[2];
-// 			pipe(fdpipe);
-// 			fdout = fdpipe[1];
-// 			fdin = fdpipe[0];
-// 		}
-// 		// Redirect output
-// 		dup2(fdout, 1);
-// 		close(fdout);
-
-// 		// Create child process;
-// 		ret = fork();
-// 		if (ret == 0)
-// 		{
-// 			check_execve(new_arr, p);
-// 			//perror("minishell");
-// 			exit(1);
-// 		}
-
-// 		p->idx++;
-// 	}
-// 	// restore in/out defaults
-// 	dup2(tmpin, 0);
-// 	dup2(tmpout, 1);
-
-// 	close(tmpin);
-// 	close(tmpout);
-
-// 	waitpid(ret, NULL, 0);
-
-// 	ft_free(commands);
-// 	return (new_arr);
-// }
 
 int	parse_cmd(char *line, t_struct *p)
 {
@@ -347,8 +386,8 @@ int	parse_cmd(char *line, t_struct *p)
 		i++;
 	p->total_cmd = i;
 	commands = split_string(commands, p);
-	// if (p->redirect)
-	// 	print_list(p);
+	if (p->redirect)
+		print_list(p);
 	ft_free(commands);
 	return (0);
 }
