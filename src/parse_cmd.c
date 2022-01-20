@@ -132,27 +132,42 @@ void	get_infile(t_struct *p)
 	}
 }
 
-void	get_outfile(t_struct *p, int pos)
+int	get_outfile(t_struct *p, int pos)
 {
 	t_redirect	*tmp;
+	int			flag;
 
 	tmp = p->redirect;
+	flag = 0;
 	while (tmp != NULL)
 	{
 		if (!ft_strncmp(">", tmp->type, 2) && pos == tmp->number_command)
 		{
-			p->out_file = open(get_file(p, ">"), O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			if (flag)
+			{
+				close(p->out_file);
+				flag = 0;
+			}
+			p->out_file = open(tmp->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			flag++;
 			if (!p->out_file)
 				perror("minishell");
 		}
 		if (!ft_strncmp(">>", tmp->type, 3) && pos == tmp->number_command)
 		{
-			p->out_file = open(get_file(p, ">>"), O_CREAT | O_WRONLY | O_APPEND, 0644);
+			if (flag)
+			{
+				close(p->out_file);
+				flag = 0;
+			}
+			p->out_file = open(tmp->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
+			flag++;
 			if (!p->out_file)
 				perror("minishell");
 		}
 		tmp = tmp->next;
 	}
+	return (p->out_file);
 }
 
 void	check_heredoc(t_struct *p)
@@ -188,51 +203,31 @@ int	check_outfile(t_struct *p, int pos)
 	return (0);
 }
 
-// void	compare_with_last(t_struct *p, int idx)
-// {
-// 	t_redirect *tmp;
-	
-
-// 	tmp = p->redirect;
-// 	while (tmp != NULL)
-// 	{
-		
-// 	}
-	
-// }
-
-void	child(char **commands, t_struct *p, int cmd_num, char *infile)
+void	child(char **commands, t_struct *p, int cmd_num, char **infile)
 {
-	// compare_with_last(p->idx, idx);
-	//redirect input
-	if (p->idx == cmd_num && infile)
-	{
-		// printf("lol: %d\n", p->idx);
-		dup2(p->fdin, 0);
-		close(p->fdin);
-	}
-	
-	//set output
+	dup2(p->fdin, 0);
+	close(p->fdin);
 	if (p->idx == p->total_cmd - 1)
 	{
-		// if (check_outfile(p, p->idx))
-		// 	p->fdout = get_outfile(p, p->idx);	
-		// else
+		if (check_outfile(p, p->idx))
+			p->fdout = get_outfile(p, p->idx);
+		else
 			p->fdout = dup(p->tmpout); // Use default output
-		//fdout = open("test.txt", O_WRONLY | O_CREAT, 0644);
 	}
 	else
 	{
-		// Not last simple command create pipe
 		pipe(p->fdpipe);
-		p->fdout = p->fdpipe[1];
+		if (check_outfile(p, p->idx))
+		{
+			p->fdout = get_outfile(p, p->idx);
+			dup2(p->fdout, p->fdpipe[1]);
+		}
+		else
+			p->fdout = p->fdpipe[1];
 		p->fdin = p->fdpipe[0];
 	}
-	// Redirect output
 	dup2(p->fdout, 1);
 	close(p->fdout);
-
-	// Create child process;
 	p->ret = fork();
 	if (p->ret == 0)
 	{
@@ -289,7 +284,7 @@ int check_infile(t_struct *p, char **infile)
 			if (!ft_strncmp("<", tmp->type, 2))
 			{
 				num_cmd = tmp->number_command;
-				last_infile = tmp->file;		
+				last_infile = tmp->file;
 			}
 			tmp = tmp->next;
 		}
@@ -318,12 +313,7 @@ char	**split_string(char **commands, t_struct *p)
 	
 	p->tmpin = dup(0);
 	p->tmpout = dup(1);	
-	// printf("000000\n");
-	
 	cmd_num = check_infile(p, &infile);
-	// printf("num_cmd: %d\n", cmd_num);
-	// printf("infile: %s\n", infile);
-
 	p->here_doc = 0;
 	if (infile)
 	{
@@ -335,19 +325,12 @@ char	**split_string(char **commands, t_struct *p)
 	{
 		p->fdin = dup(p->tmpin);
 	}
-	printf("fdin: %d\n", p->fdin);
-	// check_infile(p);
-	// check_heredoc(p);
-	// get_infile(p);
-	
-	  //Use default input
-	// p->fdin = open("infile", O_RDONLY, 0644);
 	p->idx = 0;
 	while (p->idx < p->total_cmd)
 	{
 		new_arr = ft_split_quotes(commands[p->idx], ' ');
 		new_arr = parse_strings(new_arr, p);
-		child(new_arr, p, cmd_num, infile);
+		child(new_arr, p, cmd_num, &infile);
 		p->idx++;
 	}
 	dup2(p->tmpin, 0);
@@ -355,9 +338,10 @@ char	**split_string(char **commands, t_struct *p)
 	close(p->tmpin);
 	close(p->tmpout);
 	waitpid(p->ret, NULL, 0);
+	close(p->fdin);
+	close(p->fdout);
 	ft_free(commands);
 	return (new_arr);
-	// return(NULL);
 }
 
 int	parse_cmd(char *line, t_struct *p)
@@ -386,8 +370,8 @@ int	parse_cmd(char *line, t_struct *p)
 		i++;
 	p->total_cmd = i;
 	commands = split_string(commands, p);
-	if (p->redirect)
-		print_list(p);
+	// if (p->redirect)
+	// 	print_list(p);
 	ft_free(commands);
 	return (0);
 }

@@ -1,2 +1,0 @@
-64 bytes from 64.233.164.138: icmp_seq=0 ttl=110 time=20.708 ms
-64 bytes from 64.233.164.138: icmp_seq=1 ttl=110 time=20.485 ms
