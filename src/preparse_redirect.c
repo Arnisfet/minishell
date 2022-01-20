@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 01:50:12 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/11 21:21:44 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/20 20:55:09 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	freed(t_struct *p)
 	next_elem = NULL;
 }
 
-static	int check_redirect(t_struct *p)
+static	int	check_redirect(t_struct *p)
 {
-	int	i;
+	int		i;
 	char	*checker;
 
 	i = 0;
@@ -61,7 +61,7 @@ static	int check_redirect(t_struct *p)
 
 static	int	check_filename(t_struct *p)
 {
-	t_redirect *tmp;
+	t_redirect	*tmp;
 
 	tmp = p->redirect;
 	while (tmp->next != NULL)
@@ -85,56 +85,37 @@ static	int	check_filename(t_struct *p)
 	return (0);
 }
 
-int		check_digit_2(t_struct *p, t_redirect *tmp, int i, int flag)
+int	check_digit(char const *start, char *end, t_struct *p)
 {
-	while (tmp->file[i])
+	char	*point;
+	int		flag;
+
+	flag = 0;
+	point = (char *) start;
+	while ((point != end || flag != 1) && *point != ' ' && *point != '>'
+		&& *point != '<' && *point != '\0')
 	{
-		if (ft_isalpha(tmp->file[i]) != 0)
+		if ((ft_isalpha(*point)))
 			flag = 1;
-		i++;
+		point++;
 	}
-	if (flag != 1)
+	if (flag == 0)
 	{
-		ft_putstr_fd("\t\tsyntax error near unexpected token: ", 1);
-		ft_putstr_fd(tmp->file, 1);
-		ft_putstr_fd("\n", 1);
+		point = ft_substr(start, 0, end - start);
 		p->error = 2;
-		return (2);
+		ft_putstr_fd("\t\tsyntax error near unexpected token: ", 1);
+		ft_putendl_fd(point, 1);
+		free(point);
+		return (0);
 	}
+	return (1);
 }
 
-int		check_digit(t_struct *p)
-{
-	t_redirect	*tmp;
-	t_redirect	*last_elem;
-	int			i;
-
-	i = 0;
-	tmp = p->redirect;
-	while (tmp->next != NULL)
-		tmp = tmp->next;
-	last_elem = tmp;
-	tmp = p->redirect;
-	while (tmp->next != NULL)
-	{
-		if (tmp != last_elem)
-		{
-			i = check_digit_2(p, tmp, i, 0);
-			if (p->error != 0)
-				return (2);
-		}
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-int		correct_check(t_struct *p)
+int	correct_check(t_struct *p)
 {
 	if (check_redirect(p))
 		return (2);
 	if (check_filename(p))
 		return (2);
-//	if (check_digit(p))
-//		return (2);
 	return (0);
 }

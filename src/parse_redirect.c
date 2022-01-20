@@ -6,56 +6,24 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/12 19:50:19 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/20 20:26:58 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*ft_strtrim_quote(char *arr, char *start, char *end)
-{
-	int		num;
-	char	*new_arr;
-	int		i;
-	char	*point;
-	int		len;
-	int		j;
-
-	j = 0;
-	num = end - start;
-	point = arr;
-	i = 0;
-	if (!arr)
-		return (NULL);
-	len = ft_strlen(arr) - num;
-	new_arr = (char *)malloc(sizeof (char) * len + 1);
-	while (arr[j] != '\0')
-	{
-		if (point == start)
-		{
-			j += num;
-			point++;
-		}
-		else
-		{
-			new_arr[i] = arr[j];
-			i++;
-			j++;
-			point++;
-		}
-	}
-	new_arr[i] = '\0';
-	free(arr);
-	return (new_arr);
-}
-
-static	char	*write_filename(char *end)
+static	char	*write_filename(char *end, char *start, t_struct *p)
 {
 	while (*end != ' ' && *end != '>' && *end != '<' && *end != '\0')
 	{
 		if (*end == '"' || *end == '\'')
 			end = ft_strchr(++end, *end);
 		end++;
+	}
+	if (*end != ' ' && *end != '\0')
+	{
+		if (!(check_digit(start, end, p)))
+			return (NULL);
 	}
 	return (end);
 }
@@ -74,10 +42,14 @@ int	substring(char *start, t_struct *p)
 	if (*end != '\0' && *(end) == ' ')
 		end++;
 	start = end;
-	end = write_filename(end);
+	end = write_filename(end, start, p);
+	if (!end)
+		return (2);
 	p->point_f = end;
 	file = ft_strndup(start, end - start);
-	file = parse_dollar_without_quote(file, p);
+	if (ft_strcmp("<<", redirect) != 0)
+		file = parse_dollar_without_quote(file, p);
+	p->tmp_red = ft_strdup(redirect);
 	file = parse_revert(file, 0, p);
 	add_to_list_redirect(p, redirect, file, p->count);
 	if (correct_check(p))
@@ -97,7 +69,11 @@ char	*first_rparse(char *commands, t_struct *p)
 		{
 			start = &commands[i];
 			if (substring(start, p))
+			{
+				free(p->tmp_red);
 				return (NULL);
+			}
+			free(p->tmp_red);
 			commands = ft_strtrim_quote(commands, p->point_r, p->point_f);
 			continue ;
 		}
@@ -105,7 +81,6 @@ char	*first_rparse(char *commands, t_struct *p)
 	}
 	return (commands);
 }
-
 
 char	**parse_redirect(char **commands, t_struct *p)
 {

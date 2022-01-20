@@ -23,6 +23,5 @@ char	**parse_strings(char **commands, t_struct *p)
 		commands[i] = parse_revert(commands[i], 0, p);
 		i++;
 	}
-
 	return (commands);
 }

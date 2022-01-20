@@ -39,11 +39,10 @@ char	**realloc_2_dim(char **commands, char *command)
 	}
 	new_arr[i] = strdup(command);
 	new_arr[i + 1] = NULL;
-//	ft_free(commands);
 	return (new_arr);
 }
 
-char **write_in_2_dim(char *command,char **commands)
+char	**write_in_2_dim(char *command, char **commands)
 {
 	if (!command)
 		return (NULL);
@@ -63,8 +62,8 @@ char **write_in_2_dim(char *command,char **commands)
 
 char	*ft_realloc_ch(char *command, char ch)
 {
-	int	i;
-	char *new_arr;
+	int		i;
+	char	*new_arr;
 
 	i = 0;
 	if (command)

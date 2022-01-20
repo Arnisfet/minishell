@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:54:00 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/12 20:32:00 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/20 19:27:18 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*concat_and_free(char *first, char *second)
 {
-	char *result;
+	char	*result;
 
 	result = ft_strjoin(first, second);
 	free(first);
@@ -57,7 +57,7 @@ char	*parse_ones_revert(char *array, t_struct *p)
 	last = ft_substr(array, end - array + 1, ft_strlen(array));
 	first = concat_and_free(first, middle);
 	first = concat_and_free(first, last);
-	return(first);
+	return (first);
 }
 
 static char	*trimming(char *array, t_struct *p, int start, int end)
@@ -84,19 +84,19 @@ static char	*trimming(char *array, t_struct *p, int start, int end)
 	return (trimmer);
 }
 
-char *parse_revert(char *array, int i, t_struct *p)
+char	*parse_revert(char *array, int i, t_struct *p)
 {
 	char	*trimmer;
 	char	*last;
-	int 	start;
-	int 	end;
+	int		start;
+	int		end;
 
 	while (array[i])
 	{
 		if (array[i] == '\'' || array[i] == '"')
 		{
 			start = i;
-			end = ft_strchr(array + start + 1 , array[i]) - array;
+			end = ft_strchr(array + start + 1, array[i]) - array;
 			trimmer = NULL;
 			trimmer = trimming(array, p, start, end);
 			i = ft_strlen(trimmer);

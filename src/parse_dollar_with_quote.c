@@ -12,12 +12,12 @@
 
 #include "../inc/minishell.h"
 
-int		check_ones(char *array, int flag)
+int	check_ones(char *array, int flag)
 {
 	if (flag == 1 && array[1] == '\0')
 		return (1);
 	if (array[1] == '\'' || array[1] == '"' || array[1] == '\0'
-			|| array[1] == ' ')
+		|| array[1] == ' ')
 		return (1);
 	return (0);
 }
@@ -47,7 +47,8 @@ char	*trimming_dollar(char *array, int i, t_struct *p)
 	end = find_end_dollar(end);
 	before = ft_substr(array, 0, start - array);
 	middle = ft_substr(array, start - array, end - start);
-	middle = trim_and_find(middle, 0, p);
+	if ((ft_strcmp("<<", p->tmp_red)))
+		middle = trim_and_find(middle, 0, p);
 	copy = ft_strdup(before);
 	copy = concat_and_free(copy, middle);
 	free(before);
