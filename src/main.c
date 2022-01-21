@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/21 17:23:57 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/21 20:12:41 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int main(int argc, char **argv, char **env)
 	int			status;
 	char		*line;
 
+	g_status = 0;
 	if (argc > 1)
 	{
 		ft_putstr_fd("Error: too many arguments\n", 2);

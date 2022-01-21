@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/21 18:25:36 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/21 20:57:44 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,58 @@ int	check_bultin(char **str, t_struct *p)
 	return (0);
 }
 
+// void	start_heredoc(t_struct *p, char *stop)
+// {
+// 	int			file;
+// 	char		*buf;
+// 	pid_t		pid;
+// 	file = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_APPEND, 0000644);
+// 	if (file < 0)
+// 	{
+// 		perror("minishell: ");
+// 		return ;
+// 	}
+// 	printf("11111\n");
+// 	pid = fork();
+// 	if (pid == 0)
+// 	{
+// 		while (21)
+// 		{
+// 			write(1, "heredoc> ", 9);
+// 			if (get_next_line(0, &buf) < 0)
+// 				exit(1);
+// 			printf("BUF: %s\n", buf);
+// 			if (!ft_strncmp(stop, buf, ft_strlen(stop) + 1))
+// 				break ;
+// 			write(file, buf, ft_strlen(buf));
+// 			write(file, "\n", 1);
+// 			free(buf);
+// 			printf("2222222: %d\n", g_status);
+// 			if (g_status == -111)
+// 			{
+// 				printf("333333\n");
+// 				break ;
+// 			}
+// 		}
+// 		free(buf);
+// 		exit(1);
+// 	}
+// 	else
+// 		waitpid(pid, NULL, 0);
+// 	close(file);
+// 	p->in_file = open(".heredoc_tmp", O_RDONLY);
+// 	if (p->in_file < 0)
+// 	{
+// 		unlink(".heredoc_tmp");
+// 		ft_putendl_fd("Error: unable to open a file", 2);
+// 	}
+// }
+
 void	start_heredoc(t_struct *p, char *stop)
 {
 	int			file;
 	char		*buf;
+	pid_t		pid;
 
 	file = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_APPEND, 0000644);
 	if (file < 0)
@@ -67,18 +115,29 @@ void	start_heredoc(t_struct *p, char *stop)
 		perror("minishell: ");
 		return ;
 	}
-	while (21)
+	// printf("11111\n");
+	pid = fork();
+	if (pid == 0)
 	{
-		write(1, "heredoc> ", 9);
-		if (get_next_line(0, &buf) < 0)
-			exit(1);
-		if (!ft_strncmp(stop, buf, ft_strlen(stop) + 1))
-			break ;
-		write(file, buf, ft_strlen(buf));
-		write(file, "\n", 1);
+		signal(SIGINT, ctrl_c_heredoc);
+		signal(SIGQUIT, ctrl_slash_child);
+		while (21)
+		{
+			write(1, "heredoc> ", 9);
+			if (get_next_line(0, &buf) < 0)
+				exit(1);
+			write(2, buf, ft_strlen(buf));
+			if (!ft_strncmp(stop, buf, ft_strlen(stop) + 1))
+				break ;
+			write(file, buf, ft_strlen(buf));
+			write(file, "\n", 1);
+			free(buf);
+			// write(2, "222\n", 4);
+		}
 		free(buf);
 	}
-	free(buf);
+	else
+		waitpid(pid, NULL, 0);
 	close(file);
 	p->in_file = open(".heredoc_tmp", O_RDONLY);
 	if (p->in_file < 0)
@@ -113,8 +172,11 @@ char	*get_infile(t_struct *p, int pos)
 	flag = 0;
 	while (tmp != NULL)
 	{
-		if (!ft_strncmp("<<", tmp->type, 3) && tmp->number_command == pos)
+		if (!ft_strncmp("<<", tmp->type, 3) && tmp->number_command == pos && g_status != 130)
 		{
+			write(2, "+\n", 2);
+			if (!access(".heredoc_tmp", F_OK))
+				unlink(".heredoc_tmp");
 			start_heredoc(p, tmp->file);
 			flag = 1;
 		}
@@ -253,21 +315,21 @@ void	child(char **commands, t_struct *p)
 	close(p->fdout);
 	// p->ret = fork();
 	p->pid[p->idx]= fork();
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	
 	if (p->pid[p->idx] == 0)
 	{
-		//printf("kek");
-		signal(SIGINT, ctrl_c_child);
-		signal(SIGQUIT, ctrl_slash_child);
-		check_execve(commands, p);
+		if (p->fdin != -1)
+		{
+			check_execve(commands, p);
+		}
+		
 		//perror("minishell");
+		// write(2, "<-\n", 3);
 		exit(1);
 	}
 	// else
-		// waitpid(p->pid[p->idx], NULL, 0);
-	signal(SIGQUIT, ctrl_slash_parent);
-	signal(SIGINT, ctrl_c_parent);
+	// 	waitpid(p->pid[p->idx], NULL, 0);
+	
 }
 
 int	make_pids(t_struct *p)
@@ -287,6 +349,8 @@ char	**split_string(char **commands, t_struct *p)
 {
 	char	**new_arr;
 	int		cmd_num;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	
 	p->tmpin = dup(0);
 	p->tmpout = dup(1);	
@@ -307,20 +371,27 @@ char	**split_string(char **commands, t_struct *p)
 	{
 		new_arr = ft_split_quotes(commands[p->idx], ' ');
 		new_arr = parse_strings(new_arr, p);
+		
+		signal(SIGINT, ctrl_c_child);
+		signal(SIGQUIT, ctrl_slash_child);
 		child(new_arr, p);
 		p->idx++;
 	}
-	dup2(p->tmpin, 0);
-	dup2(p->tmpout, 1);
-	close(p->tmpin);
-	close(p->tmpout);
 	int i = 0;
 	while (i < p->total_cmd)
 	{
 		waitpid(p->pid[i], NULL, 0);
 		i++;
 	}
-	//waitpid(p->ret, NULL, 0);
+	dup2(p->tmpin, 0);
+	dup2(p->tmpout, 1);
+	close(p->tmpin);
+	close(p->tmpout);
+	
+	signal(SIGQUIT, ctrl_slash_parent);
+	signal(SIGINT, ctrl_c_parent);
+	
+	// waitpid(p->ret, NULL, 0);
 	// close(p->fdin);
 	// close(p->fdout);
 	ft_free(commands);
@@ -354,8 +425,8 @@ int	parse_cmd(char *line, t_struct *p)
 		i++;
 	p->total_cmd = i;
 	commands = split_string(commands, p);
-	// if (p->redirect)
-	// 	print_list(p);
+	if (p->redirect)
+		print_list(p);
 	ft_free(commands);
 	return (0);
 }

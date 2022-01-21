@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/21 18:20:22 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/21 20:58:06 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ typedef	struct	s_struct
 	int		error_code;
 }				t_struct;
 
+int		g_status;
+
 void	rl_replace_line(const char *text, int clear_undo);
 
 int		get_next_line(int fd, char **line);
@@ -105,6 +107,7 @@ void	ctrl_c_pipe_heredoc(int status);
 void	ctrl_c_fork(int status);
 void	ctrl_c_child(int status);
 void	ctrl_slash_child(int status);
+void	ctrl_c_heredoc(int status);
 
 void	build_exit(char **str, t_struct *p);
 void	free_list(t_struct *p);

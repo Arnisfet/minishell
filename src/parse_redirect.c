@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redirect.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/12 19:50:19 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/21 19:59:47 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ int	substring(char *start, t_struct *p)
 	end = write_filename(end);
 	p->point_f = end;
 	file = ft_strndup(start, end - start);
+	// printf("1file: %s\n", file);
 	file = parse_dollar_without_quote(file, p);
+	// printf("2file: %s\n", file);
 	file = parse_revert(file, 0, p);
 	add_to_list_redirect(p, redirect, file, p->count);
 	if (correct_check(p))
