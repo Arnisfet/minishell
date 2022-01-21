@@ -102,34 +102,32 @@ char	*get_file(t_struct *p, char *symbol)
 	return (NULL);
 }
 
-void	get_infile(t_struct *p)
+char	*get_infile(t_struct *p, int pos)
 {
 	t_redirect	*tmp;
+	char		*filename;
+	int			flag;
 
+	filename = NULL;
 	tmp = p->redirect;
-	if (p->here_doc)
+	flag = 0;
+	while (tmp != NULL)
 	{
-		while (tmp)
+		if (!ft_strncmp("<<", tmp->type, 3) && tmp->number_command == pos)
 		{
-			if (!ft_strncmp("<<", tmp->type, 3))
-				start_heredoc(p, tmp->file);
-			tmp = tmp->next;
+			start_heredoc(p, tmp->file);
+			flag = 1;
 		}
-	}
-	else
-	{
-		if (p->is_infile)
+		if (!ft_strncmp("<", tmp->type, 2) && tmp->number_command == pos)
 		{
-			p->in_file = open(get_file(p, "<"), O_RDONLY);
-			if (p->in_file < 0)
-			{
-				ft_putendl_fd("Unable to open a file", 1);	
-				return ;
-			}
+			filename = tmp->file;
+			flag = 2;
 		}
-		else
-			p->in_file = dup(0);
+		tmp = tmp->next;
 	}
+	if (flag == 1)
+		filename = ".heredoc_tmp";
+	return (filename);
 }
 
 int	get_outfile(t_struct *p, int pos)
@@ -203,8 +201,33 @@ int	check_outfile(t_struct *p, int pos)
 	return (0);
 }
 
-void	child(char **commands, t_struct *p, int cmd_num, char **infile)
+int	check_infile(t_struct *p, int pos)
 {
+	t_redirect	*tmp;
+
+	tmp = p->redirect;
+	while (tmp)
+	{
+		if (!ft_strncmp("<", tmp->type, 2) && pos == tmp->number_command)
+			return (1);
+		if (!ft_strncmp("<<", tmp->type, 3) && pos == tmp->number_command)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+void	child(char **commands, t_struct *p)
+{
+	if (p->idx != 0)
+ 	{
+		if (check_infile(p, p->idx))
+		{
+			p->fdin = open(get_infile(p, p->idx), O_RDONLY, 0644);
+			if (p->fdin == -1)
+				perror("minishell");
+		}
+ 	}
 	dup2(p->fdin, 0);
 	close(p->fdin);
 	if (p->idx == p->total_cmd - 1)
@@ -237,87 +260,18 @@ void	child(char **commands, t_struct *p, int cmd_num, char **infile)
 	}
 }
 
-// char	*check_infile(t_struct *p)
-// {
-// 	t_redirect	*tmp;
-// 	char *last_infile;
-
-// 	last_infile = NULL;
-// 	tmp = p->redirect;
-// 	if (p->redirect)
-// 	{
-// 		while (tmp->next != NULL)
-// 		{
-// 			if (!ft_strncmp("<<", tmp->type, 3))
-// 				start_heredoc(p, tmp->file);
-// 			if (!ft_strncmp("<", tmp->type, 2))
-// 				last_infile = tmp->file;		
-// 			tmp = tmp->next;
-// 		}
-// 		if (tmp->next == NULL && !ft_strncmp("<<", tmp->type, 3))
-// 		{
-// 			start_heredoc(p, tmp->file);
-// 			last_infile = ".heredoc_tmp";
-// 		}
-// 		if (tmp->next == NULL && !ft_strncmp("<", tmp->type, 2))
-// 			last_infile = tmp->file;
-// 	}
-// 	// printf("last_infile: %s\n", last_infile);
-// 	return (last_infile);
-// }
-
-int check_infile(t_struct *p, char **infile)
-{
-	t_redirect	*tmp;
-	char		*last_infile;
-	int			num_cmd;
-
-	num_cmd = 0;
-	last_infile = NULL;
-	tmp = p->redirect;
-	if (p->redirect)
-	{
-		while (tmp->next != NULL)
-		{
-			if (!ft_strncmp("<<", tmp->type, 3))
-				start_heredoc(p, tmp->file);
-			if (!ft_strncmp("<", tmp->type, 2))
-			{
-				num_cmd = tmp->number_command;
-				last_infile = tmp->file;
-			}
-			tmp = tmp->next;
-		}
-		if (tmp->next == NULL && !ft_strncmp("<<", tmp->type, 3))
-		{
-			start_heredoc(p, tmp->file);
-			num_cmd = tmp->number_command;
-			last_infile = ".heredoc_tmp";
-		}
-		if (tmp->next == NULL && !ft_strncmp("<", tmp->type, 2))
-		{
-			num_cmd = tmp->number_command;
-			last_infile = tmp->file;
-		}
-	}
-	*infile = last_infile;
-	// printf("last_infile: %s\n", last_infile);
-	return (num_cmd);
-}
-
 char	**split_string(char **commands, t_struct *p)
 {
 	char	**new_arr;
-	char	*infile;
 	int		cmd_num;
 	
 	p->tmpin = dup(0);
 	p->tmpout = dup(1);	
-	cmd_num = check_infile(p, &infile);
 	p->here_doc = 0;
-	if (infile)
+	p->idx = 0;
+	if (check_infile(p, p->idx))
 	{
-		p->fdin = open(infile, O_RDONLY, 0644);
+		p->fdin = open(get_infile(p, p->idx), O_RDONLY, 0644);
 		if (p->fdin == -1)
 			perror("minishell");
 	}
@@ -325,12 +279,11 @@ char	**split_string(char **commands, t_struct *p)
 	{
 		p->fdin = dup(p->tmpin);
 	}
-	p->idx = 0;
 	while (p->idx < p->total_cmd)
 	{
 		new_arr = ft_split_quotes(commands[p->idx], ' ');
 		new_arr = parse_strings(new_arr, p);
-		child(new_arr, p, cmd_num, &infile);
+		child(new_arr, p);
 		p->idx++;
 	}
 	dup2(p->tmpin, 0);

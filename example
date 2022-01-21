@@ -1,0 +1,16 @@
+total 216$
+drwxr-xr-x@ 15 olegkomisarenko  staff    480 21 �M-^Oнв 14:39 .$
+drwxr-xr-x@ 22 olegkomisarenko  staff    704 21 �M-^Oнв 13:40 ..$
+drwxr-xr-x  13 olegkomisarenko  staff    416 20 �M-^Oнв 18:21 .git$
+-rw-r--r--   1 olegkomisarenko  staff     20 20 �M-^Oнв 15:50 .gitignore$
+drwxr-xr-x   7 olegkomisarenko  staff    224 20 �M-^Oнв 18:03 .idea$
+-rw-r--r--   1 olegkomisarenko  staff   1119 20 �M-^Oнв 15:50 Makefile$
+drwxr-xr-x  26 olegkomisarenko  staff    832 21 �M-^Oнв 14:38 build$
+-rw-r--r--   1 olegkomisarenko  staff      0 21 �M-^Oнв 14:39 example$
+drwxr-xr-x   3 olegkomisarenko  staff     96 20 �M-^Oнв 15:50 inc$
+-rw-r--r--   1 olegkomisarenko  staff     15 20 �M-^Oнв 15:50 infile$
+-rw-r--r--   1 olegkomisarenko  staff    196 20 �M-^Oнв 15:50 infile2$
+-rw-r--r--   1 olegkomisarenko  staff    402 20 �M-^Oнв 15:50 infile_test$
+drwxr-xr-x  85 olegkomisarenko  staff   2720 21 �M-^Oнв 14:38 libft$
+-rwxr-xr-x   1 olegkomisarenko  staff  88848 21 �M-^Oнв 14:38 minishell$
+drwxr-xr-x  26 olegkomisarenko  staff    832 20 �M-^Oнв 15:50 src$
