@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 18:36:20 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/11 19:55:57 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/21 17:19:41 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 int	execute(char *path, char **str, t_struct *p)
 {
-	pid_t	child;
+	// pid_t	child;
 	
-	child = fork();
-	if (child == -1)
-	{
-		ft_putstr_fd("Error creating a process\n", 2);
-		return (-1);
-	}
-	if (child == 0)
-	{
+	// child = fork();
+	// if (child == -1)
+	// {
+	// 	ft_putstr_fd("Error creating a process\n", 2);
+	// 	return (-1);
+	// }
+	// if (child == 0)
+	// {
 		if (execve(path, str, p->arr_env) == -1)
 			perror("Could not execute execve");
-	}
-	waitpid(child, NULL, 0);
+	// }
+	// waitpid(child, NULL, 0);
 	return (1);
 }
 

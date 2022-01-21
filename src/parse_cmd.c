@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/19 21:00:49 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/21 18:25:36 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,14 +251,37 @@ void	child(char **commands, t_struct *p)
 	}
 	dup2(p->fdout, 1);
 	close(p->fdout);
-	p->ret = fork();
-	if (p->ret == 0)
+	// p->ret = fork();
+	p->pid[p->idx]= fork();
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	if (p->pid[p->idx] == 0)
 	{
+		//printf("kek");
+		signal(SIGINT, ctrl_c_child);
+		signal(SIGQUIT, ctrl_slash_child);
 		check_execve(commands, p);
 		//perror("minishell");
 		exit(1);
 	}
+	// else
+		// waitpid(p->pid[p->idx], NULL, 0);
+	signal(SIGQUIT, ctrl_slash_parent);
+	signal(SIGINT, ctrl_c_parent);
 }
+
+int	make_pids(t_struct *p)
+{
+	p->pid = (pid_t *)malloc((p->total_cmd) * sizeof(pid_t));
+	// if (!*pid)
+	// {
+	// 	close_fds(data->col_pipes, *fd);
+	// 	free_fds(data->col_pipes, *fd);
+	// 	return (2);
+	// }
+	return (0);
+}
+
 
 char	**split_string(char **commands, t_struct *p)
 {
@@ -279,6 +302,7 @@ char	**split_string(char **commands, t_struct *p)
 	{
 		p->fdin = dup(p->tmpin);
 	}
+	make_pids(p);
 	while (p->idx < p->total_cmd)
 	{
 		new_arr = ft_split_quotes(commands[p->idx], ' ');
@@ -290,10 +314,17 @@ char	**split_string(char **commands, t_struct *p)
 	dup2(p->tmpout, 1);
 	close(p->tmpin);
 	close(p->tmpout);
-	waitpid(p->ret, NULL, 0);
-	close(p->fdin);
-	close(p->fdout);
+	int i = 0;
+	while (i < p->total_cmd)
+	{
+		waitpid(p->pid[i], NULL, 0);
+		i++;
+	}
+	//waitpid(p->ret, NULL, 0);
+	// close(p->fdin);
+	// close(p->fdout);
 	ft_free(commands);
+	free(p->pid);
 	return (new_arr);
 }
 
