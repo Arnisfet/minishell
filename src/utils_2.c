@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_env.c                                      :+:      :+:    :+:   */
+/*   parse_redirect.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/12 17:01:04 by mrudge            #+#    #+#             */
+/*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
 /*   Updated: 2022/01/20 19:27:18 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	builtin_env(t_struct *p)
+void	free2(char *array, char *trimmer)
 {
-	t_env	*tmp;
+	free (array);
+	free(trimmer);
+}
 
-	tmp = p->my_env;
-	while (tmp != NULL)
-	{
-		if (!tmp->is_blank)
-		{
-			ft_putstr_fd(tmp->var, 1);
-			ft_putchar_fd('=', 1);
-			ft_putendl_fd(tmp->value, 1);
-		}
-		tmp = tmp->next;
-	}
-	return (1);
+void	util(t_struct *p, char *file, char *redirect)
+{
+	p->tmp_red = ft_strdup(redirect);
+	file = parse_revert(file, 0, p);
+	add_to_list_redirect(p, redirect, file, p->count);
 }

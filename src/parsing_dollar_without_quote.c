@@ -6,13 +6,13 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 04:24:32 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/12 19:50:19 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/20 20:10:13 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int		end_of_quote(char *array, int i)
+int	end_of_quote(char *array, int i)
 {
 	char	quote;
 
@@ -59,6 +59,7 @@ static char	*trimmering(char *array, char *trimmer, char *end)
 	array = concat_and_free(array, last);
 	return (array);
 }
+
 char	*parse_dollar_without_quote(char *array, t_struct *p)
 {
 	int		i;

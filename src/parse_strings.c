@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/12 19:50:19 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/12 20:32:00 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,5 @@ char	**parse_strings(char **commands, t_struct *p)
 		commands[i] = parse_revert(commands[i], 0, p);
 		i++;
 	}
-
 	return (commands);
 }

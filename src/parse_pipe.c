@@ -6,7 +6,7 @@
 /*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 21:51:41 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/12 19:50:19 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/20 19:40:49 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	printr(char **commands)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (commands[i])
@@ -30,11 +30,11 @@ char	*quotes(char *line, char *command, int i, t_struct *p)
 
 	p->revert_flag = 1;
 	p->count = i;
-	command  = write_in_arr(line, command, i, p);
+	command = write_in_arr(line, command, i, p);
 	ch = line[i++];
 	while (line[i] != '\0' && line[i] != ch)
 	{
-		command  = write_in_arr(line, command, i, p);
+		command = write_in_arr(line, command, i, p);
 		i++;
 	}
 	if (line[i] != ch)
@@ -51,8 +51,8 @@ char	*quotes(char *line, char *command, int i, t_struct *p)
 
 char	*write_in_arr(char *line, char *command, int i, t_struct *p)
 {
-	if ((line[i] == ' ' && (line[i + 1] == ' ' || line[i + 1] == '\0')) &&
-	p->revert_flag == 0)
+	if ((line[i] == ' ' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
+		&& p->revert_flag == 0)
 		return (command);
 	if ((line[i] == '"' || line[i] == '\'') && p->revert_flag == 0)
 	{
@@ -75,7 +75,7 @@ char	*write_in_arr(char *line, char *command, int i, t_struct *p)
 
 char	**parse_pipe(char *line, t_struct *p)
 {
-	int	i;
+	int		i;
 	char	**commands;
 	char	*command;
 
@@ -87,14 +87,14 @@ char	**parse_pipe(char *line, t_struct *p)
 		p->count = 0;
 		if (line[i] == '|')
 		{
-			commands =  write_in_2_dim(command, commands);
+			commands = write_in_2_dim(command, commands);
 			command = NULL;
 			i++;
 		}
 		command = write_in_arr(line, command, i, p);
 		i += p->count + 1;
 	}
-	commands =  write_in_2_dim(command, commands);
+	commands = write_in_2_dim(command, commands);
 	if (command)
 		free(command);
 	return (commands);

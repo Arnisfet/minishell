@@ -12,12 +12,12 @@
 
 #include "../inc/minishell.h"
 
-int		check_ones(char *array, int flag)
+int	check_ones(char *array, int flag)
 {
 	if (flag == 1 && array[1] == '\0')
 		return (1);
 	if (array[1] == '\'' || array[1] == '"' || array[1] == '\0'
-			|| array[1] == ' ')
+		|| array[1] == ' ')
 		return (1);
 	return (0);
 }
