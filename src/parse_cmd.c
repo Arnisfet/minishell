@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/22 18:23:58 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/22 19:19:40 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -366,11 +366,21 @@ void	preparation(t_struct *p)
 
 void	check_minishell(char **new_arr, t_struct *p)
 {
+	int	a;
+
+	a = 0;
 	if (find_str(new_arr[0], "exit"))
 	{
 		build_exit(new_arr, p);
 		return ;
 	}
+	if (p->total_cmd == 1)
+	{
+		a = 0;
+		a = check_bultin(new_arr, p);	
+	}
+	if (a == 1)
+		return ;
 	if (ft_strncmp(new_arr[0], "./minishell", 12))
 		on_chld_signals();
 	child(new_arr, p);

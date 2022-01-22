@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 17:43:02 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/22 18:30:34 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/22 19:09:42 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	update_var(char *s1, char *s2, t_struct *p)
 	t_env	*tmp;
 
 	tmp = p->my_env;
-	printf("s2 - %s\n", s2);
 	while (tmp != NULL)
 	{
 		if (find_str(s1, tmp->var))
