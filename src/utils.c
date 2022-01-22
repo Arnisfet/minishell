@@ -96,6 +96,8 @@ char	*trim_and_find(char *array, int i, t_struct *p)
 		return (ft_strdup(array));
 	if (strcmp(array, "$?") == 0)
 		return (ft_itoa(p->error_code));
+	if (p->tmp_red != NULL && ft_strcmp("<<", p->tmp_red) == 0)
+		return (array);
 	j = 0;
 	while (p->arr_env[j])
 	{

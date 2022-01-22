@@ -104,7 +104,7 @@ int		end_of_quote(char *array, int i);
 char    **ft_split_quotes(char const *s, char c);
 char	*concat_and_free(char *first, char *second);
 
-
+void	util(t_struct *p, char *file, char *redirect);
 int		correct_check(t_struct *p);
 int		check_string(char *array, t_struct *p);
 void	freed(t_struct *p);

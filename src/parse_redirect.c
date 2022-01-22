@@ -17,7 +17,7 @@ static	char	*write_filename(char *end, char *start, t_struct *p)
 	while (*end != ' ' && *end != '>' && *end != '<' && *end != '\0')
 	{
 		if (*end == '"' || *end == '\'')
-			end = ft_strchr(++end, *end);
+			end = ft_strchr(end, *end);
 		end++;
 	}
 	if (*end != ' ' && *end != '\0')
@@ -26,6 +26,18 @@ static	char	*write_filename(char *end, char *start, t_struct *p)
 			return (NULL);
 	}
 	return (end);
+}
+
+static int	check_status(char *file, t_struct *p, char *redirect, char *end)
+{
+	if (*end == '\0')
+	{
+		file = NULL;
+		add_to_list_redirect(p, redirect, file, p->count);
+		if (correct_check(p))
+			return (2);
+	}
+	return (0);
 }
 
 int	substring(char *start, t_struct *p)
@@ -41,6 +53,8 @@ int	substring(char *start, t_struct *p)
 	redirect = ft_strndup(start, end - start);
 	if (*end != '\0' && *(end) == ' ')
 		end++;
+	if (check_status(file, p, redirect, end))
+		return (2);
 	start = end;
 	end = write_filename(end, start, p);
 	if (!end)
@@ -49,9 +63,7 @@ int	substring(char *start, t_struct *p)
 	file = ft_strndup(start, end - start);
 	if (ft_strcmp("<<", redirect) != 0)
 		file = parse_dollar_without_quote(file, p);
-	p->tmp_red = ft_strdup(redirect);
-	file = parse_revert(file, 0, p);
-	add_to_list_redirect(p, redirect, file, p->count);
+	util(p, file, redirect);
 	if (correct_check(p))
 		return (2);
 	return (0);
@@ -66,6 +78,8 @@ char	*first_rparse(char *commands, t_struct *p)
 	i = 0;
 	while (commands[i])
 	{
+		if (commands[i] == '\'' || commands[i] == '"')
+			i = end_of_quote(commands, i);
 		if (commands[i] == '>' || commands[i] == '<')
 		{
 			start = &commands[i];

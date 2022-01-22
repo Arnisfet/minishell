@@ -47,8 +47,7 @@ char	*trimming_dollar(char *array, int i, t_struct *p)
 	end = find_end_dollar(end);
 	before = ft_substr(array, 0, start - array);
 	middle = ft_substr(array, start - array, end - start);
-	if (p->tmp_red != NULL && (ft_strcmp("<<", p->tmp_red)))
-		middle = trim_and_find(middle, 0, p);
+	middle = trim_and_find(middle, 0, p);
 	copy = ft_strdup(before);
 	copy = concat_and_free(copy, middle);
 	free(before);

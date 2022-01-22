@@ -17,3 +17,10 @@ void	free2(char *array, char *trimmer)
 	free (array);
 	free(trimmer);
 }
+
+void	util(t_struct *p, char *file, char *redirect)
+{
+	p->tmp_red = ft_strdup(redirect);
+	file = parse_revert(file, 0, p);
+	add_to_list_redirect(p, redirect, file, p->count);
+}

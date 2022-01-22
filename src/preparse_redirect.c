@@ -64,9 +64,9 @@ static	int	check_filename(t_struct *p)
 	t_redirect	*tmp;
 
 	tmp = p->redirect;
-	while (tmp->next != NULL)
+	while (tmp != NULL)
 	{
-		if (tmp->file == NULL || strcmp(tmp->file, "") == 0)
+		if (tmp->file == NULL)
 		{
 			ft_putstr_fd("\t\tsyntax error near unexpected token: ", 1);
 			ft_putstr_fd("syntax error near unexpected token `newline'\n", 1);
@@ -74,13 +74,6 @@ static	int	check_filename(t_struct *p)
 			return (2);
 		}
 		tmp = tmp->next;
-	}
-	if (tmp->file == NULL || strcmp(tmp->file, "") == 0)
-	{
-		ft_putstr_fd("\t\tsyntax error near unexpected token: ", 1);
-		ft_putstr_fd("syntax error near unexpected token `newline'\n", 1);
-		p->error = 2;
-		return (2);
 	}
 	return (0);
 }
