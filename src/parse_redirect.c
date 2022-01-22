@@ -62,6 +62,7 @@ char	*first_rparse(char *commands, t_struct *p)
 	char	*start;
 	int		i;
 
+	p->tmp_red = NULL;
 	i = 0;
 	while (commands[i])
 	{

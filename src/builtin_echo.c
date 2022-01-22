@@ -35,9 +35,9 @@ int	check_n(char *str, t_struct *p)
 
 int	print_echo(char *str, t_struct *p)
 {
-		if (check_n(str, p) == 1)
-			return (1);
-		ft_putstr_fd(str, 1);
+	if (check_n(str, p) == 1)
+		return (1);
+	ft_putstr_fd(str, 1);
 	return (0);
 }
 
@@ -57,7 +57,7 @@ int	builtin_echo(char **str, t_struct *p)
 		if (print_echo(str[i], p) == 1)
 		{
 			i++;
-			continue;
+			continue ;
 		}
 		if (str[i + 1])
 			ft_putchar_fd(' ', 1);

@@ -37,6 +37,8 @@ char	*parse_d_revert(char *array, t_struct *p)
 	if (ft_strchr(middle, '$'))
 		middle = parse_dollar_with_quote(middle, p);
 	last = ft_substr(array, end - array + 1, ft_strlen(array));
+	if (first[0] == '\0' && middle[0] == '\0' && last[0] == '\0')
+		return (ft_strdup(""));
 	first = concat_and_free(first, middle);
 	first = concat_and_free(first, last);
 	return (first);
