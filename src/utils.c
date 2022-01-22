@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_redirect.c                                   :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/20 19:27:18 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/22 18:29:40 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,12 @@ void	print_list(t_struct *p)
 	tmp = p->redirect;
 	if (!tmp)
 		return ;
-	while (tmp->next != NULL)
+	while (tmp)
 	{
 		printf ("type of redirect: %s, filename: %s, number of pipe: %d\n",
 			tmp->type, tmp->file, tmp->number_command);
 		tmp = tmp->next;
 	}
-	printf ("type of redirect: %s, filename: %s, number of pipe: %d\n",
-		tmp->type, tmp->file, tmp->number_command);
 }
 
 void	trim_env(t_struct *p)

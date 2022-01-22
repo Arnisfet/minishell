@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/20 19:27:18 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/22 18:30:48 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# define BUFFER_SIZE 1
 
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -26,6 +28,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <string.h>
+# include <fcntl.h>
 
 typedef struct	s_env
 {
@@ -43,6 +46,12 @@ typedef struct s_redirect
 	struct	s_redirect	*next;
 }				t_redirect;
 
+typedef struct s_cmd
+{
+	char			**cmd;
+	struct	s_cmd	*next;
+}				t_cmd;
+
 typedef	struct	s_struct
 {
 	t_env	*my_env;
@@ -53,11 +62,36 @@ typedef	struct	s_struct
 	int		count;
 	char	*point_r;
 	char	*point_f;
+	int		total_cmd;
+	int		in_file;
+	int		out_file;
+	int		is_infile;
+	int		is_outfile;
+	int		total_pipes;
+	int		here_doc;
+	int		tmpin;
+	int		tmpout;
+	int		fdin;
+	int		fdout;
+	int		idx;
+	int		ret;
+	int		fdpipe[2];
+	int		flag;
+	pid_t	*pid;
 	t_redirect	*redirect;
 	int		error;
 	int		error_code;
 	char	*tmp_red;
 }				t_struct;
+
+int		g_status;
+
+void	rl_replace_line(const char *text, int clear_undo);
+void	ignore_signals(void);
+void	on_chld_signals(void);
+void	on_parent_signals(void);
+
+int		get_next_line(int fd, char **line);
 
 void	init_env(char **env, t_struct *p);
 void	display_message(t_struct *p);
@@ -72,9 +106,22 @@ int		builtin_echo(char **str, t_struct *p);
 int		builtin_env(t_struct *p);
 char	*get_env_var(char *str, t_struct *p);
 
+void	ctrl_c_parent(int status);
+void	ctrl_slash_parent(int status);
+void	ctrl_c_pipe_heredoc(int status);
+void	ctrl_c_fork(int status);
+void	ctrl_c_child(int status);
+void	ctrl_slash_child(int status);
+void	ctrl_c_heredoc(int status);
+
 void	build_exit(char **str, t_struct *p);
 void	free_list(t_struct *p);
 void	clean_split_tmp(char **clean);
+void	free_array(char **str);
+int		execute(char *path, char **str, t_struct *p);
+int		start_execve(char *path, char **str, t_struct *p);
+int		check_execve(char **str, t_struct *p);
+int		special_check(char *str);
 
 char	**write_in_2_dim(char *command,char **commands);
 int  	env_len(char **env);

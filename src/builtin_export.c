@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 17:43:35 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/20 19:27:18 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/22 18:30:08 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,18 @@ void	find_and_update(char *str, t_struct *p)
 	}
 }
 
+int	export_errors(char **str)
+{
+	if (special_check(str[1]))
+	{
+		ft_putstr_fd("minishell: export: '", 1);
+		ft_putstr_fd(str[1], 1);
+		ft_putendl_fd("': not a valid identifier", 1);
+		return (1);
+	}
+	return (0);
+}
+
 int	build_export(char **str, t_struct *p)
 {
 	int		i;
@@ -195,6 +207,8 @@ int	build_export(char **str, t_struct *p)
 		print_env(p);
 		return (1);
 	}
+	if (export_errors(str))
+		return (1);
 	i = 1;
 	tmp = p->my_env;
 	while (str[i])
