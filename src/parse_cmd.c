@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/22 19:19:40 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/22 20:57:18 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	start_heredoc(t_struct *p, char *stop)
 			if (get_next_line(0, &buf) < 0)
 				exit(1);
 			if (!ft_strncmp(stop, buf, ft_strlen(stop) + 1))
-				break ;
+				exit(1);
 			write(file, buf, ft_strlen(buf));
 			write(file, "\n", 1);
 			free(buf);
@@ -390,6 +390,7 @@ char	**split_string(char **commands, t_struct *p)
 {
 	char	**new_arr;
 
+	new_arr = NULL;
 	preparation(p);
 	if (check_infile(p, p->idx))
 	{
@@ -404,7 +405,8 @@ char	**split_string(char **commands, t_struct *p)
 	{
 		new_arr = ft_split_quotes(commands[p->idx], ' ');
 		new_arr = parse_strings(new_arr, p);
-		check_minishell(new_arr, p);
+		if (new_arr[0] != NULL)
+			check_minishell(new_arr, p);
 		p->idx++;
 	}
 	global_wait(p);
