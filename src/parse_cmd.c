@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/22 17:39:33 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/22 18:23:58 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,18 @@ int	check_bultin(char **str, t_struct *p)
 	return (0);
 }
 
+void	unlink_file_err(void)
+{
+	unlink(".heredoc_tmp");
+	ft_putendl_fd("Error: unable to open a file", 2);
+}
+
+void	act_signals(void)
+{
+	signal(SIGINT, ctrl_c_heredoc);
+	signal(SIGQUIT, ctrl_slash_child);
+}
+
 void	start_heredoc(t_struct *p, char *stop)
 {
 	int			file;
@@ -63,22 +75,15 @@ void	start_heredoc(t_struct *p, char *stop)
 	pid_t		pid;
 
 	file = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_APPEND, 0000644);
-	if (file < 0)
-	{
-		perror("minishell: ");
-		return ;
-	}
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGINT, ctrl_c_heredoc);
-		signal(SIGQUIT, ctrl_slash_child);
+		act_signals();
 		while (21)
 		{
 			write(1, "heredoc> ", 9);
 			if (get_next_line(0, &buf) < 0)
 				exit(1);
-			write(2, buf, ft_strlen(buf));
 			if (!ft_strncmp(stop, buf, ft_strlen(stop) + 1))
 				break ;
 			write(file, buf, ft_strlen(buf));
@@ -92,10 +97,7 @@ void	start_heredoc(t_struct *p, char *stop)
 	close(file);
 	p->in_file = open(".heredoc_tmp", O_RDONLY);
 	if (p->in_file < 0)
-	{
-		unlink(".heredoc_tmp");
-		ft_putendl_fd("Error: unable to open a file", 2);
-	}
+		unlink_file_err();
 }
 
 char	*get_file(t_struct *p, char *symbol)
