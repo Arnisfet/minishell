@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/22 18:30:48 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/22 20:36:53 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	ctrl_c_child(int status);
 void	ctrl_slash_child(int status);
 void	ctrl_c_heredoc(int status);
 
-void	build_exit(char **str, t_struct *p);
+int		build_exit(char **cmd, t_struct *p);
 void	free_list(t_struct *p);
 void	clean_split_tmp(char **clean);
 void	free_array(char **str);
