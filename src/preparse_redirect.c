@@ -88,7 +88,7 @@ int	check_digit(char const *start, char *end, t_struct *p)
 	while ((point != end || flag != 1) && *point != ' ' && *point != '>'
 		&& *point != '<' && *point != '\0')
 	{
-		if ((ft_isalpha(*point)))
+		if ((!ft_isdigit(*point)))
 			flag = 1;
 		point++;
 	}

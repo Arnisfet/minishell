@@ -1,0 +1,15 @@
+total 160
+drwxr-xr-x  14 mrudge  4221    476 Jan 22 19:58 .
+drwxr-xr-x  10 mrudge  4221    340 Jan 22 19:57 ..
+-rw-r--r--@  1 mrudge  4221   6148 Jan 22 19:56 .DS_Store
+drwxr-xr-x  13 mrudge  4221    442 Jan 22 19:28 .git
+-rw-r--r--   1 mrudge  4221     20 Jan 22 19:27 .gitignore
+drwxr-xr-x   6 mrudge  4221    204 Jan 22 19:56 .idea
+-rw-r--r--   1 mrudge  4221   1243 Jan 22 19:30 Makefile
+drwxr-xr-x  29 mrudge  4221    986 Jan 22 19:54 build
+-rw-r--r--   1 mrudge  4221      0 Jan 22 19:58 file1
+drwxr-xr-x   3 mrudge  4221    102 Jan 22 19:28 inc
+drwxr-xr-x  85 mrudge  4221   2890 Jan 22 19:54 libft
+-rwxr-xr-x   1 mrudge  4221  63972 Jan 22 19:54 minishell
+drwxr-xr-x   2 mrudge  4221     68 Jan 22 19:47 redir
+drwxr-xr-x  29 mrudge  4221    986 Jan 22 19:53 src
