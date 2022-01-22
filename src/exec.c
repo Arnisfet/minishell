@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 18:36:20 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/21 17:19:41 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/22 17:30:55 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,8 @@
 
 int	execute(char *path, char **str, t_struct *p)
 {
-	// pid_t	child;
-	
-	// child = fork();
-	// if (child == -1)
-	// {
-	// 	ft_putstr_fd("Error creating a process\n", 2);
-	// 	return (-1);
-	// }
-	// if (child == 0)
-	// {
-		if (execve(path, str, p->arr_env) == -1)
-			perror("Could not execute execve");
-	// }
-	// waitpid(child, NULL, 0);
+	if (execve(path, str, p->arr_env) == -1)
+		perror("Could not execute execve");
 	return (1);
 }
 
@@ -70,6 +58,11 @@ int	check_execve(char **str, t_struct *p)
 				return (start_execve(execve_path, str, p));
 			}
 			i++;
+		}
+		if (!ft_strncmp(str[0], "./minishell", 12))
+		{
+			ignore_signals();
+			return (start_execve(str[0], str, p));
 		}
 		free_array(spl_path);
 	}

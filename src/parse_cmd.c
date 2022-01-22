@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/21 20:57:44 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/22 17:39:33 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,53 +56,6 @@ int	check_bultin(char **str, t_struct *p)
 	return (0);
 }
 
-// void	start_heredoc(t_struct *p, char *stop)
-// {
-// 	int			file;
-// 	char		*buf;
-// 	pid_t		pid;
-// 	file = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_APPEND, 0000644);
-// 	if (file < 0)
-// 	{
-// 		perror("minishell: ");
-// 		return ;
-// 	}
-// 	printf("11111\n");
-// 	pid = fork();
-// 	if (pid == 0)
-// 	{
-// 		while (21)
-// 		{
-// 			write(1, "heredoc> ", 9);
-// 			if (get_next_line(0, &buf) < 0)
-// 				exit(1);
-// 			printf("BUF: %s\n", buf);
-// 			if (!ft_strncmp(stop, buf, ft_strlen(stop) + 1))
-// 				break ;
-// 			write(file, buf, ft_strlen(buf));
-// 			write(file, "\n", 1);
-// 			free(buf);
-// 			printf("2222222: %d\n", g_status);
-// 			if (g_status == -111)
-// 			{
-// 				printf("333333\n");
-// 				break ;
-// 			}
-// 		}
-// 		free(buf);
-// 		exit(1);
-// 	}
-// 	else
-// 		waitpid(pid, NULL, 0);
-// 	close(file);
-// 	p->in_file = open(".heredoc_tmp", O_RDONLY);
-// 	if (p->in_file < 0)
-// 	{
-// 		unlink(".heredoc_tmp");
-// 		ft_putendl_fd("Error: unable to open a file", 2);
-// 	}
-// }
-
 void	start_heredoc(t_struct *p, char *stop)
 {
 	int			file;
@@ -115,7 +68,6 @@ void	start_heredoc(t_struct *p, char *stop)
 		perror("minishell: ");
 		return ;
 	}
-	// printf("11111\n");
 	pid = fork();
 	if (pid == 0)
 	{
@@ -132,7 +84,6 @@ void	start_heredoc(t_struct *p, char *stop)
 			write(file, buf, ft_strlen(buf));
 			write(file, "\n", 1);
 			free(buf);
-			// write(2, "222\n", 4);
 		}
 		free(buf);
 	}
@@ -172,9 +123,9 @@ char	*get_infile(t_struct *p, int pos)
 	flag = 0;
 	while (tmp != NULL)
 	{
-		if (!ft_strncmp("<<", tmp->type, 3) && tmp->number_command == pos && g_status != 130)
+		if (!ft_strncmp("<<", tmp->type, 3) && \
+		tmp->number_command == pos && g_status != 130)
 		{
-			write(2, "+\n", 2);
 			if (!access(".heredoc_tmp", F_OK))
 				unlink(".heredoc_tmp");
 			start_heredoc(p, tmp->file);
@@ -192,39 +143,41 @@ char	*get_infile(t_struct *p, int pos)
 	return (filename);
 }
 
+void	catch_file(t_struct *p, char *filename, int state)
+{
+	if (p->flag)
+	{
+		close(p->out_file);
+		p->flag = 0;
+	}
+	p->flag++;
+	if (state == 1)
+	{
+		p->out_file = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (p->out_file == -1)
+			perror("minishell");
+	}
+	if (state == 2)
+	{
+		p->out_file = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (p->out_file == -1)
+			perror("minishell");
+	}
+}
+
 int	get_outfile(t_struct *p, int pos)
 {
 	t_redirect	*tmp;
 	int			flag;
 
 	tmp = p->redirect;
-	flag = 0;
+	p->flag = 0;
 	while (tmp != NULL)
 	{
 		if (!ft_strncmp(">", tmp->type, 2) && pos == tmp->number_command)
-		{
-			if (flag)
-			{
-				close(p->out_file);
-				flag = 0;
-			}
-			p->out_file = open(tmp->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			flag++;
-			if (!p->out_file)
-				perror("minishell");
-		}
+			catch_file(p, tmp->file, 1);
 		if (!ft_strncmp(">>", tmp->type, 3) && pos == tmp->number_command)
-		{
-			if (flag)
-			{
-				close(p->out_file);
-				flag = 0;
-			}
-			p->out_file = open(tmp->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
-			flag++;
-			if (!p->out_file)
-				perror("minishell");
-		}
+			catch_file(p, tmp->file, 2);
 		tmp = tmp->next;
 	}
 	return (p->out_file);
@@ -279,26 +232,53 @@ int	check_infile(t_struct *p, int pos)
 	return (0);
 }
 
+void	check_in(t_struct *p)
+{
+	if (check_infile(p, p->idx))
+	{
+		p->fdin = open(get_infile(p, p->idx), O_RDONLY, 0644);
+		if (p->fdin == -1)
+			perror("minishell");
+	}
+}
+
+void	redirect_in(t_struct *p)
+{
+	dup2(p->fdin, 0);
+	close(p->fdin);
+}
+
+void	redirect_out(t_struct *p)
+{
+	dup2(p->fdout, 1);
+	close(p->fdout);
+}
+
+void	check_out(t_struct *p)
+{
+	if (check_outfile(p, p->idx))
+		p->fdout = get_outfile(p, p->idx);
+	else
+		p->fdout = dup(p->tmpout);
+}
+
+void	choose_func(char **commands, t_struct *p)
+{
+	int	a;
+
+	a = 0;
+	a = check_bultin(commands, p);
+	if (a == 0 && a != -1)
+		check_execve(commands, p);
+}
+
 void	child(char **commands, t_struct *p)
 {
 	if (p->idx != 0)
- 	{
-		if (check_infile(p, p->idx))
-		{
-			p->fdin = open(get_infile(p, p->idx), O_RDONLY, 0644);
-			if (p->fdin == -1)
-				perror("minishell");
-		}
- 	}
-	dup2(p->fdin, 0);
-	close(p->fdin);
+		check_in(p);
+	redirect_in(p);
 	if (p->idx == p->total_cmd - 1)
-	{
-		if (check_outfile(p, p->idx))
-			p->fdout = get_outfile(p, p->idx);
-		else
-			p->fdout = dup(p->tmpout); // Use default output
-	}
+		check_out(p);
 	else
 	{
 		pipe(p->fdpipe);
@@ -311,51 +291,94 @@ void	child(char **commands, t_struct *p)
 			p->fdout = p->fdpipe[1];
 		p->fdin = p->fdpipe[0];
 	}
-	dup2(p->fdout, 1);
-	close(p->fdout);
-	// p->ret = fork();
-	p->pid[p->idx]= fork();
-	
+	redirect_out(p);
+	p->pid[p->idx] = fork();
 	if (p->pid[p->idx] == 0)
 	{
 		if (p->fdin != -1)
-		{
-			check_execve(commands, p);
-		}
-		
-		//perror("minishell");
-		// write(2, "<-\n", 3);
+			choose_func(commands, p);
 		exit(1);
 	}
-	// else
-	// 	waitpid(p->pid[p->idx], NULL, 0);
-	
 }
 
 int	make_pids(t_struct *p)
 {
-	p->pid = (pid_t *)malloc((p->total_cmd) * sizeof(pid_t));
-	// if (!*pid)
-	// {
-	// 	close_fds(data->col_pipes, *fd);
-	// 	free_fds(data->col_pipes, *fd);
-	// 	return (2);
-	// }
+	if (p->total_cmd != 0)
+	{
+		p->pid = (pid_t *)malloc((p->total_cmd) * sizeof(pid_t));
+		if (!(p->pid))
+		{
+			ft_putendl_fd("Error: unable to allocate memory", 2);
+			return (2);
+		}
+	}
 	return (0);
 }
 
+void	ignore_signals(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	on_chld_signals(void)
+{
+	signal(SIGINT, ctrl_c_child);
+	signal(SIGQUIT, ctrl_slash_child);
+}
+
+void	on_parent_signals(void)
+{
+	signal(SIGQUIT, ctrl_slash_parent);
+	signal(SIGINT, ctrl_c_parent);
+}
+
+void	restore_std(t_struct *p)
+{
+	dup2(p->tmpin, 0);
+	dup2(p->tmpout, 1);
+	close(p->tmpin);
+	close(p->tmpout);
+}
+
+void	global_wait(t_struct *p)
+{
+	int	i;
+
+	i = 0;
+	while (i < p->total_cmd)
+	{
+		waitpid(p->pid[i], NULL, 0);
+		i++;
+	}
+}
+
+void	preparation(t_struct *p)
+{
+	ignore_signals();
+	p->tmpin = dup(0);
+	p->tmpout = dup(1);
+	p->here_doc = 0;
+	p->idx = 0;
+}
+
+void	check_minishell(char **new_arr, t_struct *p)
+{
+	if (find_str(new_arr[0], "exit"))
+	{
+		build_exit(new_arr, p);
+		return ;
+	}
+	if (ft_strncmp(new_arr[0], "./minishell", 12))
+		on_chld_signals();
+	child(new_arr, p);
+}
 
 char	**split_string(char **commands, t_struct *p)
 {
 	char	**new_arr;
-	int		cmd_num;
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	
-	p->tmpin = dup(0);
-	p->tmpout = dup(1);	
-	p->here_doc = 0;
-	p->idx = 0;
+
+	preparation(p);
 	if (check_infile(p, p->idx))
 	{
 		p->fdin = open(get_infile(p, p->idx), O_RDONLY, 0644);
@@ -363,37 +386,18 @@ char	**split_string(char **commands, t_struct *p)
 			perror("minishell");
 	}
 	else
-	{
 		p->fdin = dup(p->tmpin);
-	}
 	make_pids(p);
 	while (p->idx < p->total_cmd)
 	{
 		new_arr = ft_split_quotes(commands[p->idx], ' ');
 		new_arr = parse_strings(new_arr, p);
-		
-		signal(SIGINT, ctrl_c_child);
-		signal(SIGQUIT, ctrl_slash_child);
-		child(new_arr, p);
+		check_minishell(new_arr, p);
 		p->idx++;
 	}
-	int i = 0;
-	while (i < p->total_cmd)
-	{
-		waitpid(p->pid[i], NULL, 0);
-		i++;
-	}
-	dup2(p->tmpin, 0);
-	dup2(p->tmpout, 1);
-	close(p->tmpin);
-	close(p->tmpout);
-	
-	signal(SIGQUIT, ctrl_slash_parent);
-	signal(SIGINT, ctrl_c_parent);
-	
-	// waitpid(p->ret, NULL, 0);
-	// close(p->fdin);
-	// close(p->fdout);
+	global_wait(p);
+	restore_std(p);
+	on_parent_signals();
 	ft_free(commands);
 	free(p->pid);
 	return (new_arr);
@@ -425,8 +429,8 @@ int	parse_cmd(char *line, t_struct *p)
 		i++;
 	p->total_cmd = i;
 	commands = split_string(commands, p);
-	if (p->redirect)
-		print_list(p);
+	// if (p->redirect)
+	// 	print_list(p);
 	ft_free(commands);
 	return (0);
 }

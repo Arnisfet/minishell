@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/21 20:58:06 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/22 16:43:09 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef	struct	s_struct
 	int		idx;
 	int		ret;
 	int		fdpipe[2];
+	int		flag;
 	pid_t	*pid;
 	t_redirect	*redirect;
 	int		error;
@@ -85,6 +86,9 @@ typedef	struct	s_struct
 int		g_status;
 
 void	rl_replace_line(const char *text, int clear_undo);
+void	ignore_signals(void);
+void	on_chld_signals(void);
+void	on_parent_signals(void);
 
 int		get_next_line(int fd, char **line);
 
