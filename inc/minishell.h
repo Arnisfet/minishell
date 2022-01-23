@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 11:04:03 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 11:43:31 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,11 @@ void	ctrl_slash_child(int status);
 void	ctrl_c_heredoc(int status);
 
 int		build_exit(char **cmd, t_struct *p);
+void	add_null_value(char *str, t_struct *p, int flag);
+int		check_var(char *str, t_struct *p);
+void	blank_and_replace(char *str, t_struct *p);
+void	exist_add(char *var, char *value, t_struct *p, int flag);
+void	addition_var(char *var, char *value, t_struct *p, int flag);
 void	free_list(t_struct *p);
 void	clean_split_tmp(char **clean);
 void	free_array(char **str);
@@ -125,6 +130,8 @@ int		special_check(char *str);
 int		execute_chld(char *path, char **str, t_struct *p);
 
 char	**write_in_2_dim(char *command,char **commands);
+void	ctrl_c_pipe_heredoc(int status);
+void	ctrl_c_heredoc(int status);
 int  	env_len(char **env);
 void	ft_free(char **commands);
 char	*ft_realloc_ch(char *command, char ch);
@@ -143,6 +150,8 @@ void	print_list(t_struct *p);
 char	**parse_strings(char **commands, t_struct *p);
 char	*ft_strtrim_quote(char *arr, char *start, char *end);
 int 	check_digit(char const *start, char *end, t_struct *p);
+int		print_env(t_struct *p);
+int		export_errors(char **str);
 
 char	*trim_and_find(char *array, int i, t_struct *p);
 void	trim_env(t_struct *p);

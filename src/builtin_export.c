@@ -6,134 +6,11 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 17:43:35 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/22 18:30:08 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 11:39:08 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-void	add_null_value(char *str, t_struct *p, int flag)
-{
-	t_env	*tmp;
-
-	tmp = p->my_env;
-	if (tmp == NULL)
-	{
-		tmp = (t_env *)malloc(sizeof(t_env));
-		tmp->var = ft_strdup(str);
-		tmp->value = NULL;
-		tmp->is_blank = 1;
-		tmp->next = NULL;
-	}
-	else
-	{
-		while (tmp->next != NULL)
-			tmp = tmp->next;
-		tmp->next = (t_env *)malloc(sizeof(t_env));
-		tmp->next->var = ft_strdup(str);
-		tmp->next->value = NULL;
-		tmp->next->is_blank = 1;
-		tmp->next->next = NULL;
-	}
-}
-
-void	blank_and_replace(char *str, t_struct *p)
-{
-	t_env	*tmp;
-
-	tmp = p->my_env;
-	while (tmp != NULL)
-	{
-		if (find_str(str, tmp->var))
-			return ;
-		tmp = tmp->next;
-	}
-	add_null_value(str, p, 1);
-}
-
-int	print_env(t_struct *p)
-{
-	t_env	*tmp;
-
-	tmp = p->my_env;
-	while (tmp != NULL)
-	{
-		ft_putstr_fd("declare -x ", 1);
-		ft_putstr_fd(tmp->var, 1);
-		if (!tmp->is_blank)
-		{
-			ft_putstr_fd("=\"", 1);
-			ft_putstr_fd(tmp->value, 1);
-			ft_putstr_fd("\"", 1);
-		}
-		ft_putchar_fd('\n', 1);
-		tmp = tmp->next;
-	}
-	return (1);
-}
-
-int	check_var(char *str, t_struct *p)
-{
-	t_env	*tmp;
-
-	tmp = p->my_env;
-	while (tmp != NULL)
-	{
-		if (find_str(str, tmp->var))
-			return (1);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-void	exist_add(char *var, char *value, t_struct *p, int flag)
-{
-	t_env	*tmp;
-
-	tmp = p->my_env;
-	while (tmp != NULL)
-	{
-		if (find_str(var, tmp->var))
-		{
-			if (flag)
-			{
-				if (tmp->value)
-					free(tmp->value);
-				tmp->value = NULL;
-				tmp->is_blank = 0;
-			}
-			else
-			{
-				if (tmp->value)
-					free(tmp->value);
-				tmp->value = ft_strdup(value);
-				tmp->is_blank = 0;
-			}
-		}
-		tmp = tmp->next;
-	}
-}
-
-void	addition_var(char *var, char *value, t_struct *p, int flag)
-{
-	t_env	*tmp;
-
-	tmp = p->my_env;
-	while (tmp->next != NULL)
-		tmp = tmp->next;
-	tmp->next = (t_env *)malloc(sizeof(t_env));
-	tmp->next->var = ft_strdup(var);
-	if (flag)
-	{
-		tmp->next->value = NULL;
-		tmp->next->is_blank = 0;
-	}
-	else
-	{
-		tmp->next->value = ft_strdup(value);
-		tmp->next->is_blank = 0;
-	}
-}
 
 void	add_new(char *var, char *value, t_struct *p, int flag)
 {
@@ -182,18 +59,6 @@ void	find_and_update(char *str, t_struct *p)
 		else
 			add_new(str, stop_position, p, 1);
 	}
-}
-
-int	export_errors(char **str)
-{
-	if (special_check(str[1]))
-	{
-		ft_putstr_fd("minishell: export: '", 1);
-		ft_putstr_fd(str[1], 1);
-		ft_putendl_fd("': not a valid identifier", 1);
-		return (1);
-	}
-	return (0);
 }
 
 int	build_export(char **str, t_struct *p)
