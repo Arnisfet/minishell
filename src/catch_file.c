@@ -1,37 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redir_wo_cmd.c                                     :+:      :+:    :+:   */
+/*   catch_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/23 17:00:46 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 17:07:01 by jmacmill         ###   ########.fr       */
+/*   Created: 2022/01/23 17:22:12 by jmacmill          #+#    #+#             */
+/*   Updated: 2022/01/23 17:22:49 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static int	create_file(t_redirect *p)
+void	catch_file(t_struct *p, char *filename, int state)
 {
-	int	fd;
-
-	fd = open(p->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd == -1)
-		perror("minishell");
-	return (1);
-}
-
-int	create_redir(t_struct *p)
-{
-	t_redirect	*point;
-
-	point = p->redirect;
-	while (point != NULL)
+	if (p->flag)
 	{
-		if (point->type[0] == '>')
-			create_file(point);
-			point = point->next;
+		close(p->out_file);
+		p->flag = 0;
 	}
-	return (0);
+	p->flag++;
+	if (state == 1)
+	{
+		p->out_file = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (p->out_file == -1)
+			perror("minishell");
+	}
+	if (state == 2)
+	{
+		p->out_file = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (p->out_file == -1)
+			perror("minishell");
+	}
 }

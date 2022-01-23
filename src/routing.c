@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 14:17:39 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 15:35:02 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 17:09:34 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	check_minishell(char **new_arr, t_struct *p)
 	if (p->total_cmd == 1)
 	{
 		a = 0;
-		a = check_bultin(new_arr, p);	
+		a = check_bultin(new_arr, p);
 	}
 	if (a == 1)
 		return ;
@@ -87,17 +87,9 @@ void	route_minishell(char **array, t_struct *p)
 {
 	if (p->total_cmd == 1)
 	{
-		// if (!ft_strncmp(array[0], "./minishell", 12))
-		// {
-		// 	ignore_signals();
-		// 	write(2, "mini\n", 5);
-		// 	start_execve(array[0], array, p);
-		// }
-
-			if (p->fdin == -1)
+		if (p->fdin == -1)
 			return ;
 		minishell_wo_pipes(array, p);
-	
 	}
 	else
 	{

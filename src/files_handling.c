@@ -6,27 +6,11 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 14:20:57 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 14:22:50 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 18:16:30 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-void	check_heredoc(t_struct *p)
-{
-	t_redirect	*tmp;
-
-	tmp = p->redirect;
-	while (tmp)
-	{
-		if (!ft_strncmp("<<", tmp->type, 3))
-		{
-			p->here_doc = 1;
-			break ;
-		}
-		tmp = tmp->next;
-	}
-}
 
 int	get_outfile(t_struct *p, int pos)
 {
@@ -63,6 +47,12 @@ int	check_outfile(t_struct *p, int pos)
 	return (0);
 }
 
+static int	tup(char **filename, t_redirect *tmp)
+{
+	*filename = tmp->file;
+	return (2);
+}
+
 char	*get_infile(t_struct *p, int pos)
 {
 	t_redirect	*tmp;
@@ -74,7 +64,8 @@ char	*get_infile(t_struct *p, int pos)
 	flag = 0;
 	while (tmp != NULL)
 	{
-		if (!ft_strncmp("<<", tmp->type, 3) && tmp->number_command == pos && g_status != 130)
+		if (!ft_strncmp("<<", tmp->type, 3) && \
+		tmp->number_command == pos && g_status != 130)
 		{
 			if (!access(".heredoc_tmp", F_OK))
 				unlink(".heredoc_tmp");
@@ -82,10 +73,7 @@ char	*get_infile(t_struct *p, int pos)
 			flag = 1;
 		}
 		if (!ft_strncmp("<", tmp->type, 2) && tmp->number_command == pos)
-		{
-			filename = tmp->file;
-			flag = 2;
-		}
+			flag = tup(&filename, tmp);
 		tmp = tmp->next;
 	}
 	if (flag == 1)

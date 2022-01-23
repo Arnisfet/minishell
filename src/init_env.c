@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:49:43 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/12 19:50:19 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/23 18:00:20 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,22 @@
 
 void	clean_split_tmp(char **clean)
 {
-	if(clean[0])
+	if (clean[0])
 		free(clean[0]);
-	if(clean[1])
+	if (clean[1])
 		free(clean[1]);
 	free(clean);
+}
+
+void	create_first(t_struct *p, char **str, char *content)
+{
+	p->my_env = (t_env *)malloc(sizeof(t_env));
+	str = ft_split(content, '=');
+	p->my_env->var = ft_strdup(str[0]);
+	p->my_env->value = ft_strdup(str[1]);
+	p->my_env->is_blank = 0;
+	clean_split_tmp(str);
+	p->my_env->next = NULL;
 }
 
 void	init_env_list(t_struct *p, char *content)
@@ -28,15 +39,7 @@ void	init_env_list(t_struct *p, char *content)
 
 	tmp = p->my_env;
 	if (p->my_env == NULL)
-	{
-		p->my_env = (t_env *)malloc(sizeof(t_env));
-		str = ft_split(content, '=');
-		p->my_env->var = ft_strdup(str[0]);
-		p->my_env->value = ft_strdup(str[1]);
-		p->my_env->is_blank = 0;
-		clean_split_tmp(str);
-		p->my_env->next = NULL;
-	}
+		create_first(p, str, content);
 	else
 	{
 		while (tmp->next != NULL)

@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 17:01:19 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 17:28:51 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,42 +40,6 @@ int	check_bultin(char **str, t_struct *p)
 	return (0);
 }
 
-// char	*get_file(t_struct *p, char *symbol)
-// {
-// 	t_redirect	*tmp;
-
-// 	tmp = p->redirect;
-// 	while (tmp)
-// 	{
-// 		if (!ft_strncmp(symbol, tmp->type, 2))
-// 			return (tmp->file);
-// 		tmp = tmp->next;
-// 	}
-// 	return (NULL);
-// }
-
-void	catch_file(t_struct *p, char *filename, int state)
-{
-	if (p->flag)
-	{
-		close(p->out_file);
-		p->flag = 0;
-	}
-	p->flag++;
-	if (state == 1)
-	{
-		p->out_file = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (p->out_file == -1)
-			perror("minishell");
-	}
-	if (state == 2)
-	{
-		p->out_file = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		if (p->out_file == -1)
-			perror("minishell");
-	}
-}
-
 void	choose_func(char **commands, t_struct *p)
 {
 	int	a;
@@ -89,6 +53,14 @@ void	choose_func(char **commands, t_struct *p)
 		else
 			check_execve(commands, p);
 	}		
+}
+
+void	splitting(char **commands, t_struct *p)
+{
+	restore_std(p);
+	on_parent_signals();
+	ft_free(commands);
+	free(p->pid);
 }
 
 char	**split_string(char **commands, t_struct *p)
@@ -116,10 +88,7 @@ char	**split_string(char **commands, t_struct *p)
 	}
 	if (p->total_cmd > 1)
 		global_wait(p);
-	restore_std(p);
-	on_parent_signals();
-	ft_free(commands);
-	free(p->pid);
+	splitting(commands, p);
 	return (new_arr);
 }
 
@@ -150,9 +119,6 @@ int	parse_cmd(char *line, t_struct *p)
 	p->total_cmd = i;
 	create_redir(p);
 	commands = split_string(commands, p);
-	
-	// if (p->redirect)
-	// 	print_list(p);
 	ft_free(commands);
 	return (0);
 }

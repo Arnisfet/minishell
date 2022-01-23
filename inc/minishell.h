@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 17:00:56 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 17:22:46 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	preparation(t_struct *p);
 void	check_minishell(char **new_arr, t_struct *p);
 void	minishell_wo_pipes(char **array, t_struct *p);
 void	route_minishell(char **array, t_struct *p);
+void	catch_file(t_struct *p, char *filename, int state);
 
 void	check_in(t_struct *p);
 void	redirect_in(t_struct *p);
