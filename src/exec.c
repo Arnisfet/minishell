@@ -6,13 +6,34 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 18:36:20 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/22 17:30:55 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 13:45:03 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 int	execute(char *path, char **str, t_struct *p)
+{
+	int	ret;
+
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, ctrl_c_child);
+	signal(SIGQUIT, ctrl_slash_child);
+	ret = fork();
+	if (ret == -1)
+		ft_putendl_fd("Unable to create a fork", 2);
+	if (ret == 0)
+	{
+		if (execve(path, str, p->arr_env) == -1)
+			perror("Could not execute execve");
+	}
+	else
+		waitpid(ret, NULL, 0);
+	return (1);
+}
+
+int	execute_chld(char *path, char **str, t_struct *p)
 {
 	if (execve(path, str, p->arr_env) == -1)
 		perror("Could not execute execve");
@@ -21,7 +42,10 @@ int	execute(char *path, char **str, t_struct *p)
 
 int	start_execve(char *path, char **str, t_struct *p)
 {
-	execute(path, str, p);
+	if (p->total_cmd == 1)
+		execute(path, str, p);
+	else
+		execute_chld(path, str, p);
 	free(path);
 	return (0);
 }
@@ -44,7 +68,7 @@ int	check_execve(char **str, t_struct *p)
 				execve_path = ft_strdup(str[0]);
             else
             {
-                char *save;
+                char	*save;
                 execve_path = ft_strjoin(spl_path[i], "/");
                 save = execve_path;
                 execve_path = ft_strjoin(save, str[0]);

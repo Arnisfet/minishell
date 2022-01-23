@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 total 160
 drwxr-xr-x  14 mrudge  4221    476 Jan 22 19:58 .
 drwxr-xr-x  10 mrudge  4221    340 Jan 22 19:57 ..
@@ -13,3 +14,7 @@ drwxr-xr-x  85 mrudge  4221   2890 Jan 22 19:54 libft
 -rwxr-xr-x   1 mrudge  4221  63972 Jan 22 19:54 minishell
 drwxr-xr-x   2 mrudge  4221     68 Jan 22 19:47 redir
 drwxr-xr-x  29 mrudge  4221    986 Jan 22 19:53 src
+=======
+file1asd
+file1asd
+>>>>>>> dev

@@ -6,13 +6,13 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 17:43:02 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/22 19:09:42 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 11:33:44 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	find_str(const char *s1,const char *s2)
+int	find_str(const char *s1, const char *s2)
 {
 	int	result;
 
@@ -65,20 +65,17 @@ int	build_cd(char **str, t_struct *p)
 {
 	char	*home_path;
 	char	*old_path;
-	
+
 	home_path = get_env_var("HOME", p);
 	old_path = get_env_var("OLDPWD", p);
-	
 	if (!str[1])
-	{
 		go_to_dir(home_path, p);
-		return (1);
-	}
 	else
 	{
 		if (!str[2])
 		{
-			if (!find_str(str[1], "--") && !find_str(str[1], "~") && !find_str(str[1], "-"))
+			if (!find_str(str[1], "--") && !find_str(str[1], "~") \
+			&& !find_str(str[1], "-"))
 				go_to_dir(str[1], p);
 			if (find_str(str[1], "--") || find_str(str[1], "~"))
 				go_to_dir(home_path, p);

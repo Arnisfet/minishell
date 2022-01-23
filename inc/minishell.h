@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/22 18:30:48 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 14:42:27 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,24 @@ int		builtin_echo(char **str, t_struct *p);
 int		builtin_env(t_struct *p);
 char	*get_env_var(char *str, t_struct *p);
 
+int		make_pids(t_struct *p);
+void	preparation(t_struct *p);
+void	check_minishell(char **new_arr, t_struct *p);
+void	minishell_wo_pipes(char **array, t_struct *p);
+void	route_minishell(char **array, t_struct *p);
+
+void	check_in(t_struct *p);
+void	redirect_in(t_struct *p);
+void	redirect_out(t_struct *p);
+void	check_out(t_struct *p);
+void	child(char **commands, t_struct *p);
+
+void	check_heredoc(t_struct *p);
+int		get_outfile(t_struct *p, int pos);
+int		check_outfile(t_struct *p, int pos);
+char	*get_infile(t_struct *p, int pos);
+int		check_infile(t_struct *p, int pos);
+
 void	ctrl_c_parent(int status);
 void	ctrl_slash_parent(int status);
 void	ctrl_c_pipe_heredoc(int status);
@@ -113,8 +131,18 @@ void	ctrl_c_fork(int status);
 void	ctrl_c_child(int status);
 void	ctrl_slash_child(int status);
 void	ctrl_c_heredoc(int status);
+void	ignore_signals(void);
+void	on_chld_signals(void);
+void	on_parent_signals(void);
+void	restore_std(t_struct *p);
+void	global_wait(t_struct *p);
 
-void	build_exit(char **str, t_struct *p);
+int		build_exit(char **cmd, t_struct *p);
+void	add_null_value(char *str, t_struct *p, int flag);
+int		check_var(char *str, t_struct *p);
+void	blank_and_replace(char *str, t_struct *p);
+void	exist_add(char *var, char *value, t_struct *p, int flag);
+void	addition_var(char *var, char *value, t_struct *p, int flag);
 void	free_list(t_struct *p);
 void	clean_split_tmp(char **clean);
 void	free_array(char **str);
@@ -122,8 +150,11 @@ int		execute(char *path, char **str, t_struct *p);
 int		start_execve(char *path, char **str, t_struct *p);
 int		check_execve(char **str, t_struct *p);
 int		special_check(char *str);
+int		execute_chld(char *path, char **str, t_struct *p);
 
 char	**write_in_2_dim(char *command,char **commands);
+void	ctrl_c_pipe_heredoc(int status);
+void	ctrl_c_heredoc(int status);
 int  	env_len(char **env);
 void	ft_free(char **commands);
 char	*ft_realloc_ch(char *command, char ch);
@@ -142,6 +173,8 @@ void	print_list(t_struct *p);
 char	**parse_strings(char **commands, t_struct *p);
 char	*ft_strtrim_quote(char *arr, char *start, char *end);
 int 	check_digit(char const *start, char *end, t_struct *p);
+int		print_env(t_struct *p);
+int		export_errors(char **str);
 
 char	*trim_and_find(char *array, int i, t_struct *p);
 void	trim_env(t_struct *p);
