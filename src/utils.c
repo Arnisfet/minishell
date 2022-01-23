@@ -50,7 +50,7 @@ void	add_to_list_redirect(t_struct *p, char *type, char *file, int num)
 
 char	*trim_and_find(char *array, int i, t_struct *p)
 {
-	t_env *point;
+	t_env	*point;
 
 	point = p->my_env;
 	if (check_ones(array, i))

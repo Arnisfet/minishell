@@ -14,9 +14,9 @@
 
 void	clean_split_tmp(char **clean)
 {
-	if(clean[0])
+	if (clean[0])
 		free(clean[0]);
-	if(clean[1])
+	if (clean[1])
 		free(clean[1]);
 	free(clean);
 }
@@ -51,9 +51,9 @@ void	init_env_list(t_struct *p, char *content)
 	}
 }
 
-int  env_len(char **env)
+int	env_len(char **env)
 {
-	int  i;
+	int	i;
 
 	i = 0;
 	while (env[i])
@@ -61,9 +61,9 @@ int  env_len(char **env)
 	return (i);
 }
 
-void  init_env(char **env, t_struct *p)
+void	init_env(char **env, t_struct *p)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	p->arr_env = (char **)malloc(sizeof (char *) * (env_len(env) + 1));

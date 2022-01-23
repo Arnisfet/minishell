@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-int	end_of_quote(char *array, int i)
+int	end_of_quote(const char *array, int i)
 {
 	char	quote;
 

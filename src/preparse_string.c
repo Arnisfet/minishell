@@ -42,6 +42,7 @@ static int	error_code(char *array, int i, t_struct *p)
 		ft_putstr_fd("\t\tsyntax error near unexpected token '|'\n", 1);
 		return (2);
 	}
+	return (0);
 }
 
 int	check_double_pipe(char *array, t_struct *p)
