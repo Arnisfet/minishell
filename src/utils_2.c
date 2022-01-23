@@ -1,16 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_redirect.c                                   :+:      :+:    :+:   */
+/*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/20 19:27:18 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/23 14:20:11 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+void	free_array(char **str)
+{
+	int	i;
+
+	if (str)
+	{
+		i = 0;
+		while (str[i])
+		{
+			free(str[i]);
+			i++;
+		}
+		free(str);
+	}
+}
 
 void	free2(char *array, char *trimmer)
 {

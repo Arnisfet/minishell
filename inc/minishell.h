@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 11:43:31 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 14:42:27 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,24 @@ int		builtin_echo(char **str, t_struct *p);
 int		builtin_env(t_struct *p);
 char	*get_env_var(char *str, t_struct *p);
 
+int		make_pids(t_struct *p);
+void	preparation(t_struct *p);
+void	check_minishell(char **new_arr, t_struct *p);
+void	minishell_wo_pipes(char **array, t_struct *p);
+void	route_minishell(char **array, t_struct *p);
+
+void	check_in(t_struct *p);
+void	redirect_in(t_struct *p);
+void	redirect_out(t_struct *p);
+void	check_out(t_struct *p);
+void	child(char **commands, t_struct *p);
+
+void	check_heredoc(t_struct *p);
+int		get_outfile(t_struct *p, int pos);
+int		check_outfile(t_struct *p, int pos);
+char	*get_infile(t_struct *p, int pos);
+int		check_infile(t_struct *p, int pos);
+
 void	ctrl_c_parent(int status);
 void	ctrl_slash_parent(int status);
 void	ctrl_c_pipe_heredoc(int status);
@@ -113,6 +131,11 @@ void	ctrl_c_fork(int status);
 void	ctrl_c_child(int status);
 void	ctrl_slash_child(int status);
 void	ctrl_c_heredoc(int status);
+void	ignore_signals(void);
+void	on_chld_signals(void);
+void	on_parent_signals(void);
+void	restore_std(t_struct *p);
+void	global_wait(t_struct *p);
 
 int		build_exit(char **cmd, t_struct *p);
 void	add_null_value(char *str, t_struct *p, int flag);
