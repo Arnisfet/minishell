@@ -148,7 +148,11 @@ int	parse_cmd(char *line, t_struct *p)
 	while (commands[i])
 		i++;
 	p->total_cmd = i;
-	commands = split_string(commands, p);
+	printf("%d", p->total_cmd);
+	if (commands[0][0] != '\0')
+		commands = split_string(commands, p);
+	if (commands[0][0] == '\0')
+		create_redir(p);
 	// if (p->redirect)
 	// 	print_list(p);
 	ft_free(commands);
