@@ -12,10 +12,10 @@
 
 #include "../inc/minishell.h"
 
-static int    ft_count(const char *s, char c)
+static int	ft_count(const char *s, char c)
 {
-	size_t    i;
-	int        counter;
+	size_t	i;
+	int		counter;
 
 	i = 0;
 	counter = 0;
@@ -35,10 +35,10 @@ static int    ft_count(const char *s, char c)
 	return (counter);
 }
 
-static char    *ft_copy(const char *str, size_t n)
+static char	*ft_copy(const char *str, size_t n)
 {
-	char    *new;
-	size_t    i;
+	char	*new;
+	size_t	i;
 
 	i = 0;
 	new = (char *)malloc(sizeof(char) * (n + 1));
@@ -64,12 +64,12 @@ int		count_counter(char const *s, char c, int i)
 	return (i);
 }
 
-char    **ft_split_quotes(char const *s, char c)
+char	**ft_split_quotes(char const *s, char c)
 {
-	char    **new;
-	size_t    i;
-	size_t    place;
-	int        word;
+	char	**new;
+	size_t	i;
+	size_t	place;
+	int		word;
 
 	if (s == NULL)
 		return (NULL);

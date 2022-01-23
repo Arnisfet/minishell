@@ -12,6 +12,27 @@
 
 #include "../inc/minishell.h"
 
+
+char	**parsing(char *line, t_struct *p, char **commands)
+{
+	if (check_string(line, p) != 0)
+		return (NULL);
+	commands = parse_pipe(line, p);
+	if (p->error != 0)
+	{
+		if (commands)
+			ft_free(commands);
+		return (NULL);
+	}
+	commands = parse_redirect(commands, p);
+	if (p->error != 0)
+	{
+		ft_free(commands);
+		return (NULL);
+	}
+	return (commands);
+}
+
 char	**parse_strings(char **commands, t_struct *p)
 {
 	int		i;

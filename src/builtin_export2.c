@@ -16,6 +16,7 @@ void	add_null_value(char *str, t_struct *p, int flag)
 {
 	t_env	*tmp;
 
+	(void )flag;
 	tmp = p->my_env;
 	if (tmp == NULL)
 	{

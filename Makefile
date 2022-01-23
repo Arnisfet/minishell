@@ -31,11 +31,11 @@ $(BUILDDIR):
 
 # Object dir rule
 $(BUILDDIR)%.o:$(SRCDIR)%.c
-	$(CC) -I$(LIBINC) -I$(INC) -g -o $@ -c $<
+	$(CC) -I$(LIBINC) -I$(INC) $(CFLAGS) -g -o $@ -c $<
 
 # Project file rule
 $(NAME): $(BUILDOBJS)
-	$(CC) -lreadline -g -o $(NAME) $(BUILDOBJS) $(LIBFT) -L/Users/jmacmill/.brew/Cellar/readline/8.1/lib/ -I/Users/jmacmill/.brew/Cellar/readline/8.1/include
+	$(CC) -lreadline -g -o $(NAME) $(BUILDOBJS) $(LIBFT)  -L/Users/mrudge/Desktop/homebrew/Cellar/readline/8.1.1/lib/ -I /Users/mrudge/Desktop/homebrew/Cellar/readline/8.1.1/include
 
 # Libft rule
 $(LIBFT):

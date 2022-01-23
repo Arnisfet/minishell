@@ -15,7 +15,6 @@
 int	get_outfile(t_struct *p, int pos)
 {
 	t_redirect	*tmp;
-	int			flag;
 
 	tmp = p->redirect;
 	p->flag = 0;

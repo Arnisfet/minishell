@@ -34,7 +34,7 @@ int	check_bultin(char **str, t_struct *p)
 		return (build_export(str, p));
 	if (find_str(str[0], "exit"))
 	{
-		build_exit(str, p);
+		build_exit(str);
 		return (-1);
 	}
 	return (0);
@@ -98,21 +98,10 @@ int	parse_cmd(char *line, t_struct *p)
 	int		i;
 
 	p->error = 0;
-	if (check_string(line, p) != 0)
+	commands = NULL;
+	commands = parsing(line, p, commands);
+	if (!commands)
 		return (2);
-	commands = parse_pipe(line, p);
-	if (p->error != 0)
-	{
-		if (commands)
-			ft_free(commands);
-		return (1);
-	}
-	commands = parse_redirect(commands, p);
-	if (p->error != 0)
-	{
-		ft_free(commands);
-		return (2);
-	}
 	i = 0;
 	while (commands[i])
 		i++;

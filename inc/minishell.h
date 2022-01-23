@@ -139,7 +139,7 @@ void	restore_std(t_struct *p);
 void	global_wait(t_struct *p);
 int		create_redir(t_struct *p);
 
-int		build_exit(char **cmd, t_struct *p);
+int		build_exit(char **cmd);
 void	add_null_value(char *str, t_struct *p, int flag);
 int		check_var(char *str, t_struct *p);
 void	blank_and_replace(char *str, t_struct *p);
@@ -177,14 +177,20 @@ char	*ft_strtrim_quote(char *arr, char *start, char *end);
 int 	check_digit(char const *start, char *end, t_struct *p);
 int		print_env(t_struct *p);
 int		export_errors(char **str);
+char	**parsing(char *line, t_struct *p, char **commands);
 
 char	*trim_and_find(char *array, int i, t_struct *p);
 void	trim_env(t_struct *p);
 int		check_ones(char *array, int flag);
 char	*find_end_dollar(char *end);
-int		end_of_quote(char *array, int i);
-char    **ft_split_quotes(char const *s, char c);
+int		end_of_quote(const char *array, int i);
+char	**ft_split_quotes(char const *s, char c);
 char	*concat_and_free(char *first, char *second);
+int		create_redir(t_struct *p);
+void	start_heredoc(t_struct *p, char *stop);
+void	catch_file(t_struct *p, char *filename, int state);
+void	choose_func(char **commands, t_struct *p);
+int		check_bultin(char **str, t_struct *p);
 
 void	util(t_struct *p, char *file, char *redirect);
 int		correct_check(t_struct *p);

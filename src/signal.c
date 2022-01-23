@@ -25,6 +25,7 @@ void	ctrl_c_parent(int status)
 
 void	ctrl_slash_parent(int status)
 {
+	(void )status;
 	rl_on_new_line();
 	rl_redisplay();
 	ft_putstr_fd("  \b\b", 1);
@@ -40,6 +41,7 @@ void	ctrl_c_child(int status)
 
 void	ctrl_slash_child(int status)
 {
+	status++;
 	ft_putstr_fd("Quit: 3\n", 1);
 }
 

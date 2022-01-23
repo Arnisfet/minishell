@@ -40,16 +40,23 @@ static int	check_status(char *file, t_struct *p, char *redirect, char *end)
 	return (0);
 }
 
+static char	*end_q(char *end)
+{
+	while (*end != '\0' && (*end != ' ' && (*end == '<' || *end == '>')))
+		end++;
+	return (end);
+}
+
 int	substring(char *start, t_struct *p)
 {
 	char	*redirect;
 	char	*file;
 	char	*end;
+	file = NULL;
 
 	end = start;
 	p->point_r = start;
-	while (*end != '\0' && (*end != ' ' && (*end == '<' || *end == '>')))
-		end++;
+	end = end_q(end);
 	redirect = ft_strndup(start, end - start);
 	if (*end != '\0' && *(end) == ' ')
 		end++;

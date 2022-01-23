@@ -48,68 +48,22 @@ void	add_to_list_redirect(t_struct *p, char *type, char *file, int num)
 	}
 }
 
-void	print_list(t_struct *p)
-{
-	t_redirect	*tmp;
-
-	tmp = p->redirect;
-	if (!tmp)
-		return ;
-	while (tmp)
-	{
-		printf ("type of redirect: %s, filename: %s, number of pipe: %d\n",
-			tmp->type, tmp->file, tmp->number_command);
-		tmp = tmp->next;
-	}
-}
-
-void	trim_env(t_struct *p)
-{
-	int		i;
-	char	*trimmer;
-	char	*start;
-
-	i = 0;
-	p->trim_env = (char **)malloc(sizeof (char *) * env_len(p->arr_env) + 1);
-	if (!p->trim_env)
-		return ((void) NULL);
-	while (p->arr_env[i])
-	{
-		start = ft_strchr(p->arr_env[i], '=');
-		trimmer = ft_substr(p->arr_env[i], start - p->arr_env[i] + 1, ft_strlen
-				(p->arr_env[i]));
-		p->trim_env[i] = ft_strdup(trimmer);
-		free(trimmer);
-		i++;
-	}
-}
-
 char	*trim_and_find(char *array, int i, t_struct *p)
 {
-	int		j;
-	char	*trimmer;
-	char	*end;
+	t_env	*point;
 
+	point = p->my_env;
 	if (check_ones(array, i))
 		return (ft_strdup(array));
 	if (strcmp(array, "$?") == 0)
-		return (ft_itoa(p->error_code));
+		return (ft_itoa(g_status));
 	if (p->tmp_red != NULL && ft_strcmp("<<", p->tmp_red) == 0)
 		return (array);
-	j = 0;
-	while (p->arr_env[j])
+	while (point != NULL)
 	{
-		end = ft_strchr(p->arr_env[j], '=');
-		trimmer = ft_substr(p->arr_env[j], 0, end - p->arr_env[j]);
-		if ((ft_strcmp(array + 1, trimmer)) == 0)
-		{
-			free2(array, trimmer);
-			trimmer = ft_substr(p->arr_env[j], (end - p->arr_env[j]) + 1,
-					(ft_strlen(p->arr_env[j]) - (end - p->arr_env[j])));
-			return (trimmer);
-		}
-		j++;
+		if (!ft_strcmp(array + 1, point->var))
+			return (ft_strdup(point->value));
+		point = point->next;
 	}
-	free2(array, trimmer);
 	return (ft_strdup(""));
 }

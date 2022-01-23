@@ -42,7 +42,7 @@ void	check_minishell(char **new_arr, t_struct *p)
 	a = 0;
 	if (find_str(new_arr[0], "exit"))
 	{
-		build_exit(new_arr, p);
+		build_exit(new_arr);
 		return ;
 	}
 	if (p->total_cmd == 1)
@@ -70,7 +70,7 @@ void	minishell_wo_pipes(char **array, t_struct *p)
 	a = 0;
 	if (find_str(array[0], "exit"))
 	{
-		build_exit(array, p);
+		build_exit(array);
 		return ;
 	}
 	i = check_bultin(array, p);

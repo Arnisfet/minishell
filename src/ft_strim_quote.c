@@ -36,6 +36,7 @@ static void	*trim(char *new_arr, char *arr, char *start, char *end)
 		}
 		new_arr[i] = '\0';
 	}
+	return (NULL);
 }
 
 char	*ft_strtrim_quote(char *arr, char *start, char *end)

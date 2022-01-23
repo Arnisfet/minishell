@@ -39,6 +39,7 @@ int	main(int argc, char **argv, char **env)
 
 	// write(2, "HUY\n", 4);
 	g_status = 0;
+	(void ) argv;
 	if (argc > 1)
 	{
 		ft_putstr_fd("Error: too many arguments\n", 2);
@@ -47,7 +48,6 @@ int	main(int argc, char **argv, char **env)
 	p = (t_struct *)malloc(sizeof(t_struct));
 	if (!p)
 		return (-1);
-	// (void)argc;
 	p->count = 0;
 	p->revert_flag = 0;
 	p->trim_env = NULL;
@@ -73,6 +73,6 @@ int	main(int argc, char **argv, char **env)
 		if (p->redirect)
 			freed(p);
 		free(line);
-		p->error_code = p->error;
+		g_status = p->error;
 	}
 }
