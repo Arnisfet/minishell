@@ -37,6 +37,7 @@ void	init_env_list(t_struct *p, char *content)
 	t_env	*tmp;
 	char	**str;
 
+	str = NULL;
 	tmp = p->my_env;
 	if (p->my_env == NULL)
 		create_first(p, str, content);
