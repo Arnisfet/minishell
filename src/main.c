@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 11:47:41 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 15:27:08 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	main(int argc, char **argv, char **env)
 	int			status;
 	char		*line;
 
+	write(2, "HUY\n", 4);
 	g_status = 0;
 	if (argc > 1)
 	{
