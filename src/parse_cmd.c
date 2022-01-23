@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 15:34:40 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 17:01:19 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,9 @@ int	parse_cmd(char *line, t_struct *p)
 	while (commands[i])
 		i++;
 	p->total_cmd = i;
+	create_redir(p);
 	commands = split_string(commands, p);
+	
 	// if (p->redirect)
 	// 	print_list(p);
 	ft_free(commands);
