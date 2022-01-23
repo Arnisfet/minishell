@@ -38,7 +38,7 @@ static int	error_code(char *array, int i, t_struct *p)
 {
 	if (array[i] == '|')
 	{
-		p->error_code = 2;
+		p->error = 2;
 		ft_putstr_fd("\t\tsyntax error near unexpected token '|'\n", 1);
 		return (2);
 	}

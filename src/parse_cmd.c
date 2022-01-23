@@ -129,30 +129,15 @@ int	parse_cmd(char *line, t_struct *p)
 	int		i;
 
 	p->error = 0;
-	if (check_string(line, p) != 0)
+	commands = parsing(line, p, commands);
+	if (!commands)
 		return (2);
-	commands = parse_pipe(line, p);
-	if (p->error != 0)
-	{
-		if (commands)
-			ft_free(commands);
-		return (1);
-	}
-	commands = parse_redirect(commands, p);
-	if (p->error != 0)
-	{
-		ft_free(commands);
-		return (2);
-	}
 	i = 0;
-	while (commands[i])
+	while (commands && commands[i])
 		i++;
 	p->total_cmd = i;
 	create_redir(p);
 	commands = split_string(commands, p);
-
-	// if (p->redirect)
-	// 	print_list(p);
 	ft_free(commands);
 	return (0);
 }

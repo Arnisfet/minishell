@@ -73,6 +73,6 @@ int	main(int argc, char **argv, char **env)
 		if (p->redirect)
 			freed(p);
 		free(line);
-		p->error_code = p->error;
+		g_status = p->error;
 	}
 }

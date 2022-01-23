@@ -176,6 +176,7 @@ char	*ft_strtrim_quote(char *arr, char *start, char *end);
 int 	check_digit(char const *start, char *end, t_struct *p);
 int		print_env(t_struct *p);
 int		export_errors(char **str);
+char	*parsing(char *line, t_struct *p, char **commands);
 
 char	*trim_and_find(char *array, int i, t_struct *p);
 void	trim_env(t_struct *p);

@@ -56,7 +56,7 @@ char	*trim_and_find(char *array, int i, t_struct *p)
 	if (check_ones(array, i))
 		return (ft_strdup(array));
 	if (strcmp(array, "$?") == 0)
-		return (ft_itoa(p->error_code));
+		return (ft_itoa(g_status));
 	if (p->tmp_red != NULL && ft_strcmp("<<", p->tmp_red) == 0)
 		return (array);
 	while (point != NULL)
