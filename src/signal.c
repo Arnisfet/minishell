@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 16:35:33 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 11:44:04 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 12:53:39 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	ctrl_slash_parent(int status)
 void	ctrl_c_child(int status)
 {
 	status++;
+	g_status = 130;
 	printf("\n");
 }
 

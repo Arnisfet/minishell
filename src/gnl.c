@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/23 11:48:18 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 11:48:54 by jmacmill         ###   ########.fr       */
+/*   Created: 2022/01/23 12:16:58 by jmacmill          #+#    #+#             */
+/*   Updated: 2022/01/23 13:34:23 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,15 @@ int	get_next_line(int fd, char **line)
 	char	c;
 	char	*tmp;
 
-	r = 0;
+	r = 1;
 	len = 1;
 	*line = malloc(len);
 	(*line)[0] = 0;
 	if (!line)
 		return (-1);
-	while ((r = read(fd, &c, 1)) && len++ && c != '\n')
+	while (r > 0 && len++ && c != '\n')
 	{
+		r = read(fd, &c, 1);
 		tmp = malloc(len);
 		if (!tmp)
 			ft_exit(line);

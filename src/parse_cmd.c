@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 12:08:38 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 14:14:39 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,7 @@ char	*get_infile(t_struct *p, int pos)
 	flag = 0;
 	while (tmp != NULL)
 	{
-		if (!ft_strncmp("<<", tmp->type, 3) && \
-		tmp->number_command == pos && g_status != 130)
+		if (!ft_strncmp("<<", tmp->type, 3) && tmp->number_command == pos && g_status != 130)
 		{
 			if (!access(".heredoc_tmp", F_OK))
 				unlink(".heredoc_tmp");
@@ -421,6 +420,8 @@ void	route_minishell(char **array, t_struct *p)
 {
 	if (p->total_cmd == 1)
 	{
+		if (p->fdin == -1)
+			return ;
 		minishell_wo_pipes(array, p);
 	}
 	else
@@ -452,7 +453,6 @@ char	**split_string(char **commands, t_struct *p)
 		new_arr = parse_strings(new_arr, p);
 		if (new_arr[0] != NULL)
 			route_minishell(new_arr, p);
-			// check_minishell(new_arr, p);
 		p->idx++;
 	}
 	if (p->total_cmd > 1)

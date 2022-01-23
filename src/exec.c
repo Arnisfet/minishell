@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 18:36:20 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 11:51:42 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 13:45:03 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	check_execve(char **str, t_struct *p)
 				execve_path = ft_strdup(str[0]);
             else
             {
-                char *save;
+                char	*save;
                 execve_path = ft_strjoin(spl_path[i], "/");
                 save = execve_path;
                 execve_path = ft_strjoin(save, str[0]);
