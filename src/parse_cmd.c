@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/22 20:57:18 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 11:03:16 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -381,8 +381,8 @@ void	check_minishell(char **new_arr, t_struct *p)
 	}
 	if (a == 1)
 		return ;
-	if (ft_strncmp(new_arr[0], "./minishell", 12))
-		on_chld_signals();
+	// if (ft_strncmp(new_arr[0], "./minishell", 12))
+	// 	on_chld_signals();
 	child(new_arr, p);
 }
 
@@ -398,9 +398,7 @@ void	minishell_wo_pipes(char **array, t_struct *p)
 	i = check_bultin(array, p);
 	if (i == 0)
 	{
-		write(2, "22222222\n", 9);
 		check_execve(array, p);
-		write(2, "33333333\n", 9);
 	}
 }
 
@@ -408,12 +406,14 @@ void	route_minishell(char **array, t_struct *p)
 {
 	if (p->total_cmd == 1)
 	{
-		printf("total cmd: %d\n", p->total_cmd);
-		minishell_wo_pipes(array, p);		
+		minishell_wo_pipes(array, p);
 	}
 	else
-		printf("total cmd: %d\n", p->total_cmd);
-	write(2, "11111111\n", 9);
+	{
+		if (ft_strncmp(array[0], "./minishell", 12))
+			on_chld_signals();
+		child(array, p);
+	}
 }
 
 char	**split_string(char **commands, t_struct *p)

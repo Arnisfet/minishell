@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/22 20:36:53 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 11:04:03 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int		execute(char *path, char **str, t_struct *p);
 int		start_execve(char *path, char **str, t_struct *p);
 int		check_execve(char **str, t_struct *p);
 int		special_check(char *str);
+int		execute_chld(char *path, char **str, t_struct *p);
 
 char	**write_in_2_dim(char *command,char **commands);
 int  	env_len(char **env);
