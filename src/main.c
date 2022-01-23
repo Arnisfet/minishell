@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:53:59 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 17:00:15 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 20:21:32 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,22 @@ void	my_handler(int signo)
 	}
 }
 
+static void	str_ct(t_struct *p, char **env)
+{
+	p->count = 0;
+	p->revert_flag = 0;
+	p->trim_env = NULL;
+	signal(SIGQUIT, ctrl_slash_parent);
+	signal(SIGINT, ctrl_c_parent);
+	init_env(env, p);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_struct	*p;
-	int			status;
 	char		*line;
 
-	// write(2, "HUY\n", 4);
+	line = NULL;
 	g_status = 0;
 	(void ) argv;
 	if (argc > 1)
@@ -48,31 +57,7 @@ int	main(int argc, char **argv, char **env)
 	p = (t_struct *)malloc(sizeof(t_struct));
 	if (!p)
 		return (-1);
-	p->count = 0;
-	p->revert_flag = 0;
-	p->trim_env = NULL;
-	status = 3;
-	signal(SIGQUIT, ctrl_slash_parent);
-	signal(SIGINT, ctrl_c_parent);
-	init_env(env, p);
-	while (status)
-	{
-		line = readline("minishell🍑$> ");
-		if (!line)
-		{
-			write(1, "exit\n", 5);
-			break ;
-		}
-		add_history(line);
-		if (input_is_empty(line))
-		{
-			free(line);
-			continue ;
-		}
-		parse_cmd(line, p);
-		if (p->redirect)
-			freed(p);
-		free(line);
-		g_status = p->error;
-	}
+	str_ct(p, env);
+	loop(&line, p);
+	return (0);
 }

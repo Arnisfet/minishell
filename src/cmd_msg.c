@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_msg.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrudge <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 22:26:43 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/12 19:50:19 by mrudge           ###   ########.fr       */
+/*   Updated: 2022/01/23 19:47:16 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ char	*get_env_var(char *str, t_struct *p)
 	return (NULL);
 }
 
-char  *parse_path(char *path, t_struct *p, int reverse)
+char	*parse_path(char *path, t_struct *p, int reverse)
 {
-	char  *home_path;
+	char	*home_path;
 
 	if (!path)
 		return (NULL);
@@ -48,11 +48,11 @@ char  *parse_path(char *path, t_struct *p, int reverse)
 	return (home_path);
 }
 
-void  display_message(t_struct *p)
+void	display_message(t_struct *p)
 {
-	char *cwd;
-	char buf[4096 + 1];
-	char *parsed;
+	char	*cwd;
+	char	buf[4096 + 1];
+	char	*parsed;
 
 	cwd = getcwd(buf, 4096);
 	parsed = parse_path(cwd, p, 0);

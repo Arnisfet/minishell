@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 17:28:51 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 20:45:23 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,21 @@ int	parse_cmd(char *line, t_struct *p)
 	int		i;
 
 	p->error = 0;
-	commands = NULL;
-	commands = parsing(line, p, commands);
-	if (!commands)
+	if (check_string(line, p) != 0)
 		return (2);
+	commands = parse_pipe(line, p);
+	if (p->error != 0)
+	{
+		if (commands)
+			ft_free(commands);
+		return (1);
+	}
+	commands = parse_redirect(commands, p);
+	if (p->error != 0)
+	{
+		ft_free(commands);
+		return (2);
+	}
 	i = 0;
 	while (commands[i])
 		i++;

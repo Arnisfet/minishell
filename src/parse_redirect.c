@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/22 18:29:56 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 19:45:51 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	substring(char *start, t_struct *p)
 	char	*redirect;
 	char	*file;
 	char	*end;
-	file = NULL;
 
+	file = NULL;
 	end = start;
 	p->point_r = start;
 	end = end_q(end);
@@ -74,34 +74,6 @@ int	substring(char *start, t_struct *p)
 	if (correct_check(p))
 		return (2);
 	return (0);
-}
-
-char	*first_rparse(char *commands, t_struct *p)
-{
-	char	*start;
-	int		i;
-
-	p->tmp_red = NULL;
-	i = 0;
-	while (commands[i])
-	{
-		if (commands[i] == '\'' || commands[i] == '"')
-			i = end_of_quote(commands, i);
-		if (commands[i] == '>' || commands[i] == '<')
-		{
-			start = &commands[i];
-			if (substring(start, p))
-			{
-				free(p->tmp_red);
-				return (NULL);
-			}
-			free(p->tmp_red);
-			commands = ft_strtrim_quote(commands, p->point_r, p->point_f);
-			continue ;
-		}
-		i++;
-	}
-	return (commands);
 }
 
 char	**parse_redirect(char **commands, t_struct *p)

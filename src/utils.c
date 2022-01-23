@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/22 18:29:40 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 20:21:38 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,35 @@ char	*trim_and_find(char *array, int i, t_struct *p)
 		point = point->next;
 	}
 	return (ft_strdup(""));
+}
+
+static int	line_test(char **line)
+{
+	*line = readline("minishell🍑$> ");
+	if (!*line)
+	{
+		write(1, "exit\n", 5);
+		return (1);
+	}
+	return (0);
+}
+
+void	loop(char **line, t_struct *p)
+{
+	while (1)
+	{
+		if (line_test(line))
+			break ;
+		add_history(*line);
+		if (input_is_empty(*line))
+		{
+			free(*line);
+			continue ;
+		}
+		parse_cmd(*line, p);
+		if (p->redirect)
+			freed(p);
+		free(*line);
+		g_status = p->error;
+	}
 }

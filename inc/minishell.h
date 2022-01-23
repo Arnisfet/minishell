@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 17:22:46 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 20:19:38 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # include <string.h>
 # include <fcntl.h>
 
-typedef struct	s_env
+typedef struct s_env
 {
 	char			*var;
 	char			*value;
@@ -40,48 +40,48 @@ typedef struct	s_env
 
 typedef struct s_redirect
 {
-	char	*type;
-	char	*file;
-	int		number_command;
-	struct	s_redirect	*next;
+	char				*type;
+	char				*file;
+	int					number_command;
+	struct s_redirect	*next;
 }				t_redirect;
 
 typedef struct s_cmd
 {
 	char			**cmd;
-	struct	s_cmd	*next;
+	struct s_cmd	*next;
 }				t_cmd;
 
-typedef	struct	s_struct
+typedef struct s_struct
 {
-	t_env	*my_env;
-	char	**trim_env;
-	char	**arr_env;
-	int		echo_flag;
-	int		revert_flag;
-	int		count;
-	char	*point_r;
-	char	*point_f;
-	int		total_cmd;
-	int		in_file;
-	int		out_file;
-	int		is_infile;
-	int		is_outfile;
-	int		total_pipes;
-	int		here_doc;
-	int		tmpin;
-	int		tmpout;
-	int		fdin;
-	int		fdout;
-	int		idx;
-	int		ret;
-	int		fdpipe[2];
-	int		flag;
-	pid_t	*pid;
+	t_env		*my_env;
+	char		**trim_env;
+	char		**arr_env;
+	int			echo_flag;
+	int			revert_flag;
+	int			count;
+	char		*point_r;
+	char		*point_f;
+	int			total_cmd;
+	int			in_file;
+	int			out_file;
+	int			is_infile;
+	int			is_outfile;
+	int			total_pipes;
+	int			here_doc;
+	int			tmpin;
+	int			tmpout;
+	int			fdin;
+	int			fdout;
+	int			idx;
+	int			ret;
+	int			fdpipe[2];
+	int			flag;
+	pid_t		*pid;
 	t_redirect	*redirect;
-	int		error;
-	int		error_code;
-	char	*tmp_red;
+	int			error;
+	int			error_code;
+	char		*tmp_red;
 }				t_struct;
 
 int		g_status;
@@ -98,13 +98,14 @@ void	display_message(t_struct *p);
 int		build_cd(char **str, t_struct *p);
 int		input_is_empty(char *check);
 char	*build_pwd(char **str);
-int		find_str(const char *s1,const char *s2);
+int		find_str(const char *s1, const char *s2);
 int		build_export(char **str, t_struct *p);
 int		build_unset(char **str, t_struct *p);
 void	init_env_list(t_struct *p, char *content);
 int		builtin_echo(char **str, t_struct *p);
 int		builtin_env(t_struct *p);
 char	*get_env_var(char *str, t_struct *p);
+char	*first_rparse(char *commands, t_struct *p);
 
 int		make_pids(t_struct *p);
 void	preparation(t_struct *p);
@@ -154,10 +155,10 @@ int		check_execve(char **str, t_struct *p);
 int		special_check(char *str);
 int		execute_chld(char *path, char **str, t_struct *p);
 
-char	**write_in_2_dim(char *command,char **commands);
+char	**write_in_2_dim(char *command, char **commands);
 void	ctrl_c_pipe_heredoc(int status);
 void	ctrl_c_heredoc(int status);
-int  	env_len(char **env);
+int		env_len(char **env);
 void	ft_free(char **commands);
 char	*ft_realloc_ch(char *command, char ch);
 char	*parse_revert(char *array, int i, t_struct *p);
@@ -174,10 +175,11 @@ char	*parse_dollar_without_quote(char *array, t_struct *p);
 void	print_list(t_struct *p);
 char	**parse_strings(char **commands, t_struct *p);
 char	*ft_strtrim_quote(char *arr, char *start, char *end);
-int 	check_digit(char const *start, char *end, t_struct *p);
+int		check_digit(char const *start, char *end, t_struct *p);
 int		print_env(t_struct *p);
 int		export_errors(char **str);
 char	**parsing(char *line, t_struct *p, char **commands);
+void	loop(char **line, t_struct *p);
 
 char	*trim_and_find(char *array, int i, t_struct *p);
 void	trim_env(t_struct *p);
@@ -191,12 +193,13 @@ void	start_heredoc(t_struct *p, char *stop);
 void	catch_file(t_struct *p, char *filename, int state);
 void	choose_func(char **commands, t_struct *p);
 int		check_bultin(char **str, t_struct *p);
+void	clean_split_tmp(char **clean);
 
 void	util(t_struct *p, char *file, char *redirect);
 int		correct_check(t_struct *p);
 int		check_string(char *array, t_struct *p);
 void	freed(t_struct *p);
 void	free2(char *array, char *trimmer);
-
+int		substring(char *start, t_struct *p);
 
 #endif

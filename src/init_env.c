@@ -6,20 +6,11 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:49:43 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 18:00:20 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 19:48:24 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-void	clean_split_tmp(char **clean)
-{
-	if (clean[0])
-		free(clean[0]);
-	if (clean[1])
-		free(clean[1]);
-	free(clean);
-}
 
 void	create_first(t_struct *p, char **str, char *content)
 {
