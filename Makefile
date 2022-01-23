@@ -35,7 +35,7 @@ $(BUILDDIR)%.o:$(SRCDIR)%.c
 
 # Project file rule
 $(NAME): $(BUILDOBJS)
-	$(CC) -lreadline -g -o $(NAME) $(BUILDOBJS) $(LIBFT) -L/Users/jmacmill/.brew/Cellar/readline/8.1/lib/ -I/Users/jmacmill/.brew/Cellar/readline/8.1/include
+	$(CC) -lreadline -g -o $(NAME) $(BUILDOBJS) $(LIBFT)
 
 # Libft rule
 $(LIBFT):

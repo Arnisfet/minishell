@@ -17,21 +17,24 @@ void	ctrl_c_parent(int status)
 	status++;
 	// write(2, "ctrl+c parent\n", 14);
 	// g_question = 130;
-	rl_on_new_line();
-	rl_redisplay();
+
+	// rl_on_new_line();
+	// rl_redisplay();
 	ft_putstr_fd("  \b\b\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 1);
-	rl_redisplay();
+	// rl_on_new_line();
+	// rl_replace_line("", 1);
+	// rl_redisplay();
 }
 
 void	ctrl_slash_parent(int status)
 {
 	// write(2, "ctrl+slash parent\n", 18);
-	rl_on_new_line();
-	rl_redisplay();
+
+
+	// rl_on_new_line();
+	// rl_redisplay();
 	ft_putstr_fd("  \b\b", 1);
-	rl_redisplay();
+	// rl_redisplay();
 }
 
 void	ctrl_c_heredoc(int status)
@@ -73,25 +76,12 @@ void	ctrl_slash_child(int status)
 	// exit(1);
 }
 
-// void	ctrl_c_redirect_heredoc(int status)
-// {
-// 	int		file;
-
-// 	status++;
-// 	write(1, "\n", 1);
-// 	file = open(".heredoc_error", O_CREAT | O_TRUNC | O_RDWR, 0644);
-// 	write(file, "ctrl_c_redirect_heredoc",
-// 		ft_strlen("ctrl_c_redirect_heredoc"));
-// 	rl_on_new_line();
-// 	close(file);
-// 	exit(130);
-// }
-
 void	ctrl_c_pipe_heredoc(int status)
 {
 	status++;
 	write(1, "\n", 1);
-	rl_on_new_line();
+
+	// rl_on_new_line();
 	exit(130);
 }
 

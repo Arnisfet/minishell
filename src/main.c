@@ -19,7 +19,6 @@ void	display_new_line()
 
 	cwd = getcwd(buff, 4096);
 	ft_putstr_fd(cwd, 1);
-	//free(cwd);
 }
 
 void	my_handler(int signo)
@@ -27,7 +26,6 @@ void	my_handler(int signo)
 	if (signo == SIGINT)
 	{
 		write(1, "\n", 2);
-		//display_new_line();
 		ft_putstr_fd("minishell🍑$> ",1);
 		signal(SIGINT, my_handler);
 	}
@@ -58,7 +56,6 @@ int main(int argc, char **argv, char **env)
 	init_env(env, p);
 	while (status)
 	{
-		// signal(SIGINT, my_handler);
 		line = readline("minishell🍑$> ");
 		if (!line)
 		{

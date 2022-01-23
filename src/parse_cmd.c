@@ -386,6 +386,36 @@ void	check_minishell(char **new_arr, t_struct *p)
 	child(new_arr, p);
 }
 
+void	minishell_wo_pipes(char **array, t_struct *p)
+{
+	int	i;
+
+	i = 0;
+	dup2(p->fdin, 0);
+	close(p->fdin);
+	check_out(p);
+	redirect_out(p);
+	i = check_bultin(array, p);
+	if (i == 0)
+	{
+		write(2, "22222222\n", 9);
+		check_execve(array, p);
+		write(2, "33333333\n", 9);
+	}
+}
+
+void	route_minishell(char **array, t_struct *p)
+{
+	if (p->total_cmd == 1)
+	{
+		printf("total cmd: %d\n", p->total_cmd);
+		minishell_wo_pipes(array, p);		
+	}
+	else
+		printf("total cmd: %d\n", p->total_cmd);
+	write(2, "11111111\n", 9);
+}
+
 char	**split_string(char **commands, t_struct *p)
 {
 	char	**new_arr;
@@ -406,10 +436,14 @@ char	**split_string(char **commands, t_struct *p)
 		new_arr = ft_split_quotes(commands[p->idx], ' ');
 		new_arr = parse_strings(new_arr, p);
 		if (new_arr[0] != NULL)
-			check_minishell(new_arr, p);
+			route_minishell(new_arr, p);
+			// check_minishell(new_arr, p);
 		p->idx++;
 	}
-	global_wait(p);
+	if (p->total_cmd > 1)
+	{
+		global_wait(p);
+	}
 	restore_std(p);
 	on_parent_signals();
 	ft_free(commands);
