@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 18:36:20 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 13:45:03 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 15:36:26 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ int	execute(char *path, char **str, t_struct *p)
 
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, ctrl_c_child);
-	signal(SIGQUIT, ctrl_slash_child);
 	ret = fork();
 	if (ret == -1)
 		ft_putendl_fd("Unable to create a fork", 2);
 	if (ret == 0)
 	{
+		signal(SIGINT, ctrl_c_child);
+		signal(SIGQUIT, ctrl_slash_child);
 		if (execve(path, str, p->arr_env) == -1)
 			perror("Could not execute execve");
 	}

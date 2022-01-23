@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal2.c                                          :+:      :+:    :+:   */
+/*   redir_wo_cmd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/23 11:42:51 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 17:04:26 by jmacmill         ###   ########.fr       */
+/*   Created: 2022/01/23 17:00:46 by jmacmill          #+#    #+#             */
+/*   Updated: 2022/01/23 17:00:48 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	ctrl_c_heredoc(int status)
+static int create_file(t_redirect *p)
 {
-	int		file;
+ int fd;
 
-	(void)status;
-	g_status = 1;
-	write(1, "\n", 1);
-	exit(130);
+ fd = open(p->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+ if (fd == -1)
+  perror("minishell");
+ return (1);
 }
 
-// void	ctrl_c_pipe_heredoc(int status)
-// {
-// 	status++;
-// 	write(1, "\n", 1);
-// 	rl_on_new_line();
-// 	exit(130);
-// }
+int create_redir(t_struct *p)
+{
+ t_redirect *point;
+
+ point = p->redirect;
+ while (point != NULL)
+ {
+  if (point->type[0] == '>')
+   create_file(point);
+  point = point->next;
+ }
+ return (0);
+}

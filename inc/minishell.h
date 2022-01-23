@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 14:42:27 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 17:00:56 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ void	on_chld_signals(void);
 void	on_parent_signals(void);
 void	restore_std(t_struct *p);
 void	global_wait(t_struct *p);
+int		create_redir(t_struct *p);
 
 int		build_exit(char **cmd, t_struct *p);
 void	add_null_value(char *str, t_struct *p, int flag);
