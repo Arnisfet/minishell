@@ -47,7 +47,6 @@ void	update_var(char *s1, char *s2, t_struct *p)
 
 void	go_to_dir(char *path, t_struct *p)
 {
-	t_env	*tmp;
 	char	oldpwd[4096 + 1];
 	char	cwd[4096 + 1];
 

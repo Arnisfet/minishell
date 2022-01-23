@@ -52,6 +52,7 @@ char	*parse_ones_revert(char *array, t_struct *p)
 	char	*first;
 	char	*last;
 
+	(void )p;
 	start = ft_strchr(array, '\'');
 	end = ft_strchr(start + 1, '\'');
 	first = ft_substr(array, 0, start - array);

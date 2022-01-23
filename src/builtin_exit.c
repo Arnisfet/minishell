@@ -37,7 +37,7 @@ static int	is_al_num(char *str)
 	return (1);
 }
 
-int	build_exit(char **cmd, t_struct *p)
+int	build_exit(char **cmd)
 {
 	if (!cmd[1])
 	{

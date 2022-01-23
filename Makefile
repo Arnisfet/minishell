@@ -31,7 +31,7 @@ $(BUILDDIR):
 
 # Object dir rule
 $(BUILDDIR)%.o:$(SRCDIR)%.c
-	$(CC) -I$(LIBINC) -I$(INC) -g -o $@ -c $<
+	$(CC) -I$(LIBINC) -I$(INC) $(CFLAGS) -g -o $@ -c $<
 
 # Project file rule
 $(NAME): $(BUILDOBJS)

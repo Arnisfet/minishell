@@ -14,18 +14,8 @@
 
 void	ctrl_c_heredoc(int status)
 {
-	int		file;
-
 	(void)status;
 	g_status = 1;
 	write(1, "\n", 1);
 	exit(130);
 }
-
-// void	ctrl_c_pipe_heredoc(int status)
-// {
-// 	status++;
-// 	write(1, "\n", 1);
-// 	rl_on_new_line();
-// 	exit(130);
-// }

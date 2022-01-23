@@ -22,7 +22,7 @@ int	end_of_quote(const char *array, int i)
 	return (i);
 }
 
-char	*trimming_dollar_without(char *array, int i, char *trimmer, t_struct *p)
+char	*trimming_dollar_without(char *array, int i, t_struct *p)
 {
 	char	*start;
 	char	*end;
@@ -65,7 +65,6 @@ char	*parse_dollar_without_quote(char *array, t_struct *p)
 	int		i;
 	char	*trimmer;
 	char	*end;
-	char	*last;
 
 	i = 0;
 	trimmer = NULL;
@@ -77,7 +76,7 @@ char	*parse_dollar_without_quote(char *array, t_struct *p)
 		{
 			end = &array[i] + 1;
 			end = find_end_dollar(end);
-			trimmer = trimming_dollar_without(array, i, trimmer, p);
+			trimmer = trimming_dollar_without(array, i, p);
 			i = ft_strlen(trimmer);
 			array = trimmering(array, trimmer, end);
 			free(trimmer);

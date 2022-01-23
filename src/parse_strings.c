@@ -13,7 +13,7 @@
 #include "../inc/minishell.h"
 
 
-char	*parsing(char *line, t_struct *p, char **commands)
+char	**parsing(char *line, t_struct *p, char **commands)
 {
 	if (check_string(line, p) != 0)
 		return (NULL);
