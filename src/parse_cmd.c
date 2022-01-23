@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 11:03:16 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 11:13:17 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -389,12 +389,19 @@ void	check_minishell(char **new_arr, t_struct *p)
 void	minishell_wo_pipes(char **array, t_struct *p)
 {
 	int	i;
+	int	a;
 
 	i = 0;
 	dup2(p->fdin, 0);
 	close(p->fdin);
 	check_out(p);
 	redirect_out(p);
+	a = 0;
+	if (find_str(array[0], "exit"))
+	{
+		build_exit(array, p);
+		return ;
+	}
 	i = check_bultin(array, p);
 	if (i == 0)
 	{

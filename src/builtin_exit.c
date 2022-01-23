@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 17:43:26 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/22 20:40:44 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/23 11:15:03 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	build_exit(char **cmd, t_struct *p)
 {
 	if (!cmd[1])
 	{
+		printf("exit\n");
 		unlink(".heredoc_tmp");
 		exit(g_status);
 	}
