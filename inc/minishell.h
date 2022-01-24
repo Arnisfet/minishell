@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 17:45:25 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 20:19:38 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 19:50:06 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ void	catch_file(t_struct *p, char *filename, int state);
 void	choose_func(char **commands, t_struct *p);
 int		check_bultin(char **str, t_struct *p);
 void	clean_split_tmp(char **clean);
+void	remove_spaces_in_line(char **str);
 
 void	util(t_struct *p, char *file, char *redirect);
 int		correct_check(t_struct *p);

@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/24 16:07:44 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 20:00:24 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	choose_func(char **commands, t_struct *p)
 
 	a = 0;
 	a = check_bultin(commands, p);
+	p->error = g_status;
+	g_status = 0;
 	if (a == 0 && a != -1)
 	{
 		if (access(commands[0], (F_OK & X_OK)) == 0)
@@ -74,7 +76,7 @@ char	**split_string(char **commands, t_struct *p)
 		p->fdin = open(get_infile(p, p->idx), O_RDONLY, 0644);
 		if (p->fdin == -1)
 		{
-			g_status = 1;
+			p->error = 1;
 			perror("minishell");
 		}
 	}

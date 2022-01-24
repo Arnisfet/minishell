@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 14:26:27 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/24 17:55:50 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 20:06:02 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,11 @@ void	check_heredoc_tmp(t_struct *p)
 {
 	p->in_file = open(".heredoc_tmp", O_RDONLY);
 	if (p->in_file < 0)
+	{
 		unlink_file_err();
+		p->error = g_status;
+		g_status = 0;	
+	}
 }
 
 void	start_heredoc(t_struct *p, char *stop)

@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 17:43:02 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 11:33:44 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 19:54:40 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	go_to_dir(char *path, t_struct *p)
 	getcwd(oldpwd, 4096);
 	if (chdir(path) != 0)
 	{
+		p->error = 1;
 		perror("cd ");
 		return ;
 	}
@@ -82,7 +83,10 @@ int	build_cd(char **str, t_struct *p)
 				go_to_dir(old_path, p);
 		}
 		else
+		{
+			p->error = 1;
 			ft_putstr_fd("bash: cd: too many arguments\n", 2);
+		}
 	}
 	return (1);
 }

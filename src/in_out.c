@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 14:24:06 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/24 18:02:30 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 20:06:16 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	check_in(t_struct *p)
 		p->fdin = open(get_infile(p, p->idx), O_RDONLY, 0644);
 		if (p->fdin == -1)
 		{
-			g_status = 1;
+			p->error = 1;
 			perror("minishell");
 		}
 	}

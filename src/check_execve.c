@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 18:19:42 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/24 17:45:10 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 20:04:09 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	check_execve(char **str, t_struct *p)
 		}
 		free_array(spl_path);
 	}
-	g_status = 127;
+	p->error = 127;
 	ft_putstr_fd("minishell: command not found: ", 2);
 	ft_putstr_fd(str[0], 2);
 	ft_putstr_fd("\n", 2);

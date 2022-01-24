@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 18:36:20 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/24 17:47:19 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 20:04:38 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	execute(char *path, char **str, t_struct *p)
 	{
 		if (execve(path, str, p->arr_env) == -1)
 		{
-			g_status = 126;
+			p->error = 126;
 			perror("Could not execute execve");
 		}
 	}
@@ -40,7 +40,7 @@ int	execute_chld(char *path, char **str, t_struct *p)
 {
 	if (execve(path, str, p->arr_env) == -1)
 	{
-		g_status = 126;
+		p->error = 126;
 		perror("Could not execute execve");
 	}
 	return (1);

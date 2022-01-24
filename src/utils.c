@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 18:13:15 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/24 18:10:24 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 19:49:37 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,15 @@ char	*trim_and_find(char *array, int i, t_struct *p)
 static int	line_test(char **line)
 {
 	*line = readline("minishell🍑$> ");
+
 	if (!*line)
 	{
+		
 		write(1, "exit\n", 5);
 		return (1);
 	}
+	else
+		remove_spaces_in_line(line);
 	return (0);
 }
 
