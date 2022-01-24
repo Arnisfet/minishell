@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 17:57:10 by mrudge            #+#    #+#             */
-/*   Updated: 2022/01/23 20:45:23 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 16:07:44 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ char	**split_string(char **commands, t_struct *p)
 	{
 		p->fdin = open(get_infile(p, p->idx), O_RDONLY, 0644);
 		if (p->fdin == -1)
+		{
+			g_status = 1;
 			perror("minishell");
+		}
 	}
 	else
 		p->fdin = dup(p->tmpin);

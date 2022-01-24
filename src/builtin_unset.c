@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 17:43:53 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 11:52:06 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 17:40:17 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,13 @@ int	unset_errors(char **str)
 {
 	if (!str[1])
 	{
+		g_status = 1;
 		ft_putstr_fd("unset: not enough arguments\n", 2);
 		return (1);
 	}
 	if (special_check(str[1]))
 	{
+		g_status = 1;
 		ft_putstr_fd("unset: ", 2);
 		ft_putstr_fd(str[1], 2);
 		ft_putstr_fd(": invalid parameter name\n", 2);

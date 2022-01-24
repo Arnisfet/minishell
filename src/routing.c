@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 14:17:39 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 17:09:34 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 16:40:48 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	make_pids(t_struct *p)
 		p->pid = (pid_t *)malloc((p->total_cmd) * sizeof(pid_t));
 		if (!(p->pid))
 		{
+			g_status = 1;
 			ft_putendl_fd("Error: unable to allocate memory", 2);
 			return (2);
 		}

@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 14:26:27 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 18:15:42 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 17:55:50 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	act_signals(void)
 void	unlink_file_err(void)
 {
 	unlink(".heredoc_tmp");
+	g_status = 2;
 	ft_putendl_fd("Error: unable to open a file", 2);
 }
 

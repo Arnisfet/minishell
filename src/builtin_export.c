@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 17:43:35 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 11:39:08 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 17:41:56 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	add_new(char *var, char *value, t_struct *p, int flag)
 	if (tmp == NULL)
 	{
 		tmp = (t_env *)malloc(sizeof(t_env));
+		if (!(tmp))
+			return ;
 		tmp->var = ft_strdup(var);
 		if (flag)
 		{

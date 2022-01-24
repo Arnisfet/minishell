@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 17:43:26 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 11:35:00 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 18:14:41 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,11 @@ int	build_exit(char **cmd)
 	}
 	else
 	{
+		g_status = 2;
 		printf("exit\n");
 		ft_putstr_fd("minishell: exit: not numeric argument\n", 2);
 		unlink(".heredoc_tmp");
-		exit(2);
+		exit(g_status);
 	}
 	return (0);
 }

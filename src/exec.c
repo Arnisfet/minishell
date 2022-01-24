@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 18:36:20 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/23 18:19:57 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/24 17:47:19 by jmacmill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,18 @@ int	execute(char *path, char **str, t_struct *p)
 
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
+	if (ft_strncmp(path, "./minishell", 12))
+		on_chld_signals();
 	ret = fork();
 	if (ret == -1)
 		ft_putendl_fd("Unable to create a fork", 2);
 	if (ret == 0)
 	{
-		signal(SIGINT, ctrl_c_child);
-		signal(SIGQUIT, ctrl_slash_child);
 		if (execve(path, str, p->arr_env) == -1)
+		{
+			g_status = 126;
 			perror("Could not execute execve");
+		}
 	}
 	else
 		waitpid(ret, NULL, 0);
@@ -36,7 +39,10 @@ int	execute(char *path, char **str, t_struct *p)
 int	execute_chld(char *path, char **str, t_struct *p)
 {
 	if (execve(path, str, p->arr_env) == -1)
+	{
+		g_status = 126;
 		perror("Could not execute execve");
+	}
 	return (1);
 }
 
