@@ -40,7 +40,6 @@ void	check_minishell(char **new_arr, t_struct *p)
 {
 	int	a;
 
-	a = 0;
 	if (find_str(new_arr[0], "exit"))
 	{
 		build_exit(new_arr);
@@ -48,7 +47,6 @@ void	check_minishell(char **new_arr, t_struct *p)
 	}
 	if (p->total_cmd == 1)
 	{
-		a = 0;
 		a = check_bultin(new_arr, p);
 		p->error = g_status;
 		g_status = 0;
@@ -63,14 +61,12 @@ void	check_minishell(char **new_arr, t_struct *p)
 void	minishell_wo_pipes(char **array, t_struct *p)
 {
 	int	i;
-	int	a;
 
 	i = 0;
 	dup2(p->fdin, 0);
 	close(p->fdin);
 	check_out(p);
 	redirect_out(p);
-	a = 0;
 	if (find_str(array[0], "exit"))
 	{
 		build_exit(array);

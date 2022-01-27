@@ -42,13 +42,7 @@ static void	*trim(char *new_arr, char *arr, char *start, char *end)
 char	*ft_strtrim_quote(char *arr, char *start, char *end)
 {
 	char	*new_arr;
-	int		i;
-	char	*point;
-	int		j;
 
-	j = 0;
-	point = arr;
-	i = 0;
 	if (!arr)
 		return (NULL);
 	new_arr = (char *)malloc(sizeof (char) * (ft_strlen(arr) - (end - start))

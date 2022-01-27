@@ -31,7 +31,7 @@ int	create_redir(t_struct *p)
 	{
 		if (point->type[0] == '>')
 			create_file(point);
-			point = point->next;
+		point = point->next;
 	}
 	return (0);
 }

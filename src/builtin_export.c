@@ -6,7 +6,7 @@
 /*   By: jmacmill <jmacmill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 17:43:35 by jmacmill          #+#    #+#             */
-/*   Updated: 2022/01/24 17:41:56 by jmacmill         ###   ########.fr       */
+/*   Updated: 2022/01/27 20:18:20 by mrudge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	build_export(char **str, t_struct *p)
 {
 	int		i;
 	char	*equal;
-	t_env	*tmp;
 
 	if (!str[1])
 	{
@@ -77,7 +76,6 @@ int	build_export(char **str, t_struct *p)
 	if (export_errors(str))
 		return (1);
 	i = 1;
-	tmp = p->my_env;
 	while (str[i])
 	{
 		equal = ft_strchr(str[i], '=');
